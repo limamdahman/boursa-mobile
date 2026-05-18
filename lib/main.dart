@@ -1,0 +1,48 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import 'core/storage/locale_storage.dart';
+import 'core/theme/app_theme.dart';
+import 'l10n/app_localizations.dart';
+import 'routing/app_router.dart';
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final prefs = await SharedPreferences.getInstance();
+
+  runApp(
+    ProviderScope(
+      overrides: [
+        sharedPrefsProvider.overrideWithValue(prefs),
+      ],
+      child: const BoursaApp(),
+    ),
+  );
+}
+
+class BoursaApp extends ConsumerWidget {
+  const BoursaApp({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final router = ref.watch(appRouterProvider);
+    final locale = ref.watch(localeProvider);
+
+    return MaterialApp.router(
+      title: 'Boursa',
+      debugShowCheckedModeBanner: false,
+      theme: AppTheme.light(),
+      locale: locale,
+      supportedLocales: const [Locale('fr'), Locale('ar')],
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      routerConfig: router,
+    );
+  }
+}

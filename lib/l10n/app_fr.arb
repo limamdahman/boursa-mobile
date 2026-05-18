@@ -1,0 +1,63 @@
+{
+  "@@locale": "fr",
+  "appTitle": "Boursa",
+  "appTagline": "Marketplace véhicules",
+
+  "navHome": "Accueil",
+  "navFavorites": "Favoris",
+  "navProfile": "Profil",
+
+  "listingTitle": "Véhicules disponibles",
+  "listingEmpty": "Aucun véhicule trouvé",
+  "listingLoading": "Chargement...",
+  "listingError": "Erreur de chargement",
+  "listingRetry": "Réessayer",
+  "listingFilters": "Filtres",
+  "listingResultsCount": "{count, plural, =0{Aucun résultat} =1{1 résultat} other{{count} résultats}}",
+  "@listingResultsCount": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+
+  "vehicleYear": "Année {year}",
+  "@vehicleYear": {
+    "placeholders": {
+      "year": { "type": "int" }
+    }
+  },
+  "vehicleKm": "{km} km",
+  "@vehicleKm": {
+    "placeholders": {
+      "km": { "type": "String" }
+    }
+  },
+  "vehiclePriceMru": "{price} MRU",
+  "@vehiclePriceMru": {
+    "placeholders": {
+      "price": { "type": "String" }
+    }
+  },
+
+  "vehicleSpecsTitle": "Caractéristiques",
+  "vehicleDescriptionTitle": "Description",
+  "vehicleAgencyTitle": "Vendeur",
+  "vehicleSimilarTitle": "Véhicules similaires",
+
+  "contactWhatsApp": "WhatsApp",
+  "contactCall": "Appeler",
+  "contactMessage": "Message",
+
+  "fuelGasoline": "Essence",
+  "fuelDiesel": "Diesel",
+  "fuelHybrid": "Hybride",
+  "fuelElectric": "Électrique",
+  "fuelGpl": "GPL",
+
+  "transmissionManual": "Manuelle",
+  "transmissionAutomatic": "Automatique",
+
+  "languageLabel": "Langue",
+  "languageFr": "Français",
+  "languageAr": "العربية"
+}
