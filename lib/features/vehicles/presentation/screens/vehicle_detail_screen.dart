@@ -1,11 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../core/theme/app_colors.dart';
 import '../../../../l10n/app_localizations.dart';
+import '../../../auth/presentation/providers/auth_provider.dart';
+import '../../../favorites/presentation/providers/favorites_provider.dart';
 import '../../data/models/vehicle.dart';
 import '../providers/listing_providers.dart';
 
@@ -23,21 +26,24 @@ class VehicleDetailScreen extends ConsumerWidget {
       body: asyncVehicle.when(
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (e, _) => Center(child: Text('${l10n.listingError}: $e')),
-        data: (vehicle) => _DetailBody(vehicle: vehicle),
+        data: (vehicle) => _DetailBody(vehicle: vehicle, vehicleId: id),
       ),
     );
   }
 }
 
-class _DetailBody extends StatelessWidget {
-  const _DetailBody({required this.vehicle});
+class _DetailBody extends ConsumerWidget {
+  const _DetailBody({required this.vehicle, required this.vehicleId});
 
   final Vehicle vehicle;
+  final String vehicleId;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
     final priceFmt = NumberFormat.decimalPattern('fr_FR');
+    final isFav = ref.watch(isFavoriteProvider(vehicleId));
+    final isAuth = ref.watch(isAuthenticatedProvider);
 
     return CustomScrollView(
       slivers: [
@@ -46,6 +52,39 @@ class _DetailBody extends StatelessWidget {
           pinned: true,
           backgroundColor: AppColors.primary,
           foregroundColor: Colors.white,
+          actions: [
+            IconButton(
+              onPressed: () async {
+                if (!isAuth) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text(
+                          'Connectez-vous pour sauvegarder ce véhicule'),
+                    ),
+                  );
+                  await Future.delayed(const Duration(milliseconds: 600));
+                  if (context.mounted) context.go('/login');
+                  return;
+                }
+                try {
+                  await ref
+                      .read(favoritesProvider.notifier)
+                      .toggle(vehicleId);
+                } catch (e) {
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Erreur : $e')),
+                    );
+                  }
+                }
+              },
+              icon: Icon(
+                isFav ? Icons.favorite : Icons.favorite_border,
+                color: isFav ? Colors.red : Colors.white,
+              ),
+              tooltip: isFav ? 'Retirer des favoris' : 'Ajouter aux favoris',
+            ),
+          ],
           flexibleSpace: FlexibleSpaceBar(
             background: vehicle.media.isNotEmpty
                 ? PageView.builder(
@@ -78,14 +117,17 @@ class _DetailBody extends StatelessWidget {
                 ),
                 const SizedBox(height: 20),
                 _SpecRow(label: 'Année', value: '${vehicle.year}'),
-                _SpecRow(label: 'Kilométrage', value: '${priceFmt.format(vehicle.mileageKm)} km'),
+                _SpecRow(
+                    label: 'Kilométrage',
+                    value: '${priceFmt.format(vehicle.mileageKm)} km'),
                 _SpecRow(label: 'Carburant', value: vehicle.fuel),
                 _SpecRow(label: 'Boite', value: vehicle.transmission),
                 _SpecRow(label: 'Carrosserie', value: vehicle.bodyType),
                 if (vehicle.city != null)
                   _SpecRow(label: 'Ville', value: vehicle.city!.name),
                 const SizedBox(height: 24),
-                if (vehicle.description != null && vehicle.description!.isNotEmpty) ...[
+                if (vehicle.description != null &&
+                    vehicle.description!.isNotEmpty) ...[
                   Text(l10n.vehicleDescriptionTitle,
                       style: Theme.of(context).textTheme.titleMedium),
                   const SizedBox(height: 8),
@@ -125,8 +167,8 @@ class _SpecRow extends StatelessWidget {
         children: [
           SizedBox(
             width: 120,
-            child: Text(label,
-                style: Theme.of(context).textTheme.bodySmall),
+            child:
+                Text(label, style: Theme.of(context).textTheme.bodySmall),
           ),
           Expanded(
             child: Text(value,
@@ -151,10 +193,13 @@ class _ContactBar extends StatelessWidget {
       children: [
         Expanded(
           child: FilledButton.icon(
-            onPressed: phone == null ? null : () => _openWhatsApp(phone, vehicle),
+            onPressed: phone == null
+                ? null
+                : () => _openWhatsApp(phone, vehicle),
             icon: const Icon(Icons.chat),
             label: Text(l10n.contactWhatsApp),
-            style: FilledButton.styleFrom(backgroundColor: const Color(0xFF25D366)),
+            style: FilledButton.styleFrom(
+                backgroundColor: const Color(0xFF25D366)),
           ),
         ),
         const SizedBox(width: 8),

@@ -106,11 +106,7 @@ class _AuthenticatedView extends ConsumerWidget {
           leading: const Icon(Icons.favorite_outline),
           title: const Text('Mes favoris'),
           trailing: const Icon(Icons.chevron_right),
-          onTap: () {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Bientôt disponible')),
-            );
-          },
+          onTap: () => context.go('/favorites'),
         ),
         if (user.isAgencyOwner)
           ListTile(

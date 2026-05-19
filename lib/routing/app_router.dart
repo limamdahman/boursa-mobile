@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import '../features/auth/presentation/screens/otp_screen.dart';
 import '../features/auth/presentation/screens/phone_login_screen.dart';
 import '../features/auth/presentation/screens/profile_screen.dart';
+import '../features/favorites/presentation/screens/favorites_screen.dart';
 import '../features/vehicles/presentation/screens/listing_screen.dart';
 import '../features/vehicles/presentation/screens/vehicle_detail_screen.dart';
 
@@ -35,6 +36,10 @@ final appRouter = GoRouter(
     GoRoute(
       path: '/profile',
       builder: (context, state) => const ProfileScreen(),
+    ),
+    GoRoute(
+      path: '/favorites',
+      builder: (context, state) => const FavoritesScreen(),
     ),
   ],
   errorBuilder: (context, state) => Scaffold(
