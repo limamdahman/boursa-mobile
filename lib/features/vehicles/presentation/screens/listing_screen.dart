@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../auth/presentation/providers/auth_provider.dart';
+
 import '../../../../core/storage/locale_storage.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../l10n/app_localizations.dart';
@@ -52,6 +54,15 @@ class _ListingScreenState extends ConsumerState<ListingScreen> {
       appBar: AppBar(
         title: Text(l10n.appTitle),
         actions: [
+          IconButton(
+            onPressed: () => context.go('/profile'),
+            icon: Icon(
+              ref.watch(isAuthenticatedProvider)
+                  ? Icons.account_circle
+                  : Icons.account_circle_outlined,
+            ),
+            tooltip: 'Mon compte',
+          ),
           IconButton(
             onPressed: () => _toggleLocale(context),
             icon: const Icon(Icons.translate),

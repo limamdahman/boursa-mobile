@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'core/storage/locale_storage.dart';
 import 'core/theme/app_theme.dart';
 import 'l10n/app_localizations.dart';
+import 'features/auth/presentation/providers/auth_provider.dart';
 import 'routing/app_router.dart';
 
 Future<void> main() async {
@@ -27,7 +28,7 @@ class BoursaApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final router = ref.watch(appRouterProvider);
+    final router = appRouter;
     final locale = ref.watch(localeProvider);
 
     return MaterialApp.router(
