@@ -29,6 +29,7 @@ dependencies:
   # UI
   cached_network_image: ^3.4.1
   cupertino_icons: ^1.0.8
+  flutter_svg: ^2.0.10
   google_fonts: ^6.2.1
 
   # Utils
@@ -49,4 +50,5 @@ flutter:
   uses-material-design: true
   generate: true
   assets:
+    - assets/brand/
     - assets/images/

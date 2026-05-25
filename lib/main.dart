@@ -35,6 +35,8 @@ class BoursaApp extends ConsumerWidget {
       title: 'Boursa',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.light(),
+      darkTheme: AppTheme.light(),
+      themeMode: ThemeMode.light,
       locale: locale,
       supportedLocales: const [Locale('fr'), Locale('ar')],
       localizationsDelegates: const [

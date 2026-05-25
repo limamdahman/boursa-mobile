@@ -20,14 +20,23 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
   RangeValues _priceRange = const RangeValues(0, 10000000);
   RangeValues _yearRange = const RangeValues(2000, 2026);
 
-  static const _fuelOptions = ['gasoline', 'diesel', 'hybrid', 'electric', 'gpl'];
-  static const _transmissionOptions = ['manual', 'automatic'];
+  static const _fuelOptions = [
+    ('gasoline', 'Essence'),
+    ('diesel', 'Diesel'),
+    ('hybrid', 'Hybride'),
+    ('electric', 'Élec.'),
+    ('gpl', 'GPL'),
+  ];
+  static const _transOptions = [
+    ('manual', 'Manuelle'),
+    ('automatic', 'Automatique'),
+  ];
   static const _sortOptions = [
     ('recent', 'Plus récents'),
     ('price_asc', 'Prix croissant'),
     ('price_desc', 'Prix décroissant'),
     ('year_desc', 'Année décroissante'),
-    ('mileage_asc', 'Kilométrage croissant'),
+    ('mileage_asc', 'Km croissant'),
   ];
 
   @override
@@ -50,39 +59,39 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
 
   @override
   Widget build(BuildContext context) {
-    final priceFmt = NumberFormat.decimalPattern('fr_FR');
-
     return DraggableScrollableSheet(
       expand: false,
       initialChildSize: 0.85,
+      minChildSize: 0.6,
       maxChildSize: 0.95,
-      minChildSize: 0.5,
       builder: (context, scrollController) => Container(
         decoration: const BoxDecoration(
-          color: AppColors.background,
+          color: AppColors.surface,
           borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
         ),
         child: Column(
           children: [
-            // Handle
+            // Drag handle
             Container(
-              margin: const EdgeInsets.only(top: 12, bottom: 8),
-              width: 40,
-              height: 4,
+              margin: const EdgeInsets.only(top: 8, bottom: 4),
+              width: 36, height: 4,
               decoration: BoxDecoration(
-                color: AppColors.border,
+                color: AppColors.borderStrong,
                 borderRadius: BorderRadius.circular(2),
               ),
             ),
-
             // Header
             Padding(
-              padding: const EdgeInsets.fromLTRB(16, 4, 8, 12),
+              padding: const EdgeInsets.fromLTRB(16, 8, 8, 12),
               child: Row(
                 children: [
                   const Text(
                     'Filtres',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700,
+                      color: AppColors.textPrimary,
+                    ),
                   ),
                   const Spacer(),
                   TextButton(
@@ -90,61 +99,60 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
                     child: const Text('Réinitialiser'),
                   ),
                   IconButton(
-                    icon: const Icon(Icons.close),
+                    icon: const Icon(Icons.close, size: 22),
                     onPressed: () => Navigator.pop(context),
                   ),
                 ],
               ),
             ),
-
             const Divider(height: 1),
-
-            // Scrollable content
+            // Content
             Expanded(
               child: ListView(
                 controller: scrollController,
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
                 children: [
-                  _buildBrandSelector(),
+                  _buildBrand(),
                   if (_draft.brandId != null) ...[
-                    const SizedBox(height: 16),
-                    _buildModelSelector(),
+                    const SizedBox(height: 18),
+                    _buildModel(),
                   ],
-                  const SizedBox(height: 24),
-                  _buildCitySelector(),
-                  const SizedBox(height: 24),
-                  _buildPriceRange(priceFmt),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 18),
+                  _buildCity(),
+                  const SizedBox(height: 18),
+                  _buildPriceRange(),
+                  const SizedBox(height: 18),
                   _buildYearRange(),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 18),
                   _buildFuelChips(),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 18),
                   _buildTransmissionChips(),
-                  const SizedBox(height: 24),
-                  _buildSortSelector(),
-                  const SizedBox(height: 32),
+                  const SizedBox(height: 18),
+                  _buildSort(),
+                  const SizedBox(height: 28),
                 ],
               ),
             ),
-
-            // Apply button
+            // Sticky CTA
             Container(
-              padding: const EdgeInsets.fromLTRB(16, 12, 16, 16),
+              padding: EdgeInsets.fromLTRB(
+                16, 10, 16, 14 + MediaQuery.of(context).padding.bottom,
+              ),
               decoration: const BoxDecoration(
                 color: AppColors.surface,
                 border: Border(top: BorderSide(color: AppColors.border)),
               ),
-              child: SafeArea(
-                top: false,
-                child: SizedBox(
-                  width: double.infinity,
-                  child: FilledButton(
-                    onPressed: _apply,
-                    child: Text(
-                      _draft.isEmpty
-                          ? 'Voir les résultats'
-                          : 'Appliquer (${_draft.activeCount} filtre(s))',
-                    ),
+              child: SizedBox(
+                width: double.infinity,
+                child: FilledButton(
+                  onPressed: _apply,
+                  style: FilledButton.styleFrom(
+                    minimumSize: const Size.fromHeight(46),
+                  ),
+                  child: Text(
+                    _draft.activeCount == 0
+                        ? 'Voir les véhicules'
+                        : 'Appliquer (${_draft.activeCount} filtre${_draft.activeCount > 1 ? "s" : ""})',
                   ),
                 ),
               ),
@@ -155,228 +163,246 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
     );
   }
 
-  // ─── Sections UI ──────────────────────────────────────────────────────────
-
-  Widget _buildBrandSelector() {
-    final brands = ref.watch(brandsListProvider);
-
-    return _Section(
-      label: 'Marque',
-      child: brands.when(
-        loading: () => const _LoadingChip(),
-        error: (e, _) => Text('Erreur: $e', style: const TextStyle(color: AppColors.error)),
-        data: (list) => DropdownButtonFormField<int?>(
-          value: _draft.brandId,
-          isExpanded: true,
-          decoration: const InputDecoration(hintText: 'Toutes les marques'),
-          items: [
-            const DropdownMenuItem<int?>(value: null, child: Text('Toutes les marques')),
-            ...list.map((b) => DropdownMenuItem<int?>(
-                  value: b.id,
-                  child: Text(b.name),
-                )),
-          ],
-          onChanged: (v) {
-            setState(() {
-              if (v == null) {
-                _draft = _draft.copyWith(clearBrand: true, clearModel: true);
-              } else {
-                _draft = _draft.copyWith(brandId: v, clearModel: true);
-              }
-            });
-          },
+  Widget _label(String s) => Padding(
+        padding: const EdgeInsets.only(bottom: 8),
+        child: Text(
+          s.toUpperCase(),
+          style: const TextStyle(
+            fontSize: 11,
+            fontWeight: FontWeight.w800,
+            letterSpacing: 0.5,
+            color: AppColors.textPrimary,
+          ),
         ),
-      ),
+      );
+
+  Widget _buildBrand() {
+    final brands = ref.watch(brandsListProvider);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _label('Marque'),
+        brands.when(
+          loading: () => const SizedBox(
+            height: 40,
+            child: Center(child: SizedBox(
+              width: 14, height: 14,
+              child: CircularProgressIndicator(strokeWidth: 2),
+            )),
+          ),
+          error: (e, _) => Text('Erreur: $e',
+              style: const TextStyle(color: AppColors.error)),
+          data: (list) => _Select<int?>(
+            value: _draft.brandId,
+            hint: 'Toutes les marques',
+            items: [
+              const _Opt<int?>(null, 'Toutes les marques'),
+              ...list.map((b) => _Opt<int?>(b.id, b.name)),
+            ],
+            onChanged: (v) => setState(() {
+              _draft = v == null
+                  ? _draft.copyWith(clearBrand: true, clearModel: true)
+                  : _draft.copyWith(brandId: v, clearModel: true);
+            }),
+          ),
+        ),
+      ],
     );
   }
 
-  Widget _buildModelSelector() {
+  Widget _buildModel() {
     if (_draft.brandId == null) return const SizedBox.shrink();
     final models = ref.watch(modelsForBrandProvider(_draft.brandId!));
-
-    return _Section(
-      label: 'Modèle',
-      child: models.when(
-        loading: () => const _LoadingChip(),
-        error: (e, _) => Text('Erreur: $e', style: const TextStyle(color: AppColors.error)),
-        data: (list) => DropdownButtonFormField<int?>(
-          value: _draft.modelId,
-          isExpanded: true,
-          decoration: const InputDecoration(hintText: 'Tous les modèles'),
-          items: [
-            const DropdownMenuItem<int?>(value: null, child: Text('Tous les modèles')),
-            ...list.map((m) => DropdownMenuItem<int?>(
-                  value: m.id,
-                  child: Text(m.name),
-                )),
-          ],
-          onChanged: (v) => setState(() {
-            _draft = v == null
-                ? _draft.copyWith(clearModel: true)
-                : _draft.copyWith(modelId: v);
-          }),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _label('Modèle'),
+        models.when(
+          loading: () => const SizedBox(height: 40),
+          error: (e, _) => Text('Erreur: $e',
+              style: const TextStyle(color: AppColors.error)),
+          data: (list) => _Select<int?>(
+            value: _draft.modelId,
+            hint: 'Tous les modèles',
+            items: [
+              const _Opt<int?>(null, 'Tous les modèles'),
+              ...list.map((m) => _Opt<int?>(m.id, m.name)),
+            ],
+            onChanged: (v) => setState(() {
+              _draft = v == null
+                  ? _draft.copyWith(clearModel: true)
+                  : _draft.copyWith(modelId: v);
+            }),
+          ),
         ),
-      ),
+      ],
     );
   }
 
-  Widget _buildCitySelector() {
+  Widget _buildCity() {
     final cities = ref.watch(citiesListProvider);
-
-    return _Section(
-      label: 'Ville',
-      child: cities.when(
-        loading: () => const _LoadingChip(),
-        error: (e, _) => Text('Erreur: $e', style: const TextStyle(color: AppColors.error)),
-        data: (list) => DropdownButtonFormField<int?>(
-          value: _draft.cityId,
-          isExpanded: true,
-          decoration: const InputDecoration(hintText: 'Toutes les villes'),
-          items: [
-            const DropdownMenuItem<int?>(value: null, child: Text('Toutes les villes')),
-            ...list.map((c) => DropdownMenuItem<int?>(
-                  value: c.id,
-                  child: Text(c.nameFr),
-                )),
-          ],
-          onChanged: (v) => setState(() {
-            _draft = v == null
-                ? _draft.copyWith(clearCity: true)
-                : _draft.copyWith(cityId: v);
-          }),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _label('Ville'),
+        cities.when(
+          loading: () => const SizedBox(height: 40),
+          error: (e, _) => Text('Erreur: $e',
+              style: const TextStyle(color: AppColors.error)),
+          data: (list) => _Select<int?>(
+            value: _draft.cityId,
+            hint: 'Toutes les villes',
+            items: [
+              const _Opt<int?>(null, 'Toutes les villes'),
+              ...list.map((c) => _Opt<int?>(c.id, c.nameFr)),
+            ],
+            onChanged: (v) => setState(() {
+              _draft = v == null
+                  ? _draft.copyWith(clearCity: true)
+                  : _draft.copyWith(cityId: v);
+            }),
+          ),
         ),
-      ),
+      ],
     );
   }
 
-  Widget _buildPriceRange(NumberFormat fmt) {
-    return _Section(
-      label: 'Prix (MRU)',
-      subtitle:
-          '${fmt.format(_priceRange.start.toInt())} – ${fmt.format(_priceRange.end.toInt())}',
-      child: RangeSlider(
-        values: _priceRange,
-        min: 0,
-        max: 10000000,
-        divisions: 50,
-        labels: RangeLabels(
-          fmt.format(_priceRange.start.toInt()),
-          fmt.format(_priceRange.end.toInt()),
+  Widget _buildPriceRange() {
+    final fmt = NumberFormat.decimalPattern('fr_FR');
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            _label('Prix (MRU)'),
+            const Spacer(),
+            Text(
+              '${fmt.format(_priceRange.start.toInt())} – ${fmt.format(_priceRange.end.toInt())}',
+              style: const TextStyle(
+                fontSize: 11,
+                color: AppColors.textSecondary,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ],
         ),
-        onChanged: (v) => setState(() {
-          _priceRange = v;
-          _draft = _draft.copyWith(
-            priceMin: v.start > 0 ? v.start.toInt() : null,
-            priceMax: v.end < 10000000 ? v.end.toInt() : null,
-          );
-        }),
-      ),
+        RangeSlider(
+          values: _priceRange,
+          min: 0,
+          max: 10000000,
+          divisions: 100,
+          onChanged: (v) => setState(() {
+            _priceRange = v;
+            _draft = _draft.copyWith(
+              priceMin: v.start > 0 ? v.start.toInt() : null,
+              priceMax: v.end < 10000000 ? v.end.toInt() : null,
+            );
+          }),
+        ),
+      ],
     );
   }
 
   Widget _buildYearRange() {
-    return _Section(
-      label: 'Année',
-      subtitle: '${_yearRange.start.toInt()} – ${_yearRange.end.toInt()}',
-      child: RangeSlider(
-        values: _yearRange,
-        min: 1990,
-        max: 2026,
-        divisions: 36,
-        labels: RangeLabels(
-          '${_yearRange.start.toInt()}',
-          '${_yearRange.end.toInt()}',
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            _label('Année'),
+            const Spacer(),
+            Text(
+              '${_yearRange.start.toInt()} – ${_yearRange.end.toInt()}',
+              style: const TextStyle(
+                fontSize: 11,
+                color: AppColors.textSecondary,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ],
         ),
-        onChanged: (v) => setState(() {
-          _yearRange = v;
-          _draft = _draft.copyWith(
-            yearMin: v.start > 1990 ? v.start.toInt() : null,
-            yearMax: v.end < 2026 ? v.end.toInt() : null,
-          );
-        }),
-      ),
+        RangeSlider(
+          values: _yearRange,
+          min: 1990,
+          max: 2026,
+          divisions: 36,
+          onChanged: (v) => setState(() {
+            _yearRange = v;
+            _draft = _draft.copyWith(
+              yearMin: v.start > 1990 ? v.start.toInt() : null,
+              yearMax: v.end < 2026 ? v.end.toInt() : null,
+            );
+          }),
+        ),
+      ],
     );
   }
 
   Widget _buildFuelChips() {
-    return _Section(
-      label: 'Carburant',
-      child: Wrap(
-        spacing: 8,
-        runSpacing: 8,
-        children: _fuelOptions.map((fuel) {
-          final selected = _draft.fuel == fuel;
-          return FilterChip(
-            label: Text(_fuelLabel(fuel)),
-            selected: selected,
-            onSelected: (s) => setState(() {
-              _draft = s
-                  ? _draft.copyWith(fuel: fuel)
-                  : _draft.copyWith(clearFuel: true);
-            }),
-          );
-        }).toList(),
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _label('Carburant'),
+        Wrap(
+          spacing: 6, runSpacing: 6,
+          children: _fuelOptions.map((opt) {
+            final (key, label) = opt;
+            final selected = _draft.fuel == key;
+            return _Chip(
+              label: label,
+              selected: selected,
+              onTap: () => setState(() {
+                _draft = selected
+                    ? _draft.copyWith(clearFuel: true)
+                    : _draft.copyWith(fuel: key);
+              }),
+            );
+          }).toList(),
+        ),
+      ],
     );
   }
 
   Widget _buildTransmissionChips() {
-    return _Section(
-      label: 'Transmission',
-      child: Wrap(
-        spacing: 8,
-        children: _transmissionOptions.map((t) {
-          final selected = _draft.transmission == t;
-          return FilterChip(
-            label: Text(t == 'manual' ? 'Manuelle' : 'Automatique'),
-            selected: selected,
-            onSelected: (s) => setState(() {
-              _draft = s
-                  ? _draft.copyWith(transmission: t)
-                  : _draft.copyWith(clearTransmission: true);
-            }),
-          );
-        }).toList(),
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _label('Transmission'),
+        Wrap(
+          spacing: 6,
+          children: _transOptions.map((opt) {
+            final (key, label) = opt;
+            final selected = _draft.transmission == key;
+            return _Chip(
+              label: label,
+              selected: selected,
+              onTap: () => setState(() {
+                _draft = selected
+                    ? _draft.copyWith(clearTransmission: true)
+                    : _draft.copyWith(transmission: key);
+              }),
+            );
+          }).toList(),
+        ),
+      ],
     );
   }
 
-  Widget _buildSortSelector() {
-    return _Section(
-      label: 'Trier par',
-      child: DropdownButtonFormField<String?>(
-        value: _draft.sort ?? 'recent',
-        isExpanded: true,
-        items: _sortOptions
-            .map((opt) => DropdownMenuItem<String?>(
-                  value: opt.$1,
-                  child: Text(opt.$2),
-                ))
-            .toList(),
-        onChanged: (v) => setState(() {
-          _draft = _draft.copyWith(sort: v);
-        }),
-      ),
+  Widget _buildSort() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _label('Trier par'),
+        _Select<String?>(
+          value: _draft.sort ?? 'recent',
+          hint: 'Plus récents',
+          items: _sortOptions
+              .map((o) => _Opt<String?>(o.$1, o.$2))
+              .toList(),
+          onChanged: (v) => setState(() => _draft = _draft.copyWith(sort: v)),
+        ),
+      ],
     );
-  }
-
-  // ─── Actions ──────────────────────────────────────────────────────────────
-
-  String _fuelLabel(String fuel) {
-    switch (fuel) {
-      case 'gasoline':
-        return 'Essence';
-      case 'diesel':
-        return 'Diesel';
-      case 'hybrid':
-        return 'Hybride';
-      case 'electric':
-        return 'Électrique';
-      case 'gpl':
-        return 'GPL';
-      default:
-        return fuel;
-    }
   }
 
   void _reset() {
@@ -387,51 +413,103 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
     });
   }
 
-  void _apply() {
-    Navigator.pop(context, _draft);
-  }
+  void _apply() => Navigator.pop(context, _draft);
 }
 
-class _Section extends StatelessWidget {
-  const _Section({required this.label, this.subtitle, required this.child});
-
+class _Opt<T> {
+  const _Opt(this.value, this.label);
+  final T value;
   final String label;
-  final String? subtitle;
-  final Widget child;
+}
+
+class _Select<T> extends StatelessWidget {
+  const _Select({
+    required this.value,
+    required this.items,
+    required this.onChanged,
+    required this.hint,
+  });
+
+  final T value;
+  final List<_Opt<T>> items;
+  final ValueChanged<T?> onChanged;
+  final String hint;
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(label,
-                style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
-            if (subtitle != null)
-              Text(subtitle!,
-                  style: const TextStyle(fontSize: 12, color: AppColors.textSecondary)),
-          ],
+    return Container(
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        border: Border.all(color: AppColors.borderStrong),
+        borderRadius: BorderRadius.circular(6),
+      ),
+      child: DropdownButtonHideUnderline(
+        child: DropdownButton<T>(
+          value: value,
+          hint: Text(hint),
+          isExpanded: true,
+          padding: const EdgeInsets.symmetric(horizontal: 12),
+          icon: const Padding(
+            padding: EdgeInsets.only(right: 4),
+            child: Icon(Icons.keyboard_arrow_down,
+                size: 18, color: AppColors.textMuted),
+          ),
+          style: const TextStyle(
+            fontSize: 13,
+            color: AppColors.textPrimary,
+          ),
+          dropdownColor: AppColors.surface,
+          items: items
+              .map((o) => DropdownMenuItem<T>(
+                    value: o.value,
+                    child: Text(o.label),
+                  ))
+              .toList(),
+          onChanged: onChanged,
         ),
-        const SizedBox(height: 8),
-        child,
-      ],
+      ),
     );
   }
 }
 
-class _LoadingChip extends StatelessWidget {
-  const _LoadingChip();
+class _Chip extends StatelessWidget {
+  const _Chip({
+    required this.label,
+    required this.selected,
+    required this.onTap,
+  });
+
+  final String label;
+  final bool selected;
+  final VoidCallback onTap;
 
   @override
-  Widget build(BuildContext context) => const SizedBox(
-        height: 32,
-        child: Center(
-          child: SizedBox(
-            width: 16, height: 16,
-            child: CircularProgressIndicator(strokeWidth: 2),
+  Widget build(BuildContext context) {
+    return Material(
+      color: selected ? AppColors.brand100 : AppColors.surface,
+      borderRadius: BorderRadius.circular(6),
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(6),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(6),
+            border: Border.all(
+              color: selected ? AppColors.primary : AppColors.borderStrong,
+              width: selected ? 1.5 : 1,
+            ),
+          ),
+          child: Text(
+            label,
+            style: TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w700,
+              color: selected ? AppColors.brand700 : AppColors.textPrimary,
+            ),
           ),
         ),
-      );
+      ),
+    );
+  }
 }
