@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../vehicles/data/models/vehicle.dart';
 
 import '../../../auth/presentation/providers/auth_provider.dart';
 import '../../data/favorite_repository.dart';
@@ -79,4 +80,17 @@ final favoritesProvider =
 /// Helper : un véhicule est-il favorisé ?
 final isFavoriteProvider = Provider.family<bool, String>((ref, vehicleId) {
   return ref.watch(favoritesProvider).contains(vehicleId);
+});
+
+/// Liste paginée des véhicules favoris (objets `Vehicle` complets).
+///
+/// Rechargé automatiquement quand l'utilisateur ajoute/retire un favori
+/// (dépend de `favoritesProvider`).
+final favoriteVehiclesProvider =
+    FutureProvider.autoDispose<List<Vehicle>>((ref) async {
+  // Recharger quand le set d'IDs change (toggle add/remove).
+  ref.watch(favoritesProvider);
+  final repo = ref.watch(favoriteRepositoryProvider);
+  final page = await repo.list(page: 1, perPage: 50);
+  return page.items;
 });

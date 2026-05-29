@@ -102,7 +102,7 @@ class _ListingScreenState extends ConsumerState<ListingScreen> {
         padding: const EdgeInsets.fromLTRB(16, 16, 16, 24),
         physics: const AlwaysScrollableScrollPhysics(),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2, mainAxisSpacing: 14, crossAxisSpacing: 14, childAspectRatio: 0.62,
+          crossAxisCount: 2, mainAxisSpacing: 14, crossAxisSpacing: 14, childAspectRatio: 0.66,
         ),
         itemCount: state.items.length + (state.isLoadingMore ? 2 : 0),
         itemBuilder: (context, index) {

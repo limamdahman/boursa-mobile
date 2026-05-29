@@ -62,44 +62,4 @@ class AppColors {
   // ─── Aliases compat ────────────────────────────────────────────────────────
   static const Color accent = priceColor;
   static const Color textOnLight = textPrimary;
-
-  // ─── Tokens refonte design mockup (Mai 2026) ───────────────────────────────
-  /// Vert clair pour pills, fonds d'icônes (primary ~12%).
-  static const Color pill = Color(0x1F16A34A);
-
-  /// Rouge actions destructrices (déconnexion).
-  static const Color danger = Color(0xFFDC2626);
-  static const Color dangerPill = Color(0x1ADC2626);
-
-  /// Alias : ancien code = priceColor, nouveau = price.
-  static const Color price = priceColor;
-
-  /// Dégradé header (Véhicules, Agences, Chat, Profil, Landing).
-  static const LinearGradient headerGradient = LinearGradient(
-    begin: Alignment.topLeft,
-    end: Alignment.bottomRight,
-    colors: [Color(0xFF064E3B), Color(0xFF052E22), Color(0xFF0A0A0A)],
-    stops: [0.0, 0.55, 1.0],
-  );
-
-  /// Ombre cards.
-  static const BoxShadow cardShadow = BoxShadow(
-    color: Color(0x0F0F172A),
-    blurRadius: 12,
-    offset: Offset(0, 4),
-  );
-
-  /// Ombre header.
-  static const BoxShadow headerShadow = BoxShadow(
-    color: Color(0x2616A34A),
-    blurRadius: 18,
-    offset: Offset(0, 8),
-  );
-
-  /// Ombre haute bottom nav.
-  static const BoxShadow bottomNavShadow = BoxShadow(
-    color: Color(0x140F172A),
-    blurRadius: 16,
-    offset: Offset(0, -4),
-  );
 }
