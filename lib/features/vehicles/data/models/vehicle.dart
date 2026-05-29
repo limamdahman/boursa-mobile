@@ -100,6 +100,12 @@ class Vehicle {
     this.coverImage,
     this.viewsCount = 0,
     this.contactsCount = 0,
+    this.priceRating,
+    this.priceRatingColor,
+    this.priceRatingLabel,
+    this.status,
+    this.isDeal = false,
+    this.originalPrice,
   });
 
   factory Vehicle.fromJson(Map<String, dynamic> json) => Vehicle(
@@ -129,6 +135,12 @@ class Vehicle {
             : null,
         viewsCount: (json['views_count'] as num?)?.toInt() ?? 0,
         contactsCount: (json['contacts_count'] as num?)?.toInt() ?? 0,
+        priceRating: json['price_rating'] as String?,
+        priceRatingColor: json['price_rating_color'] as String?,
+        priceRatingLabel: json['price_rating_label'] as String?,
+        status: json['status'] as String?,
+        isDeal: json['is_deal'] as bool? ?? false,
+        originalPrice: (json['original_price'] as num?)?.toInt(),
       );
 
   final String id;
@@ -149,9 +161,16 @@ class Vehicle {
   final String? coverImage;
   final int viewsCount;
   final int contactsCount;
+  final String? priceRating;
+  final String? priceRatingColor;
+  final String? priceRatingLabel;
+  final String? status;
+  final bool isDeal;
+  final int? originalPrice;
 
   String get title => '${brand.name} ${model.name}';
   String? get coverUrl => coverImage ?? (media.isNotEmpty ? media.first.bestUrl : null);
+  bool get isSold => status == 'sold';
 }
 
 class VehiclePage {

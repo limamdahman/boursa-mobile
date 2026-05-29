@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../core/theme/app_colors.dart';
+import '../../../chat/presentation/providers/chat_provider.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../auth/presentation/providers/auth_provider.dart';
 import '../../../favorites/presentation/providers/favorites_provider.dart';
@@ -592,13 +593,13 @@ class _DescriptionBlock extends StatelessWidget {
   }
 }
 
-class _CtaDock extends StatelessWidget {
+class _CtaDock extends ConsumerWidget {
   const _CtaDock({required this.vehicle});
 
   final Vehicle vehicle;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final phone = vehicle.agency?.phone;
 
     return Container(
@@ -615,10 +616,18 @@ class _CtaDock extends StatelessWidget {
       child: Row(
         children: [
           _CtaButton.icon(
-            icon: Icons.mail_outline,
+            icon: Icons.chat_bubble_outline,
             color: AppColors.primary,
             outlined: true,
-            onTap: phone == null ? null : () {},
+            onTap: vehicle.agency == null ? null : () async {
+              try {
+                final repo = ref.read(chatRepositoryProvider);
+                final conv = await repo.getOrCreateConversation(vehicle.agency!.id);
+                if (context.mounted) {
+                  context.push('/chat/\${conv.id}', extra: vehicle.agency!.name);
+                }
+              } catch (_) {}
+            },
           ),
           const SizedBox(width: 8),
           Expanded(
