@@ -4,6 +4,10 @@ import 'package:go_router/go_router.dart';
 import '../features/auth/presentation/screens/otp_screen.dart';
 import '../features/auth/presentation/screens/phone_login_screen.dart';
 import '../features/auth/presentation/screens/register_screen.dart';
+import '../features/agencies/presentation/screens/pricing_screen.dart';
+import '../features/notifications/presentation/screens/notifications_screen.dart';
+import '../features/my_listings/presentation/screens/my_listings_screen.dart';
+import '../features/publish/presentation/publish_screen.dart';
 import '../features/auth/presentation/screens/profile_screen.dart';
 import '../features/favorites/presentation/screens/favorites_screen.dart';
 import '../features/vehicles/presentation/screens/listing_screen.dart';
@@ -76,6 +80,22 @@ final appRouter = GoRouter(
     GoRoute(
       path: '/register',
       builder: (context, state) => const RegisterScreen(),
+    ),
+    GoRoute(
+      path: '/tarifs',
+      builder: (context, state) => const PricingScreen(),
+    ),
+    GoRoute(
+      path: '/notifications',
+      builder: (context, state) => const NotificationsScreen(),
+    ),
+    GoRoute(
+      path: '/mes-annonces',
+      builder: (context, state) => const MyListingsScreen(),
+    ),
+    GoRoute(
+      path: '/publier',
+      builder: (context, state) => const PublishScreen(),
     ),
     GoRoute(
       path: '/otp',
