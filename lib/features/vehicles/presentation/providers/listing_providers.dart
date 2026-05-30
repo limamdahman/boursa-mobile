@@ -123,3 +123,23 @@ final vehicleSimilarProvider =
   final repo = ref.watch(vehicleRepositoryProvider);
   return repo.similar(id);
 });
+
+// Provider deals — Les meilleures affaires
+final dealsProvider = FutureProvider<List<Vehicle>>((ref) async {
+  final repo = ref.read(vehicleRepositoryProvider);
+  final page = await repo.list(page: 1, perPage: 6, isDeal: true);
+  return page.items;
+});
+
+// Provider récents — dernières annonces
+final recentVehiclesProvider = FutureProvider<List<Vehicle>>((ref) async {
+  final repo = ref.read(vehicleRepositoryProvider);
+  final page = await repo.list(page: 1, perPage: 6);
+  return page.items;
+});
+
+final agencyVehiclesProvider = FutureProvider.family<List<Vehicle>, ({String agencyId, String excludeId})>((ref, args) async {
+  final repo = ref.read(vehicleRepositoryProvider);
+  final result = await repo.list(page: 1, perPage: 8);
+  return result.items.where((v) => v.agency?.id == args.agencyId && v.id != args.excludeId).toList();
+});

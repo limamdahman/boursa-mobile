@@ -2,11 +2,9 @@
   "@@locale": "fr",
   "appTitle": "Boursa",
   "appTagline": "Marketplace véhicules",
-
   "navHome": "Accueil",
   "navFavorites": "Favoris",
   "navProfile": "Profil",
-
   "listingTitle": "Véhicules disponibles",
   "listingEmpty": "Aucun véhicule trouvé",
   "listingLoading": "Chargement...",
@@ -16,48 +14,264 @@
   "listingResultsCount": "{count, plural, =0{Aucun résultat} =1{1 résultat} other{{count} résultats}}",
   "@listingResultsCount": {
     "placeholders": {
-      "count": { "type": "int" }
+      "count": {
+        "type": "int"
+      }
     }
   },
-
-  "vehicleYear": "Année {year}",
   "@vehicleYear": {
     "placeholders": {
-      "year": { "type": "int" }
+      "year": {
+        "type": "int"
+      }
     }
   },
   "vehicleKm": "{km} km",
   "@vehicleKm": {
     "placeholders": {
-      "km": { "type": "String" }
+      "km": {
+        "type": "String"
+      }
     }
   },
   "vehiclePriceMru": "{price} MRU",
   "@vehiclePriceMru": {
     "placeholders": {
-      "price": { "type": "String" }
+      "price": {
+        "type": "String"
+      }
     }
   },
-
   "vehicleSpecsTitle": "Caractéristiques",
   "vehicleDescriptionTitle": "Description",
   "vehicleAgencyTitle": "Vendeur",
   "vehicleSimilarTitle": "Véhicules similaires",
-
   "contactWhatsApp": "WhatsApp",
-  "contactCall": "Appeler",
+  "contactCall": "Appel",
   "contactMessage": "Message",
-
   "fuelGasoline": "Essence",
   "fuelDiesel": "Diesel",
   "fuelHybrid": "Hybride",
-  "fuelElectric": "Électrique",
+  "fuelElectric": "Élec.",
   "fuelGpl": "GPL",
-
   "transmissionManual": "Manuelle",
   "transmissionAutomatic": "Automatique",
-
   "languageLabel": "Langue",
   "languageFr": "Français",
-  "languageAr": "العربية"
+  "languageAr": "العربية",
+  "navVehicles": "Véhicules",
+  "navAgencies": "Agences",
+  "navChat": "Chat",
+  "filterFuel": "Carburant",
+  "filterTransmission": "Transmission",
+  "listingReset": "Réinitialiser",
+  "listingResetFilters": "Réinitialiser les filtres",
+  "vehicleCurrencyUnit": "MRU",
+  "heroTitle": "Achetez & vendez\nvotre véhicule\nen Mauritanie",
+  "heroSubtitle": "Plus de 850 véhicules vérifiés par nos agences partenaires",
+  "searchHint": "Toyota Camry, moins de 1.5M MRU...",
+  "statVehicles": "véhicules vérifiés",
+  "statAgencies": "agences partenaires",
+  "statCities": "villes couvertes",
+  "seeAll": "Voir tout →",
+  "sectionDealsTitle": "Les meilleures affaires",
+  "sectionDealsSubtitle": "{count} deals du moment",
+  "@sectionDealsSubtitle": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "sectionRecentTitle": "Annonces récentes",
+  "sectionRecentSubtitle": "Ajoutées récemment",
+  "sectionAgenciesTitle": "Agences partenaires",
+  "sectionAgenciesSubtitle": "{count} agences vérifiées",
+  "@sectionAgenciesSubtitle": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "navMessages": "Messages",
+  "messagesSubtitle": "Vos conversations",
+  "vehicleSellerPrivate": "Vendeur particulier",
+  "vehicleFuelLabel": "Carburant",
+  "filterSortRecent": "Plus récents",
+  "filterSortPriceAsc": "Prix croissant",
+  "filterSortPriceDesc": "Prix décroissant",
+  "filterSortYearDesc": "Année décroissante",
+  "filterSortKmAsc": "Km croissant",
+  "filterShowVehicles": "Voir les véhicules",
+  "filterApply": "Appliquer ({count} filtre{plural})",
+  "@filterApply": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "plural": {
+        "type": "String"
+      }
+    }
+  },
+  "filterBrand": "Marque",
+  "filterAllBrands": "Toutes les marques",
+  "filterModel": "Modèle",
+  "filterAllModels": "Tous les modèles",
+  "filterCity": "Ville",
+  "filterAllCities": "Toutes les villes",
+  "filterPriceMru": "Prix (MRU)",
+  "filterYearLabel": "Année",
+  "filterSortBy": "Trier par",
+  "filterSortRecentHint": "Plus récents",
+  "agencyAnnouncements": "Annonces",
+  "navAgenciesTitle": "Agences",
+  "vehicleYearLabel": "Année",
+  "authSignIn": "Se connecter",
+  "authCreateAccount": "Créer un compte",
+  "authMyAccount": "Mon compte",
+  "authConnectToAccess": "Connectez-vous pour accéder",
+  "authConnectForMessages": "Connectez-vous pour accéder\nà vos messages",
+  "authConnectForFavorites": "Connectez-vous pour voir\nvos favoris",
+  "authConnectForVehicle": "Connectez-vous pour sauvegarder ce véhicule",
+  "authPhoneTitle": "Entrez votre numéro de téléphone",
+  "authPhoneLabel": "Téléphone",
+  "authReceiveCode": "Recevoir le code",
+  "authContinueWithout": "Continuer sans compte",
+  "favoritesCount": "{count} véhicule enregistré",
+  "@favoritesCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "priceRatingVeryGood": "Très bon",
+  "priceRatingGood": "Bon",
+  "priceRatingFair": "Juste",
+  "priceRatingHigh": "Élevé",
+  "priceRatingVeryHigh": "Très élevé",
+  "agencyVerified": "Agence vérifiée",
+  "agenciesVerifiedCount": "{count} agences vérifiées en Mauritanie",
+  "@agenciesVerifiedCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "agencyVehiclesLabel": "véhicules",
+  "favoritesEmpty": "Enregistrez vos véhicules préférés en\ntouchant le cœur sur une annonce.",
+  "favoritesBrowse": "Parcourir les véhicules",
+  "favoritesCountLabel": "{count} véhicule enregistré",
+  "@favoritesCountLabel": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "loginTitle": "Connexion",
+  "loginSmsHint": "Nous vous enverrons un code de vérification par SMS",
+  "featuredLabel": "Vedette",
+  "categoriesTitle": "Parcourir par catégorie",
+  "categoriesViewAll": "Tout voir",
+  "catSedan": "Berlines",
+  "catSuv": "SUV",
+  "catPickup": "Pickup",
+  "catVan": "Utilitaires",
+  "catHatchback": "Compactes",
+  "catElectric": "Hybride / Élec.",
+  "brandsTitle": "Marques populaires",
+  "brandsSubtitle": "Trouvez votre voiture par marque",
+  "brandsViewAll": "Voir les marques",
+  "lifestyleTitle": "Pour chaque style de vie",
+  "lifestyleSubtitle": "Sélections curatées pour vous aider à choisir",
+  "lifestyleFrom": "à partir de",
+  "lifestyleVehicles": "véhicules",
+  "lifeFamilyTitle": "Pour la famille",
+  "lifeFamilyDesc": "SUV spacieux, 5+ places, kilométrage modéré",
+  "lifeFamilyBadge": "Famille",
+  "lifePremiumTitle": "Le premium",
+  "lifePremiumDesc": "Land Cruiser, Mercedes, Range Rover sélectionnés",
+  "lifePremiumBadge": "Premium",
+  "lifeFirstTitle": "Premier véhicule",
+  "lifeFirstDesc": "Compacte économique pour démarrer en douceur",
+  "lifeFirstBadge": "Premier achat",
+  "lifePickupTitle": "Pickup pro",
+  "lifePickupDesc": "4×4 diesel pour travail et désert mauritanien",
+  "lifePickupBadge": "Tout terrain",
+  "agencyCtaTitle": "Vous êtes une agence ?",
+  "agencyCtaSubtitle": "Diffusez votre stock auprès de 12 000+ acheteurs mensuels.",
+  "agencyCtaButton": "Devenir agence partenaire",
+  "agencyStatPartners": "Agences partenaires",
+  "agencyStatListings": "Annonces actives",
+  "agencyStatVisitors": "Visiteurs / mois",
+  "trustVerifiedTitle": "Agences vérifiées",
+  "trustVerifiedDesc": "Tous nos partenaires sont validés manuellement",
+  "trustPricesTitle": "Prix transparents",
+  "trustPricesDesc": "Comparez instantanément au marché",
+  "trustContactTitle": "Contact direct",
+  "trustContactDesc": "WhatsApp & téléphone, sans intermédiaire",
+  "trustLocalTitle": "100% Mauritanie",
+  "trustLocalDesc": "De Nouakchott à Zouérat, partout dans le pays",
+  "priceNegotiable": "Prix négociable",
+  "vehicleSold": "🚗 Ce véhicule a été vendu",
+  "vehicleTransmission": "Transmission",
+  "vehicleBodyType": "Carrosserie",
+  "vehicleCityLabel": "Ville",
+  "whatsappMessage": "Bonjour, je suis intéressé par votre {brand} {model} {year}. Toujours disponible ?",
+  "@whatsappMessage": {
+    "placeholders": {
+      "brand": {
+        "type": "String"
+      },
+      "model": {
+        "type": "String"
+      },
+      "year": {
+        "type": "int"
+      }
+    }
+  },
+  "announcedBy": "Annonce de",
+  "verifiedAgencyDot": "Agence vérifiée",
+  "transmissionManualShort": "Manuelle",
+  "transmissionAutoShort": "Auto",
+  "aboutAgency": "À propos de l'agence",
+  "agencyActiveListings": "annonces actives",
+  "allPhotos": "Toutes les photos",
+  "similarVehicles": "Véhicules similaires",
+  "otherAgencyVehicles": "Autres véhicules de cette agence",
+  "viewAll": "Voir tout",
+  "agencyAddress": "Adresse",
+  "agencyEmail": "Email",
+  "thumbnailsGallery": "Photos",
+  "agencyLocation": "Localisation",
+  "otherVehicles": "Autres véhicules de l'agence",
+  "reviewsTitle": "Avis sur ce vendeur",
+  "reviewsNone": "Aucun avis pour le moment",
+  "reviewsLeave": "Laisser un avis",
+  "reviewsEdit": "Modifier mon avis",
+  "reviewsRating": "Note",
+  "reviewsComment": "Commentaire (optionnel)",
+  "reviewsCommentHint": "Partagez votre expérience...",
+  "reviewsSubmit": "Publier l'avis",
+  "reviewsSubmitting": "Publication...",
+  "reviewsSuccess": "Avis publié",
+  "reviewsError": "Erreur lors de la publication",
+  "reviewsNoLead": "Vous devez contacter le vendeur avant de laisser un avis",
+  "reviewsOwnVehicle": "Vous ne pouvez pas évaluer votre propre annonce",
+  "reviewsLogin": "Connectez-vous pour laisser un avis",
+  "reviewsBasedOn": "basée sur",
+  "reviewsCancel": "Annuler",
+  "reviewsCount": "{count} avis",
+  "@reviewsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  }
 }

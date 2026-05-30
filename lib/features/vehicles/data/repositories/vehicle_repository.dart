@@ -28,6 +28,7 @@ class VehicleRepository {
     double? lng,
     int? radiusKm,
     String? sort,
+    bool? isDeal,
   }) async {
     final response = await _dio.get<Map<String, dynamic>>(
       '/vehicles',
@@ -47,6 +48,7 @@ class VehicleRepository {
         if (bodyType != null) 'body_type': bodyType,
         if (condition != null) 'condition': condition,
         if (lat != null) 'lat': lat,
+        if (isDeal == true) 'is_deal': '1',
         if (lng != null) 'lng': lng,
         if (radiusKm != null) 'radius_km': radiusKm,
         if (sort != null) 'sort': sort,

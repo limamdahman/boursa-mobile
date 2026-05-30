@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import '../../../../l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../core/theme/app_colors.dart';
 import '../../../auth/presentation/providers/auth_provider.dart';
@@ -55,7 +55,7 @@ class _FavoritesGrid extends ConsumerWidget {
             const SizedBox(height: 12),
             Text(
               'Impossible de charger les favoris',
-              style: GoogleFonts.sourceSans3(
+              style: TextStyle(
                 fontSize: 15,
                 color: AppColors.textSecondary,
               ),
@@ -63,7 +63,7 @@ class _FavoritesGrid extends ConsumerWidget {
             const SizedBox(height: 16),
             FilledButton(
               onPressed: () => ref.invalidate(favoriteVehiclesProvider),
-              child: const Text('Réessayer'),
+              child: Text(AppLocalizations.of(context)!.listingRetry),
             ),
           ],
         ),
@@ -104,7 +104,7 @@ class _Header extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final plural = count > 1 ? 's' : '';
+
     return Container(
       decoration: const BoxDecoration(
         gradient: LinearGradient(
@@ -134,8 +134,8 @@ class _Header extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Favoris',
-                style: GoogleFonts.sourceSans3(
+                AppLocalizations.of(context)!.navFavorites,
+                style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.w700,
                   letterSpacing: -0.3,
@@ -144,8 +144,8 @@ class _Header extends StatelessWidget {
               ),
               const SizedBox(height: 3),
               Text(
-                '$count véhicule$plural enregistré$plural',
-                style: GoogleFonts.sourceSans3(
+                AppLocalizations.of(context)!.favoritesCountLabel(count),
+                style: TextStyle(
                   fontSize: 14,
                   color: Colors.white.withOpacity(0.7),
                 ),
@@ -185,7 +185,7 @@ class _EmptyState extends StatelessWidget {
             const SizedBox(height: 16),
             Text(
               'Aucun favori',
-              style: GoogleFonts.sourceSans3(
+              style: TextStyle(
                 fontSize: 17,
                 fontWeight: FontWeight.w600,
                 color: AppColors.textPrimary,
@@ -193,9 +193,9 @@ class _EmptyState extends StatelessWidget {
             ),
             const SizedBox(height: 6),
             Text(
-              'Enregistrez vos véhicules préférés en\ntouchant le cœur sur une annonce.',
+              AppLocalizations.of(context)!.favoritesEmpty,
               textAlign: TextAlign.center,
-              style: GoogleFonts.sourceSans3(
+              style: TextStyle(
                 fontSize: 14,
                 height: 1.4,
                 color: AppColors.textSecondary,
@@ -205,7 +205,7 @@ class _EmptyState extends StatelessWidget {
             FilledButton.icon(
               onPressed: () => context.go('/'),
               icon: const Icon(Icons.search, size: 18),
-              label: const Text('Parcourir les véhicules'),
+              label: Text(AppLocalizations.of(context)!.favoritesBrowse),
             ),
           ],
         ),
@@ -240,9 +240,9 @@ class _NotLoggedIn extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             Text(
-              'Connectez-vous pour voir\nvos favoris',
+              AppLocalizations.of(context)!.authConnectForFavorites,
               textAlign: TextAlign.center,
-              style: GoogleFonts.sourceSans3(
+              style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
                 color: AppColors.textPrimary,
@@ -254,7 +254,7 @@ class _NotLoggedIn extends StatelessWidget {
               height: 52,
               child: FilledButton(
                 onPressed: () => context.push('/login'),
-                child: const Text('Se connecter'),
+                child: Text(AppLocalizations.of(context)!.authSignIn),
               ),
             ),
           ],

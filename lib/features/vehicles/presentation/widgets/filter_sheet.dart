@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../core/theme/app_colors.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../../data/repositories/reference_repository.dart';
 import '../providers/vehicle_filter.dart';
 
@@ -20,23 +21,23 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
   RangeValues _priceRange = const RangeValues(0, 10000000);
   RangeValues _yearRange = const RangeValues(2000, 2026);
 
-  static const _fuelOptions = [
-    ('gasoline', 'Essence'),
-    ('diesel', 'Diesel'),
-    ('hybrid', 'Hybride'),
-    ('electric', 'Élec.'),
-    ('gpl', 'GPL'),
+  List<(String, String)> _fuelOptions(AppLocalizations l) => [
+    ('gasoline', l.fuelGasoline),
+    ('diesel', l.fuelDiesel),
+    ('hybrid', l.fuelHybrid),
+    ('electric', l.fuelElectric),
+    ('gpl', l.fuelGpl),
   ];
-  static const _transOptions = [
-    ('manual', 'Manuelle'),
-    ('automatic', 'Automatique'),
+  List<(String, String)> _transOptions(AppLocalizations l) => [
+    ('manual', l.transmissionManual),
+    ('automatic', l.transmissionAutomatic),
   ];
-  static const _sortOptions = [
-    ('recent', 'Plus récents'),
-    ('price_asc', 'Prix croissant'),
-    ('price_desc', 'Prix décroissant'),
-    ('year_desc', 'Année décroissante'),
-    ('mileage_asc', 'Km croissant'),
+  List<(String, String)> _sortOptions(AppLocalizations l) => [
+    ('recent', l.filterSortRecent),
+    ('price_asc', l.filterSortPriceAsc),
+    ('price_desc', l.filterSortPriceDesc),
+    ('year_desc', l.filterSortYearDesc),
+    ('mileage_asc', l.filterSortKmAsc),
   ];
 
   @override
@@ -85,9 +86,9 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
               padding: const EdgeInsets.fromLTRB(16, 8, 8, 12),
               child: Row(
                 children: [
-                  const Text(
-                    'Filtres',
-                    style: TextStyle(
+                  Text(
+                    AppLocalizations.of(context)!.listingFilters,
+                    style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w700,
                       color: AppColors.textPrimary,
@@ -96,7 +97,7 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
                   const Spacer(),
                   TextButton(
                     onPressed: _reset,
-                    child: const Text('Réinitialiser'),
+                    child: Text(AppLocalizations.of(context)!.listingReset),
                   ),
                   IconButton(
                     icon: const Icon(Icons.close, size: 22),
@@ -181,7 +182,7 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _label('Marque'),
+        _label(AppLocalizations.of(context)!.filterBrand),
         brands.when(
           loading: () => const SizedBox(
             height: 40,
@@ -194,9 +195,9 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
               style: const TextStyle(color: AppColors.error)),
           data: (list) => _Select<int?>(
             value: _draft.brandId,
-            hint: 'Toutes les marques',
+            hint: AppLocalizations.of(context)!.filterAllBrands,
             items: [
-              const _Opt<int?>(null, 'Toutes les marques'),
+              _Opt<int?>(null, AppLocalizations.of(context)!.filterAllBrands),
               ...list.map((b) => _Opt<int?>(b.id, b.name)),
             ],
             onChanged: (v) => setState(() {
@@ -216,16 +217,16 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _label('Modèle'),
+        _label(AppLocalizations.of(context)!.filterModel),
         models.when(
           loading: () => const SizedBox(height: 40),
           error: (e, _) => Text('Erreur: $e',
               style: const TextStyle(color: AppColors.error)),
           data: (list) => _Select<int?>(
             value: _draft.modelId,
-            hint: 'Tous les modèles',
+            hint: AppLocalizations.of(context)!.filterAllModels,
             items: [
-              const _Opt<int?>(null, 'Tous les modèles'),
+              _Opt<int?>(null, AppLocalizations.of(context)!.filterAllModels),
               ...list.map((m) => _Opt<int?>(m.id, m.name)),
             ],
             onChanged: (v) => setState(() {
@@ -244,16 +245,16 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _label('Ville'),
+        _label(AppLocalizations.of(context)!.filterCity),
         cities.when(
           loading: () => const SizedBox(height: 40),
           error: (e, _) => Text('Erreur: $e',
               style: const TextStyle(color: AppColors.error)),
           data: (list) => _Select<int?>(
             value: _draft.cityId,
-            hint: 'Toutes les villes',
+            hint: AppLocalizations.of(context)!.filterAllCities,
             items: [
-              const _Opt<int?>(null, 'Toutes les villes'),
+              _Opt<int?>(null, AppLocalizations.of(context)!.filterAllCities),
               ...list.map((c) => _Opt<int?>(c.id, c.nameFr)),
             ],
             onChanged: (v) => setState(() {
@@ -274,7 +275,7 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
       children: [
         Row(
           children: [
-            _label('Prix (MRU)'),
+            _label(AppLocalizations.of(context)!.filterPriceMru),
             const Spacer(),
             Text(
               '${fmt.format(_priceRange.start.toInt())} – ${fmt.format(_priceRange.end.toInt())}',
@@ -309,7 +310,7 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
       children: [
         Row(
           children: [
-            _label('Année'),
+            _label(AppLocalizations.of(context)!.filterYearLabel),
             const Spacer(),
             Text(
               '${_yearRange.start.toInt()} – ${_yearRange.end.toInt()}',
@@ -339,13 +340,14 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
   }
 
   Widget _buildFuelChips() {
+    final l = AppLocalizations.of(context)!;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _label('Carburant'),
+        _label(l.filterFuel),
         Wrap(
           spacing: 6, runSpacing: 6,
-          children: _fuelOptions.map((opt) {
+          children: _fuelOptions(l).map((opt) {
             final (key, label) = opt;
             final selected = _draft.fuel == key;
             return _Chip(
@@ -364,13 +366,14 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
   }
 
   Widget _buildTransmissionChips() {
+    final l = AppLocalizations.of(context)!;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _label('Transmission'),
+        _label(l.filterTransmission),
         Wrap(
           spacing: 6,
-          children: _transOptions.map((opt) {
+          children: _transOptions(l).map((opt) {
             final (key, label) = opt;
             final selected = _draft.transmission == key;
             return _Chip(
@@ -389,14 +392,15 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
   }
 
   Widget _buildSort() {
+    final l = AppLocalizations.of(context)!;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _label('Trier par'),
+        _label(AppLocalizations.of(context)!.filterSortBy),
         _Select<String?>(
           value: _draft.sort ?? 'recent',
-          hint: 'Plus récents',
-          items: _sortOptions
+          hint: l.filterSortRecentHint,
+          items: _sortOptions(l)
               .map((o) => _Opt<String?>(o.$1, o.$2))
               .toList(),
           onChanged: (v) => setState(() => _draft = _draft.copyWith(sort: v)),

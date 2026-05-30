@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -30,12 +31,13 @@ class BoursaApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final router = appRouter;
     final locale = ref.watch(localeProvider);
+    final isAr = locale.languageCode == 'ar';
 
     return MaterialApp.router(
       title: 'Boursa',
       debugShowCheckedModeBanner: false,
-      theme: AppTheme.light(),
-      darkTheme: AppTheme.light(),
+      theme: isAr ? AppTheme.arabic() : AppTheme.light(),
+      darkTheme: isAr ? AppTheme.arabic() : AppTheme.light(),
       themeMode: ThemeMode.light,
       locale: locale,
       supportedLocales: const [Locale('fr'), Locale('ar')],

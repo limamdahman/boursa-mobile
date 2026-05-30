@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import '../../../../l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../core/theme/app_colors.dart';
 import '../providers/agencies_provider.dart';
@@ -46,9 +46,9 @@ class _AgenciesScreenState extends ConsumerState<AgenciesScreen> {
       body: Column(
         children: [
           _CompactHeader(
-            title: 'Agences',
+            title: AppLocalizations.of(context)!.navAgenciesTitle,
             subtitle:
-                '${state.items.where((a) => a.isVerified).length} agences vérifiées en Mauritanie',
+                AppLocalizations.of(context)!.agenciesVerifiedCount(state.items.where((a) => a.isVerified).length),
           ),
           Expanded(child: _buildBody(state)),
         ],
@@ -69,12 +69,12 @@ class _AgenciesScreenState extends ConsumerState<AgenciesScreen> {
             const Icon(Icons.cloud_off, size: 48, color: AppColors.border),
             const SizedBox(height: 12),
             Text('Impossible de charger les agences',
-                style: GoogleFonts.sourceSans3(
+                style: TextStyle(
                     fontSize: 15, color: AppColors.textSecondary)),
             const SizedBox(height: 16),
             FilledButton(
               onPressed: () => ref.read(agenciesProvider.notifier).refresh(),
-              child: const Text('Réessayer'),
+              child: Text(AppLocalizations.of(context)!.listingRetry),
             ),
           ],
         ),
@@ -147,7 +147,7 @@ class _CompactHeader extends StatelessWidget {
             children: [
               Text(
                 title,
-                style: GoogleFonts.sourceSans3(
+                style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.w700,
                   letterSpacing: -0.3,
@@ -157,7 +157,7 @@ class _CompactHeader extends StatelessWidget {
               const SizedBox(height: 3),
               Text(
                 subtitle,
-                style: GoogleFonts.sourceSans3(
+                style: TextStyle(
                   fontSize: 14,
                   color: Colors.white.withOpacity(0.7),
                 ),

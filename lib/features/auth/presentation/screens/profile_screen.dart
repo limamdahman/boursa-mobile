@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../../l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -14,7 +15,7 @@ class ProfileScreen extends ConsumerWidget {
     final isAuth = ref.watch(isAuthenticatedProvider);
     final user = ref.watch(currentUserProvider);
 
-    final name = user?.name ?? 'Mon compte';
+    final name = user?.name ?? AppLocalizations.of(context)!.authMyAccount;
     final phone = user?.phone ?? '';
     final initials = name
         .split(' ')
@@ -22,6 +23,45 @@ class ProfileScreen extends ConsumerWidget {
         .take(2)
         .map((s) => s[0].toUpperCase())
         .join();
+
+    if (!isAuth) {
+      return Scaffold(
+        backgroundColor: AppColors.background,
+        body: Column(children: [
+          Container(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight,
+                colors: [Color(0xFF064E3B), Color(0xFF052E22), Color(0xFF0A0A0A)], stops: [0.0, 0.55, 1.0]),
+              borderRadius: BorderRadius.vertical(bottom: Radius.circular(24)),
+            ),
+            child: SafeArea(bottom: false, child: Padding(
+              padding: const EdgeInsets.fromLTRB(20, 18, 20, 26),
+              child: Row(children: [
+                Container(width: 52, height: 52,
+                  decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.white.withOpacity(0.12)),
+                  child: const Icon(Icons.person_outline, color: Colors.white, size: 28)),
+                const SizedBox(width: 14),
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                  Text(AppLocalizations.of(context)!.authMyAccount, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w700, color: Colors.white)),
+                  Text(AppLocalizations.of(context)!.authConnectToAccess, style: TextStyle(fontSize: 13, color: Colors.white.withOpacity(0.7))),
+                ]),
+              ]),
+            )),
+          ),
+          const SizedBox(height: 32),
+          Padding(padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Column(children: [
+              SizedBox(width: double.infinity, height: 54,
+                child: FilledButton(onPressed: () => context.push('/login'),
+                  child: Text(AppLocalizations.of(context)!.authSignIn, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700)))),
+              const SizedBox(height: 12),
+              SizedBox(width: double.infinity, height: 54,
+                child: OutlinedButton(onPressed: () => context.push('/login'),
+                  child: Text(AppLocalizations.of(context)!.authCreateAccount, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600)))),
+            ])),
+        ]),
+      );
+    }
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -287,7 +327,7 @@ class _MenuCard extends StatelessWidget {
             _MenuRow(
               item: _MenuItem(
                 icon: Icons.login,
-                label: 'Se connecter',
+                label: AppLocalizations.of(context)!.authSignIn,
                 onTap: () => context.push('/login'),
               ),
             ),

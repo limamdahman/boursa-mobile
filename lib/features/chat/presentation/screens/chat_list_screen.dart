@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../../l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -20,7 +21,7 @@ class ChatListScreen extends ConsumerWidget {
       backgroundColor: AppColors.background,
       body: Column(
         children: [
-          _CompactHeader(title: 'Messages', subtitle: 'Vos conversations'),
+          _CompactHeader(title: AppLocalizations.of(context)!.navMessages, subtitle: AppLocalizations.of(context)!.messagesSubtitle),
           Expanded(
             child: !isAuth
                 ? _NotLoggedIn()
@@ -253,7 +254,7 @@ class _NotLoggedIn extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             Text(
-              'Connectez-vous pour accéder\nà vos messages',
+              AppLocalizations.of(context)!.authConnectForMessages,
               textAlign: TextAlign.center,
               style: GoogleFonts.sourceSans3(
                 fontSize: 16,
@@ -267,7 +268,7 @@ class _NotLoggedIn extends StatelessWidget {
               height: 52,
               child: FilledButton(
                 onPressed: () => context.push('/login'),
-                child: const Text('Se connecter'),
+                child: Text(AppLocalizations.of(context)!.authSignIn),
               ),
             ),
           ],

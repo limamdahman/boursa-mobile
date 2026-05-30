@@ -10,6 +10,7 @@ class VehicleFilter {
     this.fuel,
     this.transmission,
     this.sort,
+    this.bodyType,
   });
 
   final int? brandId;
@@ -22,6 +23,7 @@ class VehicleFilter {
   final String? fuel;
   final String? transmission;
   final String? sort;
+  final String? bodyType;
 
   VehicleFilter copyWith({
     int? brandId,
@@ -34,6 +36,7 @@ class VehicleFilter {
     String? fuel,
     String? transmission,
     String? sort,
+    String? bodyType,
     bool clearBrand = false,
     bool clearModel = false,
     bool clearCity = false,
@@ -52,6 +55,7 @@ class VehicleFilter {
         transmission:
             clearTransmission ? null : (transmission ?? this.transmission),
         sort: sort ?? this.sort,
+        bodyType: bodyType ?? this.bodyType,
       );
 
   bool get isEmpty =>
@@ -64,7 +68,8 @@ class VehicleFilter {
       yearMax == null &&
       fuel == null &&
       transmission == null &&
-      (sort == null || sort == 'recent');
+      (sort == null || sort == 'recent') &&
+      bodyType == null;
 
   int get activeCount {
     int n = 0;
@@ -75,6 +80,7 @@ class VehicleFilter {
     if (yearMin != null || yearMax != null) n++;
     if (fuel != null) n++;
     if (transmission != null) n++;
+    if (bodyType != null) n++;
     return n;
   }
 }

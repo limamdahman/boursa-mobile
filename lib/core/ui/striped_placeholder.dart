@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
 
-/// Placeholder rayé diagonal à 45° reproduit du mockup CSS
+import 'icons/boursa_icons.dart';
+
+/// Placeholder rayé 45° reproduit du mockup CSS
 /// `repeating-linear-gradient(45deg, #eef2f6 0 10px, #e6ebf1 10px 20px)`.
+///
+/// Affiche l'icône voiture stylisée `BoursaCarIcon` au centre.
 class StripedPlaceholder extends StatelessWidget {
   const StripedPlaceholder({
     super.key,
-    this.icon,
     this.iconSize = 46,
-    this.iconColor = const Color(0x8094A3B8), // slate-400 ~50%
+    this.iconColor = const Color(0x8094A3B8),
     this.stripeLight = const Color(0xFFEEF2F6),
     this.stripeDark = const Color(0xFFE6EBF1),
     this.stripeWidth = 10,
   });
 
-  final IconData? icon;
   final double iconSize;
   final Color iconColor;
   final Color stripeLight;
@@ -29,11 +31,7 @@ class StripedPlaceholder extends StatelessWidget {
         stripeWidth: stripeWidth,
       ),
       child: Center(
-        child: Icon(
-          icon ?? Icons.directions_car_outlined,
-          size: iconSize,
-          color: iconColor,
-        ),
+        child: BoursaCarIcon(size: iconSize, color: iconColor),
       ),
     );
   }
@@ -52,17 +50,12 @@ class _StripePainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    // Fond clair.
-    canvas.drawRect(
-      Offset.zero & size,
-      Paint()..color = light,
-    );
+    canvas.drawRect(Offset.zero & size, Paint()..color = light);
 
     final paintDark = Paint()..color = dark;
     final diag = size.width + size.height;
     final step = stripeWidth * 2;
 
-    // Bandes à 45° : on dessine des parallélogrammes en clip.
     canvas.save();
     canvas.clipRect(Offset.zero & size);
     for (double i = -size.height; i < diag; i += step) {

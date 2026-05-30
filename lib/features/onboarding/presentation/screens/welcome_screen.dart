@@ -25,7 +25,7 @@ class WelcomeScreen extends StatelessWidget {
               // Logo centré
               Padding(
                 padding: const EdgeInsets.only(top: 40),
-                child: BoursaLogo.horizontal(markHeight: 32, wordmarkSize: 24, dark: true),
+                child: BoursaLogo.mockup(markSize: 32, wordmarkSize: 24, dark: true),
               ),
               // Hero — placeholder rayé + icône voiture
               Expanded(

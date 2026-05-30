@@ -6,6 +6,7 @@ import '../features/auth/presentation/screens/phone_login_screen.dart';
 import '../features/auth/presentation/screens/profile_screen.dart';
 import '../features/favorites/presentation/screens/favorites_screen.dart';
 import '../features/vehicles/presentation/screens/listing_screen.dart';
+import '../features/home/presentation/screens/home_screen.dart';
 import '../features/vehicles/presentation/screens/vehicle_detail_screen.dart';
 import '../features/agencies/presentation/screens/agencies_screen.dart';
 import '../features/agencies/presentation/screens/agency_detail_screen.dart';
@@ -21,6 +22,10 @@ final appRouter = GoRouter(
       routes: [
         GoRoute(
           path: '/',
+          builder: (context, state) => const HomeScreen(),
+        ),
+        GoRoute(
+          path: '/vehicules',
           builder: (context, state) => const ListingScreen(),
         ),
         GoRoute(

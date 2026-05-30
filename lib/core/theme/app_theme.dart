@@ -257,4 +257,11 @@ class AppTheme {
 
   /// Compat (le main.dart appelle .light())
   static ThemeData dark() => light();
+
+  /// Thème arabe avec font Cairo
+  static ThemeData arabic() {
+    final base = light();
+    final cairoText = GoogleFonts.cairoTextTheme(base.textTheme);
+    return base.copyWith(textTheme: cairoText, primaryTextTheme: cairoText);
+  }
 }

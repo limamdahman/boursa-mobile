@@ -1,10 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import '../../../../l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/ui/icons/boursa_icons.dart';
 import '../../data/models/agency.dart';
 import '../providers/agencies_provider.dart';
 
@@ -29,7 +31,7 @@ class AgencyDetailScreen extends ConsumerWidget {
               const SizedBox(height: 16),
               FilledButton(
                 onPressed: () => ref.invalidate(agencyDetailProvider(slug)),
-                child: const Text('Réessayer'),
+                child: Text(AppLocalizations.of(context)!.listingRetry),
               ),
             ],
           ),
@@ -191,7 +193,7 @@ class _InfoCard extends StatelessWidget {
       child: Column(
         children: [
           if (agency.address != null)
-            _InfoRow(icon: Icons.location_on_outlined, text: agency.address!),
+            _InfoRow(customIcon: const BoursaPinIcon(size: 16, color: AppColors.textMuted), text: agency.address!),
           if (agency.email != null)
             _InfoRow(icon: Icons.email_outlined, text: agency.email!),
           if (agency.phoneCall != null)
@@ -203,7 +205,7 @@ class _InfoCard extends StatelessWidget {
                 Expanded(
                   child: _CtaBtn(
                     icon: Icons.chat_bubble_outline,
-                    label: 'WhatsApp',
+                    label: AppLocalizations.of(context)!.contactWhatsApp,
                     color: AppColors.whatsapp,
                     onTap: () => _openWhatsApp(agency.phoneWhatsapp!),
                   ),
@@ -214,7 +216,7 @@ class _InfoCard extends StatelessWidget {
                 Expanded(
                   child: _CtaBtn(
                     icon: Icons.phone,
-                    label: 'Appeler',
+                    label: AppLocalizations.of(context)!.contactCall,
                     color: AppColors.primary,
                     onTap: () => _call(agency.phoneCall!),
                   ),
@@ -239,8 +241,11 @@ class _InfoCard extends StatelessWidget {
 }
 
 class _InfoRow extends StatelessWidget {
-  const _InfoRow({required this.icon, required this.text});
-  final IconData icon;
+  const _InfoRow({this.icon, this.customIcon, required this.text})
+      : assert(icon != null || customIcon != null,
+            'Fournir soit icon, soit customIcon');
+  final IconData? icon;
+  final Widget? customIcon;
   final String text;
 
   @override
@@ -249,7 +254,7 @@ class _InfoRow extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 10),
       child: Row(
         children: [
-          Icon(icon, size: 16, color: AppColors.textMuted),
+          customIcon ?? Icon(icon, size: 16, color: AppColors.textMuted),
           const SizedBox(width: 8),
           Expanded(
             child: Text(
@@ -335,7 +340,7 @@ class _StatsRow extends StatelessWidget {
       padding: const EdgeInsets.all(16),
       child: Row(
         children: [
-          _Stat(value: '${agency.vehiclesCount}', label: 'Annonces'),
+          _Stat(value: '${agency.vehiclesCount}', label: AppLocalizations.of(context)!.agencyAnnouncements),
           _divider(),
           _Stat(
             value: agency.subscriptionTier.toUpperCase(),

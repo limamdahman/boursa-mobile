@@ -4,6 +4,8 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/storage/locale_storage.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../../../../core/ui/brand/boursa_logo.dart';
 import '../providers/listing_providers.dart';
 import '../providers/vehicle_filter.dart';
@@ -24,7 +26,12 @@ class _ListingScreenState extends ConsumerState<ListingScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.read(listingProvider.notifier).refresh();
+      final extra = GoRouterState.of(context).extra;
+      if (extra is VehicleFilter) {
+        ref.read(listingProvider.notifier).refresh(filter: extra);
+      } else {
+        ref.read(listingProvider.notifier).refresh();
+      }
     });
     _scrollController.addListener(_onScroll);
   }
@@ -69,10 +76,10 @@ class _ListingScreenState extends ConsumerState<ListingScreen> {
         child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
           const Icon(Icons.cloud_off, size: 48, color: AppColors.border),
           const SizedBox(height: 12),
-          Text('Impossible de charger les véhicules',
+          Text(AppLocalizations.of(context)!.listingError,
               style: GoogleFonts.sourceSans3(fontSize: 15, fontWeight: FontWeight.w600, color: AppColors.textSecondary)),
           const SizedBox(height: 16),
-          FilledButton(onPressed: () => ref.read(listingProvider.notifier).refresh(), child: const Text('Réessayer')),
+          FilledButton(onPressed: () => ref.read(listingProvider.notifier).refresh(), child: Text(AppLocalizations.of(context)!.listingRetry)),
         ]),
       );
     }
@@ -81,13 +88,13 @@ class _ListingScreenState extends ConsumerState<ListingScreen> {
         child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
           const Icon(Icons.search_off, size: 48, color: AppColors.border),
           const SizedBox(height: 12),
-          Text('Aucun véhicule trouvé',
+          Text(AppLocalizations.of(context)!.listingEmpty,
               style: GoogleFonts.sourceSans3(fontSize: 15, fontWeight: FontWeight.w600, color: AppColors.textSecondary)),
           if (state.filter.activeCount > 0) ...[
             const SizedBox(height: 16),
             FilledButton(
               onPressed: () => ref.read(listingProvider.notifier).refresh(filter: const VehicleFilter()),
-              child: const Text('Réinitialiser les filtres'),
+              child: Text(AppLocalizations.of(context)!.listingResetFilters),
             ),
           ],
         ]),
@@ -102,7 +109,7 @@ class _ListingScreenState extends ConsumerState<ListingScreen> {
         padding: const EdgeInsets.fromLTRB(16, 16, 16, 24),
         physics: const AlwaysScrollableScrollPhysics(),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2, mainAxisSpacing: 14, crossAxisSpacing: 14, childAspectRatio: 0.66,
+          crossAxisCount: 2, mainAxisSpacing: 14, crossAxisSpacing: 14, childAspectRatio: 0.60,
         ),
         itemCount: state.items.length + (state.isLoadingMore ? 2 : 0),
         itemBuilder: (context, index) {
@@ -133,13 +140,15 @@ class _ListingScreenState extends ConsumerState<ListingScreen> {
   }
 }
 
-class _BoursaHeader extends StatelessWidget {
+class _BoursaHeader extends ConsumerWidget {
   const _BoursaHeader({required this.filterCount, required this.onFilterTap});
   final int filterCount;
   final VoidCallback onFilterTap;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l = AppLocalizations.of(context)!;
+    final isAr = ref.watch(localeProvider).languageCode == 'ar';
     return Container(
       decoration: const BoxDecoration(
         gradient: LinearGradient(
@@ -156,8 +165,28 @@ class _BoursaHeader extends StatelessWidget {
           padding: const EdgeInsets.fromLTRB(20, 14, 20, 20),
           child: Column(
             children: [
-              BoursaLogo.horizontal(markHeight: 30, wordmarkSize: 22, dark: true),
-              const SizedBox(height: 16),
+              Row(children: [
+                Expanded(child: BoursaLogo.horizontal(markHeight: 36, wordmarkSize: 26, dark: true)),
+                GestureDetector(
+                  onTap: () async {
+                    final next = isAr ? const Locale('fr') : const Locale('ar');
+                    await ref.read(localeProvider.notifier).setLocale(next);
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.all(3),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.12),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Row(mainAxisSize: MainAxisSize.min, children: [
+                      _LangBtn(label: 'FR', active: !isAr),
+                      const SizedBox(width: 2),
+                      _LangBtn(label: 'AR', active: isAr),
+                    ]),
+                  ),
+                ),
+              ]),
+              const SizedBox(height: 14),
               GestureDetector(
                 onTap: onFilterTap,
                 child: Container(
@@ -168,27 +197,55 @@ class _BoursaHeader extends StatelessWidget {
                     borderRadius: BorderRadius.circular(14),
                     boxShadow: const [BoxShadow(color: Color(0x1A000000), blurRadius: 10, offset: Offset(0, 4))],
                   ),
-                  child: Row(
-                    children: [
-                      const Icon(Icons.search, size: 20, color: AppColors.textSecondary),
-                      const SizedBox(width: 10),
-                      Expanded(
-                        child: Text('Rechercher une voiture, une marque…',
-                            style: GoogleFonts.sourceSans3(fontSize: 14, color: AppColors.textSecondary)),
-                      ),
+                  child: Row(children: [
+                    const Icon(Icons.search, size: 20, color: AppColors.textSecondary),
+                    const SizedBox(width: 10),
+                    Expanded(child: Text(l.searchHint,
+                      style: const TextStyle(fontSize: 14, color: AppColors.textSecondary))),
+                    Stack(children: [
                       Container(
                         width: 34, height: 34,
-                        decoration: BoxDecoration(color: AppColors.primary, borderRadius: BorderRadius.circular(10)),
-                        child: const Icon(Icons.tune, size: 18, color: Colors.white),
-                      ),
-                    ],
-                  ),
+                        decoration: BoxDecoration(color: AppColors.primary,
+                          borderRadius: BorderRadius.circular(10)),
+                        child: const Icon(Icons.tune, size: 18, color: Colors.white)),
+                      if (filterCount > 0)
+                        Positioned(top: 0, right: 0,
+                          child: Container(
+                            width: 14, height: 14,
+                            decoration: const BoxDecoration(
+                              color: Colors.red, shape: BoxShape.circle),
+                            child: Center(child: Text('$filterCount',
+                              style: const TextStyle(color: Colors.white,
+                                fontSize: 9, fontWeight: FontWeight.w800))))),
+                    ]),
+                  ]),
                 ),
               ),
             ],
           ),
         ),
       ),
+    );
+  }
+}
+
+class _LangBtn extends StatelessWidget {
+  const _LangBtn({required this.label, required this.active});
+  final String label;
+  final bool active;
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 200),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
+      decoration: BoxDecoration(
+        color: active ? AppColors.primary : Colors.transparent,
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Text(label, style: TextStyle(
+        fontSize: 13, fontWeight: FontWeight.w700,
+        color: active ? Colors.white : Colors.white.withOpacity(0.6))),
     );
   }
 }

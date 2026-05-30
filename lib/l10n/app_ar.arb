@@ -2,11 +2,9 @@
   "@@locale": "ar",
   "appTitle": "بورصة",
   "appTagline": "سوق السيارات",
-
   "navHome": "الرئيسية",
   "navFavorites": "المفضلة",
   "navProfile": "الملف الشخصي",
-
   "listingTitle": "السيارات المتاحة",
   "listingEmpty": "لا توجد سيارات",
   "listingLoading": "جاري التحميل...",
@@ -14,30 +12,238 @@
   "listingRetry": "إعادة المحاولة",
   "listingFilters": "الفلاتر",
   "listingResultsCount": "{count, plural, =0{لا توجد نتائج} =1{نتيجة واحدة} other{{count} نتائج}}",
-
-  "vehicleYear": "سنة {year}",
   "vehicleKm": "{km} كم",
   "vehiclePriceMru": "{price} أوقية",
-
   "vehicleSpecsTitle": "المواصفات",
   "vehicleDescriptionTitle": "الوصف",
   "vehicleAgencyTitle": "البائع",
   "vehicleSimilarTitle": "سيارات مماثلة",
-
   "contactWhatsApp": "واتساب",
   "contactCall": "اتصال",
   "contactMessage": "رسالة",
-
   "fuelGasoline": "بنزين",
   "fuelDiesel": "ديزل",
   "fuelHybrid": "هجين",
-  "fuelElectric": "كهربائي",
+  "fuelElectric": "كهر.",
   "fuelGpl": "غاز",
-
   "transmissionManual": "يدوي",
   "transmissionAutomatic": "أوتوماتيكي",
-
   "languageLabel": "اللغة",
   "languageFr": "Français",
-  "languageAr": "العربية"
+  "languageAr": "العربية",
+  "navVehicles": "السيارات",
+  "navAgencies": "الوكالات",
+  "navChat": "المحادثات",
+  "filterFuel": "الوقود",
+  "filterTransmission": "ناقل الحركة",
+  "listingReset": "إعادة تعيين",
+  "listingResetFilters": "إعادة تعيين الفلاتر",
+  "vehicleCurrencyUnit": "أوقية",
+  "heroTitle": "اشترِ وبع سيارتك\nفي موريتانيا",
+  "heroSubtitle": "أكثر من 850 سيارة مدققة من شركاء موثوقين",
+  "searchHint": "Toyota كامري، أقل من ١.٥ م...",
+  "statVehicles": "سيارة",
+  "statAgencies": "وكالة",
+  "statCities": "مدينة",
+  "seeAll": "عرض الكل →",
+  "sectionDealsTitle": "أحسن الصفقات",
+  "sectionDealsSubtitle": "{count} صفقة اليوم",
+  "@sectionDealsSubtitle": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "sectionRecentTitle": "آخر الإعلانات",
+  "sectionRecentSubtitle": "أضيفت مؤخراً",
+  "sectionAgenciesTitle": "الوكالات الشريكة",
+  "sectionAgenciesSubtitle": "{count} وكالة موثقة",
+  "@sectionAgenciesSubtitle": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "navMessages": "الرسائل",
+  "messagesSubtitle": "محادثاتك",
+  "vehicleSellerPrivate": "بائع خاص",
+  "vehicleFuelLabel": "الوقود",
+  "filterSortRecent": "الأحدث",
+  "filterSortPriceAsc": "السعر تصاعدي",
+  "filterSortPriceDesc": "السعر تنازلي",
+  "filterSortYearDesc": "السنة تنازلي",
+  "filterSortKmAsc": "الكم تصاعدي",
+  "filterShowVehicles": "عرض السيارات",
+  "filterApply": "تطبيق ({count} فلتر{plural})",
+  "@filterApply": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "plural": {
+        "type": "String"
+      }
+    }
+  },
+  "filterBrand": "الماركة",
+  "filterAllBrands": "كل الماركات",
+  "filterModel": "الموديل",
+  "filterAllModels": "كل الموديلات",
+  "filterCity": "المدينة",
+  "filterAllCities": "كل المدن",
+  "filterPriceMru": "السعر (أوقية)",
+  "filterYearLabel": "السنة",
+  "filterSortBy": "ترتيب حسب",
+  "filterSortRecentHint": "الأحدث",
+  "agencyAnnouncements": "إعلانات",
+  "navAgenciesTitle": "الوكالات",
+  "vehicleYearLabel": "السنة",
+  "authSignIn": "تسجيل الدخول",
+  "authCreateAccount": "إنشاء حساب",
+  "authMyAccount": "حسابي",
+  "authConnectToAccess": "سجل دخولك للوصول",
+  "authConnectForMessages": "سجل دخولك للوصول\nإلى رسائلك",
+  "authConnectForFavorites": "سجل دخولك لعرض\nمفضلتك",
+  "authConnectForVehicle": "سجل دخولك لحفظ هذه السيارة",
+  "authPhoneTitle": "أدخل رقم هاتفك",
+  "authPhoneLabel": "الهاتف",
+  "authReceiveCode": "استلام الرمز",
+  "authContinueWithout": "المتابعة بدون حساب",
+  "favoritesCount": "{count} سيارة محفوظة",
+  "@favoritesCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "priceRatingVeryGood": "ممتاز",
+  "priceRatingGood": "جيد",
+  "priceRatingFair": "عادل",
+  "priceRatingHigh": "مرتفع",
+  "priceRatingVeryHigh": "مرتفع جداً",
+  "agencyVerified": "وكالة موثقة",
+  "agenciesVerifiedCount": "{count} وكالة موثقة في موريتانيا",
+  "@agenciesVerifiedCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "agencyVehiclesLabel": "سيارات",
+  "favoritesEmpty": "احفظ سياراتك المفضلة بالضغط\nعلى القلب في أي إعلان.",
+  "favoritesBrowse": "تصفح السيارات",
+  "favoritesCountLabel": "{count} سيارة محفوظة",
+  "@favoritesCountLabel": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "loginTitle": "تسجيل الدخول",
+  "loginSmsHint": "سنرسل لك رمز التحقق عبر SMS",
+  "featuredLabel": "مميز",
+  "categoriesTitle": "تصفح حسب الفئة",
+  "categoriesViewAll": "عرض الكل",
+  "catSedan": "سيدان",
+  "catSuv": "سيارات الدفع الرباعي",
+  "catPickup": "بيك أب",
+  "catVan": "مركبات تجارية",
+  "catHatchback": "مدمجة",
+  "catElectric": "هجينة / كهربائية",
+  "brandsTitle": "أشهر الماركات",
+  "brandsSubtitle": "تصفح سياراتنا حسب الماركة",
+  "brandsViewAll": "عرض الماركات",
+  "lifestyleTitle": "اختر ما يناسبك",
+  "lifestyleSubtitle": "فئات منتقاة خصيصاً لك",
+  "lifestyleFrom": "ابتداء من",
+  "lifestyleVehicles": "سيارة",
+  "lifeFamilyTitle": "سيارات عائلية",
+  "lifeFamilyDesc": "دفع رباعي رحب لكل أفراد العائلة",
+  "lifeFamilyBadge": "عائلي",
+  "lifePremiumTitle": "سيارات فاخرة",
+  "lifePremiumDesc": "لاند كروزر، مرسيدس، رينج روفر مختارة",
+  "lifePremiumBadge": "فاخر",
+  "lifeFirstTitle": "سيارتك الأولى",
+  "lifeFirstDesc": "سيارة مدمجة بسعر مناسب لبدايتك",
+  "lifeFirstBadge": "أول شراء",
+  "lifePickupTitle": "بيك أب للعمل",
+  "lifePickupDesc": "بيك أب 4x4 ديزل للعمل والصحراء",
+  "lifePickupBadge": "كل التضاريس",
+  "agencyCtaTitle": "هل أنت وكالة؟",
+  "agencyCtaSubtitle": "انشر مخزونك لأكثر من 12 ألف مشتري شهرياً.",
+  "agencyCtaButton": "كن وكالة شريكة",
+  "agencyStatPartners": "وكالة شريكة",
+  "agencyStatListings": "إعلان نشط",
+  "agencyStatVisitors": "زائر شهرياً",
+  "trustVerifiedTitle": "وكالات معتمدة",
+  "trustVerifiedDesc": "جميع شركائنا تم التحقق منهم يدوياً",
+  "trustPricesTitle": "أسعار شفافة",
+  "trustPricesDesc": "قارن فوراً مع السوق",
+  "trustContactTitle": "تواصل مباشر",
+  "trustContactDesc": "واتساب وهاتف، بدون وسيط",
+  "trustLocalTitle": "100% موريتانيا",
+  "trustLocalDesc": "من نواكشوط إلى ازويرات، في كل أنحاء البلاد",
+  "priceNegotiable": "قابل للتفاوض",
+  "vehicleSold": "🚗 هذه السيارة تم بيعها",
+  "vehicleTransmission": "ناقل الحركة",
+  "vehicleBodyType": "نوع الهيكل",
+  "vehicleCityLabel": "المدينة",
+  "whatsappMessage": "مرحباً، أنا مهتم بسيارتك {brand} {model} {year}. هل لا تزال متوفرة؟",
+  "@whatsappMessage": {
+    "placeholders": {
+      "brand": {
+        "type": "String"
+      },
+      "model": {
+        "type": "String"
+      },
+      "year": {
+        "type": "int"
+      }
+    }
+  },
+  "announcedBy": "إعلان من",
+  "verifiedAgencyDot": "وكالة موثقة",
+  "transmissionManualShort": "يدوي",
+  "transmissionAutoShort": "أوتو",
+  "aboutAgency": "عن الوكالة",
+  "agencyActiveListings": "إعلان نشط",
+  "allPhotos": "جميع الصور",
+  "similarVehicles": "سيارات مشابهة",
+  "otherAgencyVehicles": "سيارات أخرى من نفس الوكالة",
+  "viewAll": "عرض الكل",
+  "agencyAddress": "العنوان",
+  "agencyEmail": "البريد",
+  "thumbnailsGallery": "الصور",
+  "agencyLocation": "الموقع",
+  "otherVehicles": "سيارات من نفس الوكالة",
+  "reviewsTitle": "تقييمات هذا البائع",
+  "reviewsNone": "لا توجد تقييمات حاليا",
+  "reviewsLeave": "اترك تقييما",
+  "reviewsEdit": "تعديل تقييمي",
+  "reviewsRating": "التقييم",
+  "reviewsComment": "تعليق (اختياري)",
+  "reviewsCommentHint": "شارك تجربتك...",
+  "reviewsSubmit": "نشر التقييم",
+  "reviewsSubmitting": "جاري النشر...",
+  "reviewsSuccess": "تم نشر التقييم",
+  "reviewsError": "خطأ أثناء النشر",
+  "reviewsNoLead": "يجب الاتصال بالبائع قبل ترك تقييم",
+  "reviewsOwnVehicle": "لا يمكنك تقييم إعلانك الخاص",
+  "reviewsLogin": "سجل دخولك لترك تقييم",
+  "reviewsBasedOn": "بناء على",
+  "reviewsCancel": "إلغاء",
+  "reviewsCount": "{count} تقييم",
+  "@reviewsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  }
 }

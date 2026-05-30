@@ -1,8 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import '../../../../l10n/app_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/ui/icons/boursa_icons.dart';
 import '../../data/models/agency.dart';
 
 class AgencyCard extends StatelessWidget {
@@ -94,7 +96,7 @@ class AgencyCard extends StatelessWidget {
                         ),
                         if (agency.isVerified) ...[
                           const SizedBox(width: 5),
-                          _VerifiedBadge(),
+                          const BoursaVerifiedIcon(size: 16, color: AppColors.primary),
                         ],
                       ],
                     ),
@@ -103,8 +105,7 @@ class AgencyCard extends StatelessWidget {
                       const SizedBox(height: 2),
                       Row(
                         children: [
-                          const Icon(Icons.place_outlined,
-                              size: 13, color: AppColors.textSecondary),
+                          const BoursaPinIcon(size: 13, color: AppColors.textSecondary),
                           const SizedBox(width: 3),
                           Flexible(
                             child: Text(
@@ -128,7 +129,7 @@ class AgencyCard extends StatelessWidget {
                           icon: Icons.directions_car_outlined,
                           iconColor: AppColors.textSecondary,
                           value: '${agency.vehiclesCount}',
-                          label: 'véhicules',
+                          label: AppLocalizations.of(context)!.agencyVehiclesLabel,
                         ),
                         const SizedBox(width: 14),
                         _Stat(
@@ -168,21 +169,6 @@ class _Initials extends StatelessWidget {
           fontSize: 18,
         ),
       ),
-    );
-  }
-}
-
-class _VerifiedBadge extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 18,
-      height: 18,
-      decoration: const BoxDecoration(
-        color: AppColors.primary,
-        shape: BoxShape.circle,
-      ),
-      child: const Icon(Icons.check, size: 11, color: Colors.white),
     );
   }
 }
