@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import '../../../../l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -95,28 +96,11 @@ class _ChatRow extends StatelessWidget {
         ),
         child: Row(
           children: [
-            // Avatar gradient + initiales
-            Container(
-              width: 50,
-              height: 50,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: _gradient,
-                ),
-              ),
-              child: Center(
-                child: Text(
-                  _initials,
-                  style: GoogleFonts.sourceSans3(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w700,
-                    fontSize: 17,
-                  ),
-                ),
-              ),
+            // Avatar : logo agence réel, sinon dégradé + initiales
+            _Avatar(
+              logoUrl: conv.agencyLogo,
+              initials: _initials,
+              gradient: _gradient,
             ),
             const SizedBox(width: 13),
             // Milieu
@@ -126,7 +110,7 @@ class _ChatRow extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      Expanded(
+                      Flexible(
                         child: Text(
                           conv.displayName,
                           maxLines: 1,
@@ -138,6 +122,7 @@ class _ChatRow extends StatelessWidget {
                           ),
                         ),
                       ),
+                      _TierBadge(tier: conv.agencyTier),
                       Text(
                         _formatTime(conv.lastMessageAt),
                         style: GoogleFonts.sourceSans3(
@@ -323,6 +308,81 @@ class _CompactHeader extends StatelessWidget {
                   )),
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class _Avatar extends StatelessWidget {
+  const _Avatar({required this.logoUrl, required this.initials, required this.gradient});
+  final String? logoUrl;
+  final String initials;
+  final List<Color> gradient;
+
+  Widget _fallback() => Container(
+        width: 50,
+        height: 50,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: gradient,
+          ),
+        ),
+        child: Center(
+          child: Text(
+            initials,
+            style: GoogleFonts.sourceSans3(
+              color: Colors.white,
+              fontWeight: FontWeight.w700,
+              fontSize: 17,
+            ),
+          ),
+        ),
+      );
+
+  @override
+  Widget build(BuildContext context) {
+    if (logoUrl == null || logoUrl!.isEmpty) return _fallback();
+    return ClipOval(
+      child: CachedNetworkImage(
+        imageUrl: logoUrl!,
+        width: 50,
+        height: 50,
+        fit: BoxFit.cover,
+        placeholder: (_, __) => _fallback(),
+        errorWidget: (_, __, ___) => _fallback(),
+      ),
+    );
+  }
+}
+
+class _TierBadge extends StatelessWidget {
+  const _TierBadge({required this.tier});
+  final String? tier;
+
+  @override
+  Widget build(BuildContext context) {
+    if (tier == null || tier == 'free') return const SizedBox.shrink();
+    final isPro = tier == 'pro';
+    final label = isPro ? 'PRO' : 'BUSINESS';
+    final color = isPro ? const Color(0xFF16A34A) : const Color(0xFFB45309);
+    return Container(
+      margin: const EdgeInsets.only(left: 6),
+      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+      decoration: BoxDecoration(
+        color: color.withOpacity(0.12),
+        borderRadius: BorderRadius.circular(4),
+      ),
+      child: Text(
+        label,
+        style: GoogleFonts.sourceSans3(
+          fontSize: 9,
+          fontWeight: FontWeight.w800,
+          color: color,
+          letterSpacing: 0.3,
         ),
       ),
     );

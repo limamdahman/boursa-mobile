@@ -6,8 +6,11 @@ class ChatRepository {
   ChatRepository(this._dio);
 
   Future<List<Conversation>> getConversations() async {
-    final res = await _dio.get('/chat/agency/conversations');
-    final data = res.data['data'] as List? ?? res.data as List? ?? [];
+    final res = await _dio.get('/chat/conversations');
+    final raw = res.data;
+    final data = raw is List
+        ? raw
+        : (raw is Map && raw['data'] is List ? raw['data'] as List : <dynamic>[]);
     return data.map((e) => Conversation.fromJson(e as Map<String, dynamic>)).toList();
   }
 
