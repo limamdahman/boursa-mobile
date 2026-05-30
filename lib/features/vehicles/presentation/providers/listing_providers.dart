@@ -76,11 +76,16 @@ class ListingNotifier extends StateNotifier<ListingState> {
         page: page,
         perPage: 20,
         brandId: f.brandId,
+        modelId: f.modelId,
         cityId: f.cityId,
         yearMin: f.yearMin,
         yearMax: f.yearMax,
         priceMin: f.priceMin,
         priceMax: f.priceMax,
+        fuel: f.fuel,
+        transmission: f.transmission,
+        bodyType: f.bodyType,
+        isDeal: f.isDeal,
         sort: f.sort,
       );
 
@@ -140,6 +145,6 @@ final recentVehiclesProvider = FutureProvider<List<Vehicle>>((ref) async {
 
 final agencyVehiclesProvider = FutureProvider.family<List<Vehicle>, ({String agencyId, String excludeId})>((ref, args) async {
   final repo = ref.read(vehicleRepositoryProvider);
-  final result = await repo.list(page: 1, perPage: 8);
-  return result.items.where((v) => v.agency?.id == args.agencyId && v.id != args.excludeId).toList();
+  final result = await repo.list(page: 1, perPage: 8, agencyId: args.agencyId);
+  return result.items.where((v) => v.id != args.excludeId).toList();
 });

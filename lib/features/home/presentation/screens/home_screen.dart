@@ -369,7 +369,7 @@ class _SectionRecent extends ConsumerWidget {
             _SectionHeader(
               title: AppLocalizations.of(context)!.sectionRecentTitle,
               subtitle: AppLocalizations.of(context)!.sectionRecentSubtitle,
-              onSeeAll: () => context.go('/vehicules'),
+              onSeeAll: () => context.go('/vehicules', extra: const VehicleFilter(sort: 'recent')),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -603,7 +603,7 @@ class _DealsHeader extends StatelessWidget {
                 fontWeight: FontWeight.w800,
                 color: AppColors.textPrimary, letterSpacing: -0.3))),
             GestureDetector(
-              onTap: () => context.go('/vehicules'),
+              onTap: () => context.go('/vehicules', extra: const VehicleFilter(isDeal: true)),
               child: Text(l.seeAll,
                 style: const TextStyle(fontSize: 12,
                   fontWeight: FontWeight.w700, color: AppColors.primary))),

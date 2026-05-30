@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/utils/number_formatters.dart';
@@ -69,7 +70,7 @@ class SectionCategories extends ConsumerWidget {
                 cat: cats[i],
                 isLast: i == cats.length - 1,
                 ref: ref,
-                onTap: () => context.go('/vehicules'),
+                onTap: () => context.go('/vehicules', extra: cats[i].filter),
               ),
             ),
           ),
@@ -352,7 +353,7 @@ class _LifeCard extends ConsumerWidget {
     final data = r.watch(_lifestyleProvider(cat.filter));
 
     return GestureDetector(
-      onTap: () => context.go('/vehicules'),
+      onTap: () => context.go('/vehicules', extra: cat.filter),
       child: Container(
         decoration: BoxDecoration(
           color: AppColors.surface,
@@ -575,7 +576,14 @@ class SectionAgencyCta extends StatelessWidget {
             SizedBox(
               width: double.infinity,
               child: FilledButton.icon(
-                onPressed: () {},
+                onPressed: () async {
+                  final uri = Uri.parse(
+                    'https://wa.me/22240000000?text=${Uri.encodeComponent('Bonjour Boursa, je souhaite devenir agence partenaire.')}',
+                  );
+                  if (await canLaunchUrl(uri)) {
+                    await launchUrl(uri, mode: LaunchMode.externalApplication);
+                  }
+                },
                 icon: const Icon(Icons.arrow_forward, size: 14),
                 label: Text(l.agencyCtaButton),
                 style: FilledButton.styleFrom(
@@ -676,10 +684,24 @@ class _BrandLogo extends StatefulWidget {
     'citroen': 'citroen',
     'citroën': 'citroen',
   };
+  // Normalise un nom de marque en slug de fichier : minuscules, accents retirés,
+  // espaces -> tirets. Couvre les marques présentes ET futures sans étendre _overrides.
+  static String _slugify(String raw) {
+    var v = (_overrides[raw.toLowerCase()] ?? raw.toLowerCase());
+    const accents = {
+      'à': 'a', 'á': 'a', 'â': 'a', 'ä': 'a', 'ã': 'a',
+      'è': 'e', 'é': 'e', 'ê': 'e', 'ë': 'e',
+      'ì': 'i', 'í': 'i', 'î': 'i', 'ï': 'i',
+      'ò': 'o', 'ó': 'o', 'ô': 'o', 'ö': 'o', 'õ': 'o',
+      'ù': 'u', 'ú': 'u', 'û': 'u', 'ü': 'u',
+      'ç': 'c', 'ñ': 'n', 'š': 's', 'ž': 'z',
+    };
+    accents.forEach((k, val) => v = v.replaceAll(k, val));
+    return v.replaceAll(' ', '-');
+  }
 
   String get logoUrl {
-    final s = (_overrides[slug.toLowerCase()] ?? slug.toLowerCase())
-        .replaceAll(' ', '-');
+    final s = _slugify(slug);
     return 'https://www.carlogos.org/car-logos/\$s-logo.png';
   }
 
@@ -693,8 +715,7 @@ class _BrandLogoState extends State<_BrandLogo> {
   @override
   Widget build(BuildContext context) {
     if (_error) return _fallback();
-    final s = (_BrandLogo._overrides[widget.slug.toLowerCase()] ??
-        widget.slug.toLowerCase()).replaceAll(' ', '-');
+    final s = _BrandLogo._slugify(widget.slug);
     return Image.asset(
       'assets/brand_logos/$s.png',
       fit: BoxFit.contain,
