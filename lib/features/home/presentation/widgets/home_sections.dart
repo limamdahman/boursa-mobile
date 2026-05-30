@@ -576,14 +576,7 @@ class SectionAgencyCta extends StatelessWidget {
             SizedBox(
               width: double.infinity,
               child: FilledButton.icon(
-                onPressed: () async {
-                  final uri = Uri.parse(
-                    'https://wa.me/22240000000?text=${Uri.encodeComponent('Bonjour Boursa, je souhaite devenir agence partenaire.')}',
-                  );
-                  if (await canLaunchUrl(uri)) {
-                    await launchUrl(uri, mode: LaunchMode.externalApplication);
-                  }
-                },
+                onPressed: () => context.push('/tarifs'),
                 icon: const Icon(Icons.arrow_forward, size: 14),
                 label: Text(l.agencyCtaButton),
                 style: FilledButton.styleFrom(
