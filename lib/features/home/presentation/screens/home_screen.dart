@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/storage/locale_storage.dart';
+import '../../../notifications/presentation/notification_providers.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/ui/brand/boursa_logo.dart';
@@ -94,6 +95,9 @@ class _HeroHeader extends ConsumerWidget {
                   Expanded(
                     child: BoursaLogo.horizontal(markHeight: 48, wordmarkSize: 32, dark: true),
                   ),
+                  // Cloche notifications
+                  _NotifBell(),
+                  const SizedBox(width: 10),
                   // Switch langue
                   _LangSwitch(isAr: isAr, onToggle: () async {
                     final next = isAr ? const Locale('fr') : const Locale('ar');
@@ -620,6 +624,48 @@ class _DealsHeader extends StatelessWidget {
               style: const TextStyle(color: Colors.white,
                 fontSize: 10, fontWeight: FontWeight.w700))),
         ],
+      ),
+    );
+  }
+}
+
+class _NotifBell extends ConsumerWidget {
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final count = ref.watch(unreadCountProvider).valueOrNull ?? 0;
+    return GestureDetector(
+      onTap: () => context.push('/notifications'),
+      behavior: HitTestBehavior.opaque,
+      child: SizedBox(
+        width: 40,
+        height: 40,
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            const Icon(Icons.notifications_none, color: Colors.white, size: 26),
+            if (count > 0)
+              Positioned(
+                top: 4,
+                right: 4,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
+                  constraints: const BoxConstraints(minWidth: 16),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFEF4444),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Text(
+                    count > 9 ? '9+' : '$count',
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 10,
+                        fontWeight: FontWeight.w700),
+                  ),
+                ),
+              ),
+          ],
+        ),
       ),
     );
   }
