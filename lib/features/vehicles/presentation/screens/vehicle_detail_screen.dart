@@ -1066,11 +1066,12 @@ class _CtaDock extends ConsumerWidget {
           12, 12, 12, 12 + MediaQuery.of(context).padding.bottom),
       child: Row(
         children: [
-          // Chat
+          // Chat (réservé aux agences pro/business)
+          if (vehicle.agency != null &&
+              (vehicle.agency!.subscriptionTier == 'pro' ||
+               vehicle.agency!.subscriptionTier == 'business'))
           GestureDetector(
-            onTap: vehicle.agency == null
-                ? null
-                : () async {
+            onTap: () async {
                     try {
                       final repo = ref.read(chatRepositoryProvider);
                       final conv = await repo
