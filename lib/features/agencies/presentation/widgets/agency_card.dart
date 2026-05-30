@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/ui/icons/boursa_icons.dart';
+import '../../../../core/ui/tier_badge.dart';
 import '../../data/models/agency.dart';
 
 class AgencyCard extends StatelessWidget {
@@ -96,7 +97,12 @@ class AgencyCard extends StatelessWidget {
                         ),
                         if (agency.isVerified) ...[
                           const SizedBox(width: 5),
-                          const BoursaVerifiedIcon(size: 16, color: AppColors.primary),
+                          BoursaVerifiedIcon(
+                            size: 16,
+                            color: agency.isBusiness
+                                ? AppColors.priceColor
+                                : AppColors.primary,
+                          ),
                         ],
                       ],
                     ),

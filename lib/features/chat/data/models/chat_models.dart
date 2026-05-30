@@ -33,6 +33,7 @@ class Conversation {
   final String? agencyName;
   final String? agencyLogo;
   final String? agencyTier;
+  final bool agencyVerified;
   final String? lastMessageBody;
   final DateTime? lastMessageAt;
   final int unreadCount;
@@ -43,6 +44,7 @@ class Conversation {
     this.agencyName,
     this.agencyLogo,
     this.agencyTier,
+    this.agencyVerified = false,
     this.lastMessageBody,
     this.lastMessageAt,
     this.unreadCount = 0,
@@ -54,6 +56,7 @@ class Conversation {
     agencyName: j['agency']?['name'] as String?,
     agencyLogo: j['agency']?['logo_url'] as String?,
     agencyTier: j['agency']?['tier'] as String?,
+    agencyVerified: j['agency']?['is_verified'] as bool? ?? false,
     lastMessageBody: j['last_message']?['body'] as String?,
     lastMessageAt: j['last_message_at'] != null
         ? DateTime.parse(j['last_message_at'] as String)

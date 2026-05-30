@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import '../../../../core/ui/icons/boursa_icons.dart';
 import '../../../../l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -122,7 +123,16 @@ class _ChatRow extends StatelessWidget {
                           ),
                         ),
                       ),
-                      _TierBadge(tier: conv.agencyTier),
+                      if (conv.agencyVerified) ...[
+                        const SizedBox(width: 5),
+                        BoursaVerifiedIcon(
+                          size: 15,
+                          color: conv.agencyTier == 'business'
+                              ? AppColors.priceColor
+                              : AppColors.primary,
+                        ),
+                      ],
+                      const SizedBox(width: 8),
                       Text(
                         _formatTime(conv.lastMessageAt),
                         style: GoogleFonts.sourceSans3(
@@ -359,32 +369,3 @@ class _Avatar extends StatelessWidget {
   }
 }
 
-class _TierBadge extends StatelessWidget {
-  const _TierBadge({required this.tier});
-  final String? tier;
-
-  @override
-  Widget build(BuildContext context) {
-    if (tier == null || tier == 'free') return const SizedBox.shrink();
-    final isPro = tier == 'pro';
-    final label = isPro ? 'PRO' : 'BUSINESS';
-    final color = isPro ? const Color(0xFF16A34A) : const Color(0xFFB45309);
-    return Container(
-      margin: const EdgeInsets.only(left: 6),
-      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-      decoration: BoxDecoration(
-        color: color.withOpacity(0.12),
-        borderRadius: BorderRadius.circular(4),
-      ),
-      child: Text(
-        label,
-        style: GoogleFonts.sourceSans3(
-          fontSize: 9,
-          fontWeight: FontWeight.w800,
-          color: color,
-          letterSpacing: 0.3,
-        ),
-      ),
-    );
-  }
-}

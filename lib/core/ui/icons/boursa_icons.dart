@@ -221,10 +221,8 @@ class BoursaVerifiedIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox.square(
-      dimension: size,
-      child: CustomPaint(painter: _VerifiedPainter(color: color)),
-    );
+    // Badge vérifié officiel (style web/fiche véhicule) : icône Material verified
+    return Icon(Icons.verified, size: size, color: color);
   }
 }
 
