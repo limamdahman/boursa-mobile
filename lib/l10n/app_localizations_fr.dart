@@ -579,4 +579,22 @@ class AppLocalizationsFr extends AppLocalizations {
   String reviewsCount(int count) {
     return '$count avis';
   }
+
+  @override
+  String get registerTitle => 'Inscription';
+
+  @override
+  String get registerHeading => 'Créer un compte';
+
+  @override
+  String get registerSubtitle => 'Entrez vos informations pour recevoir un code de vérification';
+
+  @override
+  String get registerNameLabel => 'Nom complet';
+
+  @override
+  String get registerNameRequired => 'Veuillez entrer votre nom';
+
+  @override
+  String get registerHaveAccount => 'J\'ai déjà un compte';
 }

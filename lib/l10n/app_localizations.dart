@@ -1180,6 +1180,42 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'{count} avis'**
   String reviewsCount(int count);
+
+  /// Titre AppBar inscription
+  ///
+  /// In fr, this message translates to:
+  /// **'Inscription'**
+  String get registerTitle;
+
+  /// Titre principal inscription
+  ///
+  /// In fr, this message translates to:
+  /// **'Créer un compte'**
+  String get registerHeading;
+
+  /// Sous-titre inscription
+  ///
+  /// In fr, this message translates to:
+  /// **'Entrez vos informations pour recevoir un code de vérification'**
+  String get registerSubtitle;
+
+  /// Label champ nom
+  ///
+  /// In fr, this message translates to:
+  /// **'Nom complet'**
+  String get registerNameLabel;
+
+  /// Erreur nom manquant
+  ///
+  /// In fr, this message translates to:
+  /// **'Veuillez entrer votre nom'**
+  String get registerNameRequired;
+
+  /// Lien vers login
+  ///
+  /// In fr, this message translates to:
+  /// **'J\'ai déjà un compte'**
+  String get registerHaveAccount;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

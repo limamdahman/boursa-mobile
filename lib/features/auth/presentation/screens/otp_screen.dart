@@ -7,9 +7,10 @@ import '../../../../core/theme/app_colors.dart';
 import '../providers/auth_provider.dart';
 
 class OtpScreen extends ConsumerStatefulWidget {
-  const OtpScreen({super.key, required this.phone});
+  const OtpScreen({super.key, required this.phone, this.name});
 
   final String phone;
+  final String? name;
 
   @override
   ConsumerState<OtpScreen> createState() => _OtpScreenState();
@@ -37,7 +38,7 @@ class _OtpScreenState extends ConsumerState<OtpScreen> {
       _submitting = true;
     });
     try {
-      await ref.read(authProvider.notifier).verifyOtp(widget.phone, code);
+      await ref.read(authProvider.notifier).verifyOtp(widget.phone, code, name: widget.name);
       if (!mounted) return;
       context.go('/');
     } on Object catch (e) {

@@ -40,7 +40,7 @@ class _PhoneLoginScreenState extends ConsumerState<PhoneLoginScreen> {
     try {
       final normalized = await ref.read(authProvider.notifier).requestOtp(phone);
       if (!mounted) return;
-      context.go('/otp', extra: normalized);
+      context.go('/otp', extra: (phone: normalized, name: null));
     } on Object catch (e) {
       setState(() => _error = e.toString());
     } finally {
@@ -109,6 +109,10 @@ class _PhoneLoginScreenState extends ConsumerState<PhoneLoginScreen> {
                   : Text(AppLocalizations.of(context)!.authReceiveCode),
             ),
             const SizedBox(height: 8),
+            TextButton(
+              onPressed: () => context.go('/register'),
+              child: Text(AppLocalizations.of(context)!.registerHeading),
+            ),
             TextButton(
               onPressed: () => context.go('/'),
               child: Text(AppLocalizations.of(context)!.authContinueWithout),

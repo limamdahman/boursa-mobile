@@ -273,5 +273,29 @@
         "type": "int"
       }
     }
+  },
+  "registerTitle": "Inscription",
+  "@registerTitle": {
+    "description": "Titre AppBar inscription"
+  },
+  "registerHeading": "Créer un compte",
+  "@registerHeading": {
+    "description": "Titre principal inscription"
+  },
+  "registerSubtitle": "Entrez vos informations pour recevoir un code de vérification",
+  "@registerSubtitle": {
+    "description": "Sous-titre inscription"
+  },
+  "registerNameLabel": "Nom complet",
+  "@registerNameLabel": {
+    "description": "Label champ nom"
+  },
+  "registerNameRequired": "Veuillez entrer votre nom",
+  "@registerNameRequired": {
+    "description": "Erreur nom manquant"
+  },
+  "registerHaveAccount": "J'ai déjà un compte",
+  "@registerHaveAccount": {
+    "description": "Lien vers login"
   }
 }

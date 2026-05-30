@@ -245,5 +245,29 @@
         "type": "int"
       }
     }
+  },
+  "registerTitle": "التسجيل",
+  "@registerTitle": {
+    "description": "Titre AppBar inscription"
+  },
+  "registerHeading": "إنشاء حساب",
+  "@registerHeading": {
+    "description": "Titre principal inscription"
+  },
+  "registerSubtitle": "أدخل معلوماتك لتلقي رمز التحقق",
+  "@registerSubtitle": {
+    "description": "Sous-titre inscription"
+  },
+  "registerNameLabel": "الاسم الكامل",
+  "@registerNameLabel": {
+    "description": "Label champ nom"
+  },
+  "registerNameRequired": "الرجاء إدخال اسمك",
+  "@registerNameRequired": {
+    "description": "Erreur nom manquant"
+  },
+  "registerHaveAccount": "لدي حساب بالفعل",
+  "@registerHaveAccount": {
+    "description": "Lien vers login"
   }
 }

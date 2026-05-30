@@ -36,12 +36,17 @@ class AuthRepository {
   /// Vérifie l'OTP et retourne le token + user.
   Future<({String token, User user})> verifyOtp(
     String phone,
-    String code,
-  ) async {
+    String code, {
+    String? name,
+  }) async {
     try {
       final response = await _dio.post<Map<String, dynamic>>(
         '/auth/otp/verify',
-        data: {'phone': phone, 'code': code},
+        data: {
+          'phone': phone,
+          'code': code,
+          if (name != null && name.trim().isNotEmpty) 'name': name.trim(),
+        },
       );
       final data = response.data!;
       final token = data['token'] as String;

@@ -579,4 +579,22 @@ class AppLocalizationsAr extends AppLocalizations {
   String reviewsCount(int count) {
     return '$count تقييم';
   }
+
+  @override
+  String get registerTitle => 'التسجيل';
+
+  @override
+  String get registerHeading => 'إنشاء حساب';
+
+  @override
+  String get registerSubtitle => 'أدخل معلوماتك لتلقي رمز التحقق';
+
+  @override
+  String get registerNameLabel => 'الاسم الكامل';
+
+  @override
+  String get registerNameRequired => 'الرجاء إدخال اسمك';
+
+  @override
+  String get registerHaveAccount => 'لدي حساب بالفعل';
 }

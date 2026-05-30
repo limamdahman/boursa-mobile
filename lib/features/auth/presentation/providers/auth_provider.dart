@@ -55,10 +55,10 @@ class AuthNotifier extends StateNotifier<AuthState> {
     }
   }
 
-  Future<void> verifyOtp(String phone, String code) async {
+  Future<void> verifyOtp(String phone, String code, {String? name}) async {
     state = const AuthLoading();
     try {
-      final result = await _repo.verifyOtp(phone, code);
+      final result = await _repo.verifyOtp(phone, code, name: name);
       state = AuthAuthenticated(result.user);
     } on AuthException catch (e) {
       state = AuthError(e.message);

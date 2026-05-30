@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 
 import '../features/auth/presentation/screens/otp_screen.dart';
 import '../features/auth/presentation/screens/phone_login_screen.dart';
+import '../features/auth/presentation/screens/register_screen.dart';
 import '../features/auth/presentation/screens/profile_screen.dart';
 import '../features/favorites/presentation/screens/favorites_screen.dart';
 import '../features/vehicles/presentation/screens/listing_screen.dart';
@@ -73,9 +74,17 @@ final appRouter = GoRouter(
       builder: (context, state) => const PhoneLoginScreen(),
     ),
     GoRoute(
+      path: '/register',
+      builder: (context, state) => const RegisterScreen(),
+    ),
+    GoRoute(
       path: '/otp',
       builder: (context, state) {
-        final phone = state.extra as String? ?? '';
+        final extra = state.extra;
+        if (extra is ({String phone, String? name})) {
+          return OtpScreen(phone: extra.phone, name: extra.name);
+        }
+        final phone = extra as String? ?? '';
         return OtpScreen(phone: phone);
       },
     ),
