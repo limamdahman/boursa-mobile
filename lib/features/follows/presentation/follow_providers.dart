@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/network/api_client.dart';
 import '../data/follow_repository.dart';
+import '../data/followed_seller.dart';
 
 final followRepositoryProvider = Provider<FollowRepository>((ref) {
   return FollowRepository(ref.read(apiClientProvider));
@@ -24,4 +25,8 @@ final followersCountProvider =
   } catch (_) {
     return 0;
   }
+});
+
+final myFollowsProvider = FutureProvider<List<FollowedSeller>>((ref) async {
+  return ref.read(followRepositoryProvider).myFollows();
 });

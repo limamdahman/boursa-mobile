@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'followed_seller.dart';
 
 class FollowRepository {
   FollowRepository(this._dio);
@@ -27,5 +28,14 @@ class FollowRepository {
     final res = await _dio.get('/sellers/$sellerType/$sellerId/followers-count');
     final raw = res.data;
     return raw is Map ? (raw['count'] as num?)?.toInt() ?? 0 : 0;
+  }
+
+  Future<List<FollowedSeller>> myFollows() async {
+    final res = await _dio.get('/me/seller-follows');
+    final raw = res.data;
+    final list = raw is Map && raw['data'] is List ? raw['data'] as List : <dynamic>[];
+    return list
+        .map((e) => FollowedSeller.fromJson(e as Map<String, dynamic>))
+        .toList();
   }
 }
