@@ -70,6 +70,19 @@ class AuthNotifier extends StateNotifier<AuthState> {
     await _repo.logout();
     state = const AuthAnonymous();
   }
+
+  /// Met à jour le profil et pousse le user frais dans l'état.
+  Future<void> updateProfile({String? name, String? email, String? language}) async {
+    final user = await _repo.updateProfile(name: name, email: email, language: language);
+    state = AuthAuthenticated(user);
+  }
+
+  /// Pousse un user déjà rafraîchi (ex. après upload avatar).
+  void applyUpdatedUser(User user) {
+    state = AuthAuthenticated(user);
+  }
+
+  AuthRepository get repo => _repo;
 }
 
 final authProvider = StateNotifierProvider<AuthNotifier, AuthState>((ref) {

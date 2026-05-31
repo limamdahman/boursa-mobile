@@ -300,7 +300,7 @@ class _MenuCard extends StatelessWidget {
       _MenuItem(
         icon: Icons.settings_outlined,
         label: 'Paramètres',
-        onTap: () {},
+        onTap: () => context.push('/parametres'),
       ),
       _MenuItem(
         icon: Icons.help_outline,

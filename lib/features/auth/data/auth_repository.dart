@@ -60,6 +60,26 @@ class AuthRepository {
     }
   }
 
+  /// Met à jour le profil (PUT /me) et retourne le user frais.
+  Future<User> updateProfile({String? name, String? email, String? language}) async {
+    final payload = <String, dynamic>{};
+    if (name != null) payload['name'] = name;
+    if (email != null) payload['email'] = email;
+    if (language != null) payload['language'] = language;
+    final res = await _dio.put<Map<String, dynamic>>('/me', data: payload);
+    final userJson = res.data?['user'] as Map<String, dynamic>?;
+    return User.fromJson(userJson ?? <String, dynamic>{});
+  }
+
+  /// Upload l'avatar (POST /me/avatar) et retourne l'URL.
+  Future<String?> uploadAvatar(List<int> bytes, String filename) async {
+    final form = FormData.fromMap({
+      'avatar': MultipartFile.fromBytes(bytes, filename: filename),
+    });
+    final res = await _dio.post<Map<String, dynamic>>('/me/avatar', data: form);
+    return res.data?['avatar_url'] as String?;
+  }
+
   /// Pas d'endpoint /auth/me côté backend — on retourne null si on a juste
   /// le token. L'app demandera re-auth si nécessaire.
   Future<User?> me() async => null;
