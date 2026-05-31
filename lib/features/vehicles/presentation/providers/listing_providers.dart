@@ -143,6 +143,14 @@ final recentVehiclesProvider = FutureProvider<List<Vehicle>>((ref) async {
   return page.items;
 });
 
+// Tous les véhicules d'une agence (page agence, jusqu'à 24)
+final agencyAllVehiclesProvider =
+    FutureProvider.family<List<Vehicle>, String>((ref, agencyId) async {
+  final repo = ref.read(vehicleRepositoryProvider);
+  final result = await repo.list(page: 1, perPage: 24, agencyId: agencyId);
+  return result.items;
+});
+
 final agencyVehiclesProvider = FutureProvider.family<List<Vehicle>, ({String agencyId, String excludeId})>((ref, args) async {
   final repo = ref.read(vehicleRepositoryProvider);
   final result = await repo.list(page: 1, perPage: 8, agencyId: args.agencyId);
