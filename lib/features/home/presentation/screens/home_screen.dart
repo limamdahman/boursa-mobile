@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/storage/locale_storage.dart';
 import '../../../notifications/presentation/notification_providers.dart';
+import '../../../auth/presentation/providers/auth_provider.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/ui/brand/boursa_logo.dart';
@@ -80,7 +81,10 @@ class _HeroHeader extends ConsumerWidget {
           stops: [0.0, 0.55, 1.0],
         ),
         borderRadius: BorderRadius.vertical(bottom: Radius.circular(28)),
-        boxShadow: [BoxShadow(color: Color(0x2616A34A), blurRadius: 20, offset: Offset(0, 8))],
+        boxShadow: [
+          BoxShadow(
+              color: Color(0x2616A34A), blurRadius: 20, offset: Offset(0, 8))
+        ],
       ),
       child: SafeArea(
         bottom: false,
@@ -93,16 +97,20 @@ class _HeroHeader extends ConsumerWidget {
               Row(
                 children: [
                   Expanded(
-                    child: BoursaLogo.horizontal(markHeight: 48, wordmarkSize: 32, dark: true),
+                    child: BoursaLogo.horizontal(
+                        markHeight: 48, wordmarkSize: 32, dark: true),
                   ),
                   // Cloche notifications
                   _NotifBell(),
                   const SizedBox(width: 10),
                   // Switch langue
-                  _LangSwitch(isAr: isAr, onToggle: () async {
-                    final next = isAr ? const Locale('fr') : const Locale('ar');
-                    await ref.read(localeProvider.notifier).setLocale(next);
-                  }),
+                  _LangSwitch(
+                      isAr: isAr,
+                      onToggle: () async {
+                        final next =
+                            isAr ? const Locale('fr') : const Locale('ar');
+                        await ref.read(localeProvider.notifier).setLocale(next);
+                      }),
                 ],
               ),
               const SizedBox(height: 20),
@@ -110,14 +118,18 @@ class _HeroHeader extends ConsumerWidget {
               Text(
                 AppLocalizations.of(context)!.heroTitle,
                 style: TextStyle(
-                  fontSize: 26, fontWeight: FontWeight.w800,
-                  height: 1.2, color: Colors.white, letterSpacing: -0.5,
+                  fontSize: 26,
+                  fontWeight: FontWeight.w800,
+                  height: 1.2,
+                  color: Colors.white,
+                  letterSpacing: -0.5,
                 ),
               ),
               const SizedBox(height: 6),
               Text(
                 AppLocalizations.of(context)!.heroSubtitle,
-                style: TextStyle(fontSize: 13, color: Colors.white.withOpacity(0.7)),
+                style: TextStyle(
+                    fontSize: 13, color: Colors.white.withOpacity(0.7)),
               ),
               const SizedBox(height: 16),
               // Search bar
@@ -175,10 +187,12 @@ class _LangBtn extends StatelessWidget {
         color: active ? AppColors.primary : Colors.transparent,
         borderRadius: BorderRadius.circular(16),
       ),
-      child: Text(label, style: TextStyle(
-        fontSize: 13, fontWeight: FontWeight.w700,
-        color: active ? Colors.white : Colors.white.withOpacity(0.6),
-      )),
+      child: Text(label,
+          style: TextStyle(
+            fontSize: 13,
+            fontWeight: FontWeight.w700,
+            color: active ? Colors.white : Colors.white.withOpacity(0.6),
+          )),
     );
   }
 }
@@ -197,7 +211,10 @@ class _SearchBar extends ConsumerWidget {
         decoration: BoxDecoration(
           color: AppColors.surface,
           borderRadius: BorderRadius.circular(14),
-          boxShadow: const [BoxShadow(color: Color(0x1A000000), blurRadius: 12, offset: Offset(0, 4))],
+          boxShadow: const [
+            BoxShadow(
+                color: Color(0x1A000000), blurRadius: 12, offset: Offset(0, 4))
+          ],
         ),
         child: Row(
           children: [
@@ -210,8 +227,11 @@ class _SearchBar extends ConsumerWidget {
               ),
             ),
             Container(
-              width: 36, height: 36,
-              decoration: BoxDecoration(color: AppColors.primary, borderRadius: BorderRadius.circular(10)),
+              width: 36,
+              height: 36,
+              decoration: BoxDecoration(
+                  color: AppColors.primary,
+                  borderRadius: BorderRadius.circular(10)),
               child: const Icon(Icons.tune, size: 18, color: Colors.white),
             ),
           ],
@@ -239,9 +259,11 @@ class _StatsRow extends StatelessWidget {
   }
 
   Widget _divider() => Container(
-    width: 1, height: 28, color: Colors.white.withOpacity(0.15),
-    margin: const EdgeInsets.symmetric(horizontal: 12),
-  );
+        width: 1,
+        height: 28,
+        color: Colors.white.withOpacity(0.15),
+        margin: const EdgeInsets.symmetric(horizontal: 12),
+      );
 }
 
 class _Stat extends StatelessWidget {
@@ -256,14 +278,19 @@ class _Stat extends StatelessWidget {
       children: [
         Directionality(
           textDirection: TextDirection.ltr,
-          child: Text(value, style: TextStyle(
-            fontSize: 18, fontWeight: FontWeight.w800,
-            color: AppColors.primary, letterSpacing: -0.3,
-          )),
+          child: Text(value,
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w800,
+                color: AppColors.primary,
+                letterSpacing: -0.3,
+              )),
         ),
-        Text(label, style: TextStyle(
-          fontSize: 11, color: Colors.white.withOpacity(0.65),
-        )),
+        Text(label,
+            style: TextStyle(
+              fontSize: 11,
+              color: Colors.white.withOpacity(0.65),
+            )),
       ],
     );
   }
@@ -272,7 +299,11 @@ class _Stat extends StatelessWidget {
 // ─── Section header ───────────────────────────────────────────────────────────
 
 class _SectionHeader extends StatelessWidget {
-  const _SectionHeader({required this.title, required this.subtitle, required this.onSeeAll, this.isAr = false});
+  const _SectionHeader(
+      {required this.title,
+      required this.subtitle,
+      required this.onSeeAll,
+      this.isAr = false});
   final String title;
   final String subtitle;
   final VoidCallback onSeeAll;
@@ -288,22 +319,30 @@ class _SectionHeader extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(title, style: TextStyle(
-                  fontSize: 20, fontWeight: FontWeight.w800,
-                  color: AppColors.textPrimary, letterSpacing: -0.3)),
+                Text(title,
+                    style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w800,
+                        color: AppColors.textPrimary,
+                        letterSpacing: -0.3)),
                 const SizedBox(height: 2),
-                Text(subtitle, style: TextStyle(
-                  fontSize: 13, color: AppColors.textSecondary)),
+                Text(subtitle,
+                    style: TextStyle(
+                        fontSize: 13, color: AppColors.textSecondary)),
               ],
             ),
           ),
           GestureDetector(
             onTap: onSeeAll,
             child: Row(children: [
-              Text(AppLocalizations.of(context)!.seeAll, style: TextStyle(
-                fontSize: 13, fontWeight: FontWeight.w600, color: AppColors.primary)),
+              Text(AppLocalizations.of(context)!.seeAll,
+                  style: TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.primary)),
               const SizedBox(width: 2),
-              const Icon(Icons.arrow_forward_ios, size: 12, color: AppColors.primary),
+              const Icon(Icons.arrow_forward_ios,
+                  size: 12, color: AppColors.primary),
             ]),
           ),
         ],
@@ -321,8 +360,11 @@ class _SectionDeals extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final async = ref.watch(dealsProvider);
     return async.when(
-      loading: () => const SizedBox(height: 60,
-          child: Center(child: CircularProgressIndicator(color: AppColors.primary, strokeWidth: 2))),
+      loading: () => const SizedBox(
+          height: 60,
+          child: Center(
+              child: CircularProgressIndicator(
+                  color: AppColors.primary, strokeWidth: 2))),
       error: (_, __) => const SizedBox.shrink(),
       data: (deals) {
         if (deals.isEmpty) return const SizedBox.shrink();
@@ -336,8 +378,10 @@ class _SectionDeals extends ConsumerWidget {
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2, mainAxisSpacing: 12,
-                  crossAxisSpacing: 12, childAspectRatio: 0.55,
+                  crossAxisCount: 2,
+                  mainAxisSpacing: 12,
+                  crossAxisSpacing: 12,
+                  childAspectRatio: 0.78,
                 ),
                 itemCount: deals.length > 6 ? 6 : deals.length,
                 itemBuilder: (context, i) => VehicleCard(
@@ -362,8 +406,11 @@ class _SectionRecent extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final async = ref.watch(recentVehiclesProvider);
     return async.when(
-      loading: () => const SizedBox(height: 60,
-          child: Center(child: CircularProgressIndicator(color: AppColors.primary, strokeWidth: 2))),
+      loading: () => const SizedBox(
+          height: 60,
+          child: Center(
+              child: CircularProgressIndicator(
+                  color: AppColors.primary, strokeWidth: 2))),
       error: (_, __) => const SizedBox.shrink(),
       data: (vehicles) {
         if (vehicles.isEmpty) return const SizedBox.shrink();
@@ -373,7 +420,8 @@ class _SectionRecent extends ConsumerWidget {
             _SectionHeader(
               title: AppLocalizations.of(context)!.sectionRecentTitle,
               subtitle: AppLocalizations.of(context)!.sectionRecentSubtitle,
-              onSeeAll: () => context.go('/vehicules', extra: const VehicleFilter(sort: 'recent')),
+              onSeeAll: () => context.go('/vehicules',
+                  extra: const VehicleFilter(sort: 'recent')),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -381,8 +429,10 @@ class _SectionRecent extends ConsumerWidget {
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2, mainAxisSpacing: 12,
-                  crossAxisSpacing: 12, childAspectRatio: 0.55,
+                  crossAxisCount: 2,
+                  mainAxisSpacing: 12,
+                  crossAxisSpacing: 12,
+                  childAspectRatio: 0.78,
                 ),
                 itemCount: vehicles.length > 6 ? 6 : vehicles.length,
                 itemBuilder: (context, i) => VehicleCard(
@@ -407,13 +457,17 @@ class _SectionAgencies extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(agenciesProvider);
     final agencies = [...state.items]..sort((a, b) {
-      const order = {'business': 0, 'pro': 1, 'free': 2};
-      return (order[a.subscriptionTier] ?? 2).compareTo(order[b.subscriptionTier] ?? 2);
-    });
+        const order = {'business': 0, 'pro': 1, 'free': 2};
+        return (order[a.subscriptionTier] ?? 2)
+            .compareTo(order[b.subscriptionTier] ?? 2);
+      });
     final agenciesList = agencies.take(6).toList();
     if (state.isLoading && agenciesList.isEmpty) {
-      return const SizedBox(height: 60,
-          child: Center(child: CircularProgressIndicator(color: AppColors.primary, strokeWidth: 2)));
+      return const SizedBox(
+          height: 60,
+          child: Center(
+              child: CircularProgressIndicator(
+                  color: AppColors.primary, strokeWidth: 2)));
     }
     if (agenciesList.isEmpty) return const SizedBox.shrink();
 
@@ -422,7 +476,8 @@ class _SectionAgencies extends ConsumerWidget {
       children: [
         _SectionHeader(
           title: AppLocalizations.of(context)!.sectionAgenciesTitle,
-          subtitle: AppLocalizations.of(context)!.sectionAgenciesSubtitle(agenciesList.length),
+          subtitle: AppLocalizations.of(context)!
+              .sectionAgenciesSubtitle(agenciesList.length),
           onSeeAll: () => context.go('/agences'),
         ),
         Padding(
@@ -431,8 +486,10 @@ class _SectionAgencies extends ConsumerWidget {
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 3, mainAxisSpacing: 12,
-              crossAxisSpacing: 12, childAspectRatio: 0.95,
+              crossAxisCount: 3,
+              mainAxisSpacing: 12,
+              crossAxisSpacing: 12,
+              childAspectRatio: 0.95,
             ),
             itemCount: agencies.length,
             itemBuilder: (context, i) => _AgencyChip(
@@ -458,7 +515,8 @@ class _AgencyChipState extends State<_AgencyChip> {
   bool _hovered = false;
 
   Color get _borderColor {
-    if (widget.agency.subscriptionTier == 'business') return const Color(0xFFF59E0B);
+    if (widget.agency.subscriptionTier == 'business')
+      return const Color(0xFFF59E0B);
     if (_hovered) return AppColors.primary;
     return AppColors.border;
   }
@@ -466,12 +524,17 @@ class _AgencyChipState extends State<_AgencyChip> {
   Widget? get _badge {
     switch (widget.agency.subscriptionTier) {
       case 'business':
-        return _TierBadge(label: 'GOLD ✦',
-          gradient: const LinearGradient(colors: [Color(0xFFF59E0B), Color(0xFFD97706)]));
+        return _TierBadge(
+            label: 'GOLD ✦',
+            gradient: const LinearGradient(
+                colors: [Color(0xFFF59E0B), Color(0xFFD97706)]));
       case 'pro':
-        return _TierBadge(label: 'PRO',
-          bg: const Color(0xFFEFF6FF), textColor: const Color(0xFF2563EB));
-      default: return null;
+        return _TierBadge(
+            label: 'PRO',
+            bg: const Color(0xFFEFF6FF),
+            textColor: const Color(0xFF2563EB));
+      default:
+        return null;
     }
   }
 
@@ -493,19 +556,21 @@ class _AgencyChipState extends State<_AgencyChip> {
               color: _borderColor,
               width: widget.agency.subscriptionTier == 'business' ? 2 : 1,
             ),
-            boxShadow: [BoxShadow(
-              color: _hovered
-                ? const Color(0x1A000000)
-                : const Color(0x0A0F172A),
-              blurRadius: _hovered ? 16 : 8,
-              offset: const Offset(0, 3),
-            )],
+            boxShadow: [
+              BoxShadow(
+                color: _hovered
+                    ? const Color(0x1A000000)
+                    : const Color(0x0A0F172A),
+                blurRadius: _hovered ? 16 : 8,
+                offset: const Offset(0, 3),
+              )
+            ],
           ),
           child: Stack(
             clipBehavior: Clip.none,
             children: [
               Center(
-              child: Padding(
+                  child: Padding(
                 padding: const EdgeInsets.fromLTRB(6, 18, 6, 8),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -513,46 +578,60 @@ class _AgencyChipState extends State<_AgencyChip> {
                   children: [
                     // Avatar
                     ClipRRect(
-                      borderRadius: BorderRadius.circular(10),
-                      child: Container(
-                      width: 48, height: 48,
-                      decoration: BoxDecoration(
-                        color: const Color(0xFF0F172A),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      clipBehavior: Clip.antiAlias,
-                      child: widget.agency.logoUrl != null
-                        ? Image.network(
-                            widget.agency.logoUrl!,
-                            fit: BoxFit.cover,
-                            errorBuilder: (_, __, ___) => Center(
-                              child: Text(widget.agency.initials,
-                                style: const TextStyle(color: Colors.white,
-                                  fontWeight: FontWeight.w800, fontSize: 16))),
-                          )
-                        : Center(child: Text(widget.agency.initials,
-                            style: const TextStyle(color: Colors.white,
-                              fontWeight: FontWeight.w800, fontSize: 16))),
-                    )),
+                        borderRadius: BorderRadius.circular(10),
+                        child: Container(
+                          width: 48,
+                          height: 48,
+                          decoration: BoxDecoration(
+                            color: const Color(0xFF0F172A),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          clipBehavior: Clip.antiAlias,
+                          child: widget.agency.logoUrl != null
+                              ? Image.network(
+                                  widget.agency.logoUrl!,
+                                  fit: BoxFit.cover,
+                                  errorBuilder: (_, __, ___) => Center(
+                                      child: Text(widget.agency.initials,
+                                          style: const TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.w800,
+                                              fontSize: 16))),
+                                )
+                              : Center(
+                                  child: Text(widget.agency.initials,
+                                      style: const TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w800,
+                                          fontSize: 16))),
+                        )),
                     const SizedBox(height: 8),
                     Text(widget.agency.name,
-                      maxLines: 2, textAlign: TextAlign.center,
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(fontSize: 11,
-                        fontWeight: FontWeight.w800,
-                        color: AppColors.textPrimary, height: 1.2)),
+                        maxLines: 2,
+                        textAlign: TextAlign.center,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                            fontSize: 11,
+                            fontWeight: FontWeight.w800,
+                            color: AppColors.textPrimary,
+                            height: 1.2)),
                     if (widget.agency.vehiclesCount != null) ...[
                       const SizedBox(height: 2),
-                      Builder(builder: (ctx) => Text('${widget.agency.vehiclesCount} ${AppLocalizations.of(ctx)!.agencyVehiclesLabel}',
-                        style: const TextStyle(fontSize: 10,
-                          color: AppColors.textSecondary))),
+                      Builder(
+                          builder: (ctx) => Text(
+                              '${widget.agency.vehiclesCount} ${AppLocalizations.of(ctx)!.agencyVehiclesLabel}',
+                              style: const TextStyle(
+                                  fontSize: 10,
+                                  color: AppColors.textSecondary))),
                     ],
                   ],
                 ),
               )),
               if (badge != null)
                 Positioned(
-                  top: -8, left: 0, right: 0,
+                  top: -8,
+                  left: 0,
+                  right: 0,
                   child: Center(child: badge),
                 ),
             ],
@@ -564,7 +643,8 @@ class _AgencyChipState extends State<_AgencyChip> {
 }
 
 class _TierBadge extends StatelessWidget {
-  const _TierBadge({required this.label, this.gradient, this.bg, this.textColor});
+  const _TierBadge(
+      {required this.label, this.gradient, this.bg, this.textColor});
   final String label;
   final Gradient? gradient;
   final Color? bg;
@@ -580,9 +660,10 @@ class _TierBadge extends StatelessWidget {
         borderRadius: BorderRadius.circular(100),
       ),
       child: Text(label,
-        style: TextStyle(
-          color: textColor ?? Colors.white,
-          fontSize: 10, fontWeight: FontWeight.w800)),
+          style: TextStyle(
+              color: textColor ?? Colors.white,
+              fontSize: 10,
+              fontWeight: FontWeight.w800)),
     );
   }
 }
@@ -599,30 +680,39 @@ class _DealsHeader extends StatelessWidget {
         children: [
           Row(children: [
             SvgPicture.string(
-              '<svg viewBox="0 0 24 24" fill="none" stroke="#EF4444" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 2H4a2 2 0 0 0-2 2v5.5L12.5 20a2 2 0 0 0 2.83 0l5.17-5.17a2 2 0 0 0 0-2.83Z"/><circle cx="7" cy="7" r="1.5" fill="#EF4444" stroke="none"/></svg>',
-              width: 18, height: 18),
+                '<svg viewBox="0 0 24 24" fill="none" stroke="#EF4444" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 2H4a2 2 0 0 0-2 2v5.5L12.5 20a2 2 0 0 0 2.83 0l5.17-5.17a2 2 0 0 0 0-2.83Z"/><circle cx="7" cy="7" r="1.5" fill="#EF4444" stroke="none"/></svg>',
+                width: 18,
+                height: 18),
             const SizedBox(width: 6),
-            Expanded(child: Text(l.sectionDealsTitle,
-              style: const TextStyle(fontSize: 18,
-                fontWeight: FontWeight.w800,
-                color: AppColors.textPrimary, letterSpacing: -0.3))),
+            Expanded(
+                child: Text(l.sectionDealsTitle,
+                    style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w800,
+                        color: AppColors.textPrimary,
+                        letterSpacing: -0.3))),
             GestureDetector(
-              onTap: () => context.go('/vehicules', extra: const VehicleFilter(isDeal: true)),
-              child: Text(l.seeAll,
-                style: const TextStyle(fontSize: 12,
-                  fontWeight: FontWeight.w700, color: AppColors.primary))),
+                onTap: () => context.go('/vehicules',
+                    extra: const VehicleFilter(isDeal: true)),
+                child: Text(l.seeAll,
+                    style: const TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.primary))),
           ]),
           const SizedBox(height: 6),
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
-            decoration: BoxDecoration(
-              gradient: const LinearGradient(
-                colors: [Color(0xFFEF4444), Color(0xFFDC2626)]),
-              borderRadius: BorderRadius.circular(100)),
-            child: Text(
-              isAr ? 'سيارات بأسعار مخفضة' : 'Véhicules avec prix réduits',
-              style: const TextStyle(color: Colors.white,
-                fontSize: 10, fontWeight: FontWeight.w700))),
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
+              decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                      colors: [Color(0xFFEF4444), Color(0xFFDC2626)]),
+                  borderRadius: BorderRadius.circular(100)),
+              child: Text(
+                  isAr ? 'سيارات بأسعار مخفضة' : 'Véhicules avec prix réduits',
+                  style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 10,
+                      fontWeight: FontWeight.w700))),
         ],
       ),
     );
@@ -632,6 +722,7 @@ class _DealsHeader extends StatelessWidget {
 class _NotifBell extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    if (!ref.watch(isAuthenticatedProvider)) return const SizedBox.shrink();
     final count = ref.watch(unreadCountProvider).valueOrNull ?? 0;
     return GestureDetector(
       onTap: () => context.push('/notifications'),
@@ -648,7 +739,8 @@ class _NotifBell extends ConsumerWidget {
                 top: 4,
                 right: 4,
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
                   constraints: const BoxConstraints(minWidth: 16),
                   decoration: BoxDecoration(
                     color: const Color(0xFFEF4444),

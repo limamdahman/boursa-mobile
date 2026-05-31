@@ -15,6 +15,7 @@ final unreadCountProvider = FutureProvider<int>((ref) async {
   }
 });
 
-final recentNotificationsProvider = FutureProvider<List<AppNotification>>((ref) async {
+final recentNotificationsProvider =
+    FutureProvider<List<AppNotification>>((ref) async {
   return ref.read(notificationRepositoryProvider).recent();
 });

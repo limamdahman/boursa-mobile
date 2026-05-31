@@ -19,8 +19,14 @@ class NotificationsScreen extends ConsumerWidget {
     switch (n.type) {
       case 'vehicle_approved':
         return isAr
-            ? ('تمت الموافقة على الإعلان', 'تمت الموافقة على $brand $model ونشره')
-            : ('Annonce approuvée', 'Votre $brand $model a été approuvée et publiée');
+            ? (
+                'تمت الموافقة على الإعلان',
+                'تمت الموافقة على $brand $model ونشره'
+              )
+            : (
+                'Annonce approuvée',
+                'Votre $brand $model a été approuvée et publiée'
+              );
       case 'vehicle_rejected':
         return isAr
             ? ('تم رفض الإعلان', 'تم رفض $brand $model')
@@ -28,7 +34,10 @@ class NotificationsScreen extends ConsumerWidget {
       case 'new_lead':
         return isAr
             ? ('اتصال جديد', '$lead مهتم بـ $brand $model')
-            : ('Nouveau contact', '$lead est intéressé par votre $brand $model');
+            : (
+                'Nouveau contact',
+                '$lead est intéressé par votre $brand $model'
+              );
       default:
         return (n.type, '');
     }
@@ -39,7 +48,9 @@ class NotificationsScreen extends ConsumerWidget {
     final diff = DateTime.now().difference(dt);
     if (diff.inSeconds < 60) return isAr ? 'الآن' : "à l'instant";
     if (diff.inMinutes < 60) {
-      return isAr ? 'منذ ${diff.inMinutes} دقيقة' : 'il y a ${diff.inMinutes} min';
+      return isAr
+          ? 'منذ ${diff.inMinutes} دقيقة'
+          : 'il y a ${diff.inMinutes} min';
     }
     if (diff.inHours < 24) {
       return isAr ? 'منذ ${diff.inHours} ساعة' : 'il y a ${diff.inHours} h';
@@ -114,7 +125,9 @@ class NotificationsScreen extends ConsumerWidget {
                         fontSize: 11, color: AppColors.textMuted)),
                 onTap: () async {
                   if (!n.isRead) {
-                    await ref.read(notificationRepositoryProvider).markAsRead(n.id);
+                    await ref
+                        .read(notificationRepositoryProvider)
+                        .markAsRead(n.id);
                     ref.invalidate(recentNotificationsProvider);
                     ref.invalidate(unreadCountProvider);
                   }

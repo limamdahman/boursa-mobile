@@ -8,8 +8,11 @@ class NotificationRepository {
   Future<List<AppNotification>> recent() async {
     final res = await _dio.get('/me/notifications/recent');
     final raw = res.data;
-    final list = raw is Map && raw['data'] is List ? raw['data'] as List : <dynamic>[];
-    return list.map((e) => AppNotification.fromJson(e as Map<String, dynamic>)).toList();
+    final list =
+        raw is Map && raw['data'] is List ? raw['data'] as List : <dynamic>[];
+    return list
+        .map((e) => AppNotification.fromJson(e as Map<String, dynamic>))
+        .toList();
   }
 
   Future<int> unreadCount() async {
