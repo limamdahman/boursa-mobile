@@ -288,6 +288,11 @@ class _MenuCard extends StatelessWidget {
         onTap: () => context.push('/mes-annonces'),
       ),
       _MenuItem(
+        icon: Icons.people_outline,
+        label: 'Mes suivis',
+        onTap: () => context.push('/mes-suivis'),
+      ),
+      _MenuItem(
         icon: Icons.favorite_border,
         label: 'Mes favoris',
         onTap: () => context.go('/favorites'),
