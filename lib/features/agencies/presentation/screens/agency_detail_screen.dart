@@ -1,3 +1,4 @@
+import 'dart:ui' as ui;
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import '../../../../l10n/app_localizations.dart';
@@ -68,8 +69,8 @@ class _AgencyBody extends StatelessWidget {
                 padding: const EdgeInsets.fromLTRB(16, 14, 16, 0),
                 child: Align(
                   alignment: AlignmentDirectional.centerStart,
-                  child: FollowButton(
-                      sellerType: 'agency', sellerId: agency.id),
+                  child:
+                      FollowButton(sellerType: 'agency', sellerId: agency.id),
                 ),
               ),
               _InfoCard(agency: agency),
@@ -106,7 +107,8 @@ class _AgencyAppBar extends StatelessWidget {
       foregroundColor: AppColors.textPrimary,
       leading: IconButton(
         icon: const Icon(Icons.arrow_back),
-        onPressed: () => context.canPop() ? context.pop() : context.go('/agences'),
+        onPressed: () =>
+            context.canPop() ? context.pop() : context.go('/agences'),
       ),
       flexibleSpace: FlexibleSpaceBar(
         background: Stack(
@@ -114,7 +116,8 @@ class _AgencyAppBar extends StatelessWidget {
           children: [
             // Banner
             agency.bannerUrl != null
-                ? CachedNetworkImage(imageUrl: agency.bannerUrl!, fit: BoxFit.cover)
+                ? CachedNetworkImage(
+                    imageUrl: agency.bannerUrl!, fit: BoxFit.cover)
                 : Container(color: AppColors.textPrimary),
             // Gradient
             Container(
@@ -128,11 +131,14 @@ class _AgencyAppBar extends StatelessWidget {
             ),
             // Logo + name
             Positioned(
-              bottom: 16, left: 16, right: 16,
+              bottom: 16,
+              left: 16,
+              right: 16,
               child: Row(
                 children: [
                   Container(
-                    width: 56, height: 56,
+                    width: 56,
+                    height: 56,
                     decoration: BoxDecoration(
                       color: AppColors.surface,
                       borderRadius: BorderRadius.circular(12),
@@ -140,14 +146,17 @@ class _AgencyAppBar extends StatelessWidget {
                     ),
                     clipBehavior: Clip.antiAlias,
                     child: agency.logoUrl != null
-                        ? CachedNetworkImage(imageUrl: agency.logoUrl!, fit: BoxFit.cover)
+                        ? CachedNetworkImage(
+                            imageUrl: agency.logoUrl!, fit: BoxFit.cover)
                         : Container(
                             color: AppColors.textPrimary,
                             alignment: Alignment.center,
                             child: Text(
                               agency.initials,
                               style: const TextStyle(
-                                color: Colors.white, fontWeight: FontWeight.w800, fontSize: 18,
+                                color: Colors.white,
+                                fontWeight: FontWeight.w800,
+                                fontSize: 18,
                               ),
                             ),
                           ),
@@ -163,7 +172,8 @@ class _AgencyAppBar extends StatelessWidget {
                               child: Text(
                                 agency.name,
                                 style: const TextStyle(
-                                  color: Colors.white, fontSize: 16,
+                                  color: Colors.white,
+                                  fontSize: 16,
                                   fontWeight: FontWeight.w800,
                                 ),
                               ),
@@ -181,7 +191,8 @@ class _AgencyAppBar extends StatelessWidget {
                         if (agency.city != null)
                           Text(
                             agency.city!.name,
-                            style: const TextStyle(color: Colors.white70, fontSize: 12),
+                            style: const TextStyle(
+                                color: Colors.white70, fontSize: 12),
                           ),
                       ],
                     ),
@@ -202,7 +213,8 @@ class _InfoCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final canChat = agency.subscriptionTier == 'pro' || agency.subscriptionTier == 'business';
+    final canChat = agency.subscriptionTier == 'pro' ||
+        agency.subscriptionTier == 'business';
     return Container(
       color: AppColors.surface,
       margin: const EdgeInsets.only(top: 8),
@@ -210,7 +222,10 @@ class _InfoCard extends ConsumerWidget {
       child: Column(
         children: [
           if (agency.address != null)
-            _InfoRow(customIcon: const BoursaPinIcon(size: 16, color: AppColors.textMuted), text: agency.address!),
+            _InfoRow(
+                customIcon:
+                    const BoursaPinIcon(size: 16, color: AppColors.textMuted),
+                text: agency.address!),
           if (agency.email != null)
             _InfoRow(icon: Icons.email_outlined, text: agency.email!),
           if (agency.phoneCall != null)
@@ -281,7 +296,8 @@ class _InfoCard extends ConsumerWidget {
   Future<void> _openWhatsApp(String phone) async {
     final clean = phone.replaceAll(RegExp(r'\D'), '');
     final uri = Uri.parse('https://wa.me/$clean');
-    if (await canLaunchUrl(uri)) await launchUrl(uri, mode: LaunchMode.externalApplication);
+    if (await canLaunchUrl(uri))
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
   }
 
   Future<void> _call(String phone) async {
@@ -309,7 +325,8 @@ class _InfoRow extends StatelessWidget {
           Expanded(
             child: Text(
               text,
-              style: const TextStyle(fontSize: 13, color: AppColors.textSecondary),
+              style:
+                  const TextStyle(fontSize: 13, color: AppColors.textSecondary),
             ),
           ),
         ],
@@ -319,7 +336,11 @@ class _InfoRow extends StatelessWidget {
 }
 
 class _CtaBtn extends StatelessWidget {
-  const _CtaBtn({required this.icon, required this.label, required this.color, required this.onTap});
+  const _CtaBtn(
+      {required this.icon,
+      required this.label,
+      required this.color,
+      required this.onTap});
   final IconData icon;
   final String label;
   final Color color;
@@ -341,9 +362,12 @@ class _CtaBtn extends StatelessWidget {
             children: [
               Icon(icon, color: Colors.white, size: 16),
               const SizedBox(width: 6),
-              Text(label, style: const TextStyle(
-                color: Colors.white, fontSize: 13, fontWeight: FontWeight.w700,
-              )),
+              Text(label,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 13,
+                    fontWeight: FontWeight.w700,
+                  )),
             ],
           ),
         ),
@@ -365,13 +389,19 @@ class _DescCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('À propos', style: TextStyle(
-            fontSize: 14, fontWeight: FontWeight.w700, color: AppColors.textPrimary,
-          )),
+          const Text('À propos',
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w700,
+                color: AppColors.textPrimary,
+              )),
           const SizedBox(height: 8),
-          Text(text, style: const TextStyle(
-            fontSize: 13, color: AppColors.textSecondary, height: 1.5,
-          )),
+          Text(text,
+              style: const TextStyle(
+                fontSize: 13,
+                color: AppColors.textSecondary,
+                height: 1.5,
+              )),
         ],
       ),
     );
@@ -390,18 +420,36 @@ class _StatsRow extends StatelessWidget {
       padding: const EdgeInsets.all(16),
       child: Row(
         children: [
-          _Stat(value: '${agency.vehiclesCount}', label: AppLocalizations.of(context)!.agencyAnnouncements),
+          _Stat(
+              value: '${agency.vehiclesCount}',
+              label: AppLocalizations.of(context)!.agencyAnnouncements),
           _divider(),
           _Stat(
-            value: agency.subscriptionTier.toUpperCase(),
-            label: 'Abonnement',
-            valueColor: agency.isBusiness ? const Color(0xFFF59E0B) : AppColors.primary,
+            value: agency.isBusiness
+                ? 'Business'
+                : agency.isPro
+                    ? 'Pro'
+                    : 'Gratuit',
+            label: Localizations.localeOf(context).languageCode == 'ar'
+                ? 'شريك'
+                : 'Partenaire',
+            valueColor:
+                agency.isBusiness ? const Color(0xFFF59E0B) : AppColors.primary,
           ),
           _divider(),
           _Stat(
-            value: agency.isVerified ? 'Oui' : 'Non',
-            label: 'Vérifiée',
-            valueColor: agency.isVerified ? AppColors.primary : AppColors.textMuted,
+            value: agency.isVerified
+                ? (Localizations.localeOf(context).languageCode == 'ar'
+                    ? 'نعم'
+                    : 'Oui')
+                : (Localizations.localeOf(context).languageCode == 'ar'
+                    ? 'لا'
+                    : 'Non'),
+            label: Localizations.localeOf(context).languageCode == 'ar'
+                ? 'موثقة'
+                : 'Vérifiée',
+            valueColor:
+                agency.isVerified ? AppColors.primary : AppColors.textMuted,
           ),
         ],
       ),
@@ -409,9 +457,11 @@ class _StatsRow extends StatelessWidget {
   }
 
   Widget _divider() => Container(
-    width: 1, height: 36, color: AppColors.border,
-    margin: const EdgeInsets.symmetric(horizontal: 16),
-  );
+        width: 1,
+        height: 36,
+        color: AppColors.border,
+        margin: const EdgeInsets.symmetric(horizontal: 16),
+      );
 }
 
 class _Stat extends StatelessWidget {
@@ -425,14 +475,18 @@ class _Stat extends StatelessWidget {
     return Expanded(
       child: Column(
         children: [
-          Text(value, style: TextStyle(
-            fontSize: 16, fontWeight: FontWeight.w800,
-            color: valueColor ?? AppColors.textPrimary,
-          )),
+          Text(value,
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w800,
+                color: valueColor ?? AppColors.textPrimary,
+              )),
           const SizedBox(height: 2),
-          Text(label, style: const TextStyle(
-            fontSize: 11, color: AppColors.textMuted,
-          )),
+          Text(label,
+              style: const TextStyle(
+                fontSize: 11,
+                color: AppColors.textMuted,
+              )),
         ],
       ),
     );
@@ -447,14 +501,40 @@ class _AgencyVehicles extends ConsumerStatefulWidget {
 }
 
 class _AgencyVehiclesState extends ConsumerState<_AgencyVehicles> {
-  String _sort = 'recent'; // recent | price_asc | price_desc
+  String _sort = 'recent';
   String? _bodyType;
   String? _fuel;
+  String? _condition;
+  int? _yearFrom;
+  int? _yearTo;
+  bool _showFilters = false;
+
+  int get _activeCount {
+    var n = 0;
+    if (_bodyType != null) n++;
+    if (_fuel != null) n++;
+    if (_condition != null) n++;
+    if (_yearFrom != null) n++;
+    if (_yearTo != null) n++;
+    return n;
+  }
+
+  void _reset() => setState(() {
+        _bodyType = null;
+        _fuel = null;
+        _condition = null;
+        _yearFrom = null;
+        _yearTo = null;
+        _sort = 'recent';
+      });
 
   List<Vehicle> _apply(List<Vehicle> source) {
     var list = source.where((v) {
       if (_bodyType != null && v.bodyType != _bodyType) return false;
       if (_fuel != null && v.fuel != _fuel) return false;
+      if (_condition != null && v.condition != _condition) return false;
+      if (_yearFrom != null && v.year < _yearFrom!) return false;
+      if (_yearTo != null && v.year > _yearTo!) return false;
       return true;
     }).toList();
     if (_sort == 'price_asc') {
@@ -472,7 +552,8 @@ class _AgencyVehiclesState extends ConsumerState<_AgencyVehicles> {
     return async.when(
       loading: () => const Padding(
         padding: EdgeInsets.all(24),
-        child: Center(child: CircularProgressIndicator(color: AppColors.primary)),
+        child:
+            Center(child: CircularProgressIndicator(color: AppColors.primary)),
       ),
       error: (_, __) => const SizedBox.shrink(),
       data: (allVehicles) {
@@ -485,14 +566,15 @@ class _AgencyVehiclesState extends ConsumerState<_AgencyVehicles> {
               Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  Text(
-                    isAr ? 'سيارات هذه الوكالة' : 'Véhicules de cette agence',
-                    style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w800,
-                        color: AppColors.textPrimary),
+                  Expanded(
+                    child: Text(
+                      isAr ? 'سيارات هذه الوكالة' : 'Véhicules de cette agence',
+                      style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w800,
+                          color: AppColors.textPrimary),
+                    ),
                   ),
-                  const Spacer(),
                   Text(
                     '${vehicles.length} ${isAr ? 'إعلان' : 'annonces'}',
                     style: const TextStyle(
@@ -501,61 +583,160 @@ class _AgencyVehiclesState extends ConsumerState<_AgencyVehicles> {
                 ],
               ),
               const SizedBox(height: 12),
-              // Tri
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-                    _chip(isAr ? 'الأحدث' : 'Récent', _sort == 'recent',
-                        () => setState(() => _sort = 'recent')),
-                    _chip(isAr ? 'السعر ↑' : 'Prix ↑', _sort == 'price_asc',
-                        () => setState(() => _sort = 'price_asc')),
-                    _chip(isAr ? 'السعر ↓' : 'Prix ↓', _sort == 'price_desc',
-                        () => setState(() => _sort = 'price_desc')),
-                  ],
+              // Bouton Filtrer
+              GestureDetector(
+                onTap: () => setState(() => _showFilters = !_showFilters),
+                child: Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                  decoration: BoxDecoration(
+                    color: AppColors.surface,
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(
+                        color: _activeCount > 0
+                            ? AppColors.primary
+                            : AppColors.border),
+                  ),
+                  child: Row(
+                    children: [
+                      const Icon(Icons.tune,
+                          size: 18, color: AppColors.primary),
+                      const SizedBox(width: 8),
+                      Text(
+                        isAr ? 'تصفية' : 'Filtrer',
+                        style: const TextStyle(
+                            fontSize: 13,
+                            fontWeight: FontWeight.w700,
+                            color: AppColors.textPrimary),
+                      ),
+                      if (_activeCount > 0) ...[
+                        const SizedBox(width: 6),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 6, vertical: 1),
+                          decoration: BoxDecoration(
+                            color: AppColors.primary,
+                            borderRadius: BorderRadius.circular(100),
+                          ),
+                          child: Text('$_activeCount',
+                              style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.w700)),
+                        ),
+                      ],
+                      const Spacer(),
+                      Icon(
+                          _showFilters
+                              ? Icons.keyboard_arrow_up
+                              : Icons.keyboard_arrow_down,
+                          color: AppColors.textSecondary),
+                    ],
+                  ),
                 ),
               ),
-              const SizedBox(height: 8),
-              // Carrosserie
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-                    _chip(isAr ? 'الكل' : 'Tous', _bodyType == null,
-                        () => setState(() => _bodyType = null)),
-                    for (final e in <String, String>{
-                      'sedan': isAr ? 'سيدان' : 'Berline',
-                      'suv': 'SUV',
-                      'pickup': 'Pickup',
-                      'hatchback': isAr ? 'هاتشباك' : 'Compacte',
-                      'van': isAr ? 'فان' : 'Van',
-                      'coupe': isAr ? 'كوبيه' : 'Coupé',
-                    }.entries)
-                      _chip(e.value, _bodyType == e.key,
-                          () => setState(() => _bodyType = e.key)),
-                  ],
+              // Panneau de filtres
+              if (_showFilters) ...[
+                const SizedBox(height: 12),
+                Container(
+                  padding: const EdgeInsets.all(14),
+                  decoration: BoxDecoration(
+                    color: AppColors.surface,
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: AppColors.border),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _group(isAr ? 'الترتيب' : 'Trier par', [
+                        _chip(isAr ? 'الأحدث' : 'Récent', _sort == 'recent',
+                            () => setState(() => _sort = 'recent')),
+                        _chip(isAr ? 'السعر ↑' : 'Prix ↑', _sort == 'price_asc',
+                            () => setState(() => _sort = 'price_asc')),
+                        _chip(
+                            isAr ? 'السعر ↓' : 'Prix ↓',
+                            _sort == 'price_desc',
+                            () => setState(() => _sort = 'price_desc')),
+                      ]),
+                      _group(isAr ? 'الهيكل' : 'Carrosserie', [
+                        _chip(isAr ? 'الكل' : 'Tous', _bodyType == null,
+                            () => setState(() => _bodyType = null)),
+                        for (final e in <String, String>{
+                          'sedan': isAr ? 'سيدان' : 'Berline',
+                          'suv': 'SUV',
+                          'pickup': 'Pickup',
+                          'hatchback': isAr ? 'هاتشباك' : 'Compacte',
+                          'van': isAr ? 'فان' : 'Van',
+                          'coupe': isAr ? 'كوبيه' : 'Coupé',
+                        }.entries)
+                          _chip(e.value, _bodyType == e.key,
+                              () => setState(() => _bodyType = e.key)),
+                      ]),
+                      _group(isAr ? 'الوقود' : 'Carburant', [
+                        _chip(isAr ? 'الكل' : 'Tous', _fuel == null,
+                            () => setState(() => _fuel = null)),
+                        for (final e in <String, String>{
+                          'gasoline': isAr ? 'بنزين' : 'Essence',
+                          'diesel': isAr ? 'ديزل' : 'Diesel',
+                          'hybrid': isAr ? 'هايبرد' : 'Hybride',
+                          'electric': isAr ? 'كهربائي' : 'Électrique',
+                          'lpg': isAr ? 'غاز' : 'GPL',
+                        }.entries)
+                          _chip(e.value, _fuel == e.key,
+                              () => setState(() => _fuel = e.key)),
+                      ]),
+                      _group(isAr ? 'الحالة' : 'État', [
+                        _chip(isAr ? 'الكل' : 'Tous', _condition == null,
+                            () => setState(() => _condition = null)),
+                        for (final e in <String, String>{
+                          'used': isAr ? 'مستعمل' : 'Occasion',
+                          'new': isAr ? 'جديد' : 'Neuf',
+                          'imported': isAr ? 'مستورد' : 'Import',
+                        }.entries)
+                          _chip(e.value, _condition == e.key,
+                              () => setState(() => _condition = e.key)),
+                      ]),
+                      // Année (de ... à ...)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 12),
+                        child: Text(isAr ? 'السنة' : 'Année',
+                            style: const TextStyle(
+                                fontSize: 13,
+                                fontWeight: FontWeight.w700,
+                                color: AppColors.textPrimary)),
+                      ),
+                      const SizedBox(height: 8),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: _yearDropdown(
+                              hint: isAr ? 'من' : 'De',
+                              value: _yearFrom,
+                              onChanged: (v) => setState(() => _yearFrom = v),
+                            ),
+                          ),
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: _yearDropdown(
+                              hint: isAr ? 'إلى' : 'À',
+                              value: _yearTo,
+                              onChanged: (v) => setState(() => _yearTo = v),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 12),
+                      Align(
+                        alignment: AlignmentDirectional.centerEnd,
+                        child: TextButton(
+                          onPressed: _reset,
+                          child: Text(isAr ? 'إعادة تعيين' : 'Réinitialiser'),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              const SizedBox(height: 8),
-              // Carburant
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-                    _chip(isAr ? 'كل الوقود' : 'Tous carburants', _fuel == null,
-                        () => setState(() => _fuel = null)),
-                    for (final e in <String, String>{
-                      'gasoline': isAr ? 'بنزين' : 'Essence',
-                      'diesel': isAr ? 'ديزل' : 'Diesel',
-                      'hybrid': isAr ? 'هايبرد' : 'Hybride',
-                      'electric': isAr ? 'كهربائي' : 'Électrique',
-                      'lpg': isAr ? 'غاز' : 'GPL',
-                    }.entries)
-                      _chip(e.value, _fuel == e.key,
-                          () => setState(() => _fuel = e.key)),
-                  ],
-                ),
-              ),
+              ],
               const SizedBox(height: 14),
               if (vehicles.isEmpty)
                 Container(
@@ -572,7 +753,7 @@ class _AgencyVehiclesState extends ConsumerState<_AgencyVehicles> {
                           size: 36, color: Color(0xFFCBD5E1)),
                       const SizedBox(height: 12),
                       Text(
-                        isAr ? 'لا توجد سيارات حاليا' : 'Aucun véhicule actuellement',
+                        isAr ? 'لا توجد سيارات' : 'Aucun véhicule',
                         style: const TextStyle(
                             fontSize: 14, color: AppColors.textSecondary),
                       ),
@@ -587,7 +768,7 @@ class _AgencyVehiclesState extends ConsumerState<_AgencyVehicles> {
                     crossAxisCount: 2,
                     mainAxisSpacing: 12,
                     crossAxisSpacing: 12,
-                    childAspectRatio: 0.62,
+                    childAspectRatio: 0.58,
                   ),
                   itemCount: vehicles.length,
                   itemBuilder: (context, i) => VehicleCard(
@@ -602,26 +783,64 @@ class _AgencyVehiclesState extends ConsumerState<_AgencyVehicles> {
     );
   }
 
-  Widget _chip(String label, bool active, VoidCallback onTap) {
+  Widget _group(String title, List<Widget> chips) {
     return Padding(
-      padding: const EdgeInsets.only(right: 8),
-      child: GestureDetector(
-        onTap: onTap,
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
-          decoration: BoxDecoration(
-            color: active ? AppColors.primary : AppColors.surface,
-            borderRadius: BorderRadius.circular(100),
-            border: Border.all(
-                color: active ? AppColors.primary : AppColors.border),
-          ),
-          child: Text(
-            label,
-            style: TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.w700,
-              color: active ? Colors.white : AppColors.textSecondary,
-            ),
+      padding: const EdgeInsets.only(bottom: 4),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(title,
+              style: const TextStyle(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.textPrimary)),
+          const SizedBox(height: 8),
+          Wrap(spacing: 8, runSpacing: 8, children: chips),
+          const SizedBox(height: 4),
+        ],
+      ),
+    );
+  }
+
+  Widget _yearDropdown({
+    required String hint,
+    required int? value,
+    required ValueChanged<int?> onChanged,
+  }) {
+    final now = DateTime.now().year;
+    return DropdownButtonFormField<int>(
+      value: value,
+      isExpanded: true,
+      decoration: InputDecoration(
+        hintText: hint,
+        border: const OutlineInputBorder(),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      ),
+      items: [
+        for (var y = now; y >= 1980; y--)
+          DropdownMenuItem(value: y, child: Text('$y')),
+      ],
+      onChanged: onChanged,
+    );
+  }
+
+  Widget _chip(String label, bool active, VoidCallback onTap) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
+        decoration: BoxDecoration(
+          color: active ? AppColors.primary : AppColors.background,
+          borderRadius: BorderRadius.circular(100),
+          border:
+              Border.all(color: active ? AppColors.primary : AppColors.border),
+        ),
+        child: Text(
+          label,
+          style: TextStyle(
+            fontSize: 12,
+            fontWeight: FontWeight.w700,
+            color: active ? Colors.white : AppColors.textSecondary,
           ),
         ),
       ),
@@ -629,13 +848,21 @@ class _AgencyVehiclesState extends ConsumerState<_AgencyVehicles> {
   }
 }
 
-class _AgencyLocationMap extends StatelessWidget {
+class _AgencyLocationMap extends StatefulWidget {
   const _AgencyLocationMap(
       {required this.lat, required this.lng, required this.name, this.address});
   final double lat;
   final double lng;
   final String name;
   final String? address;
+
+  @override
+  State<_AgencyLocationMap> createState() => _AgencyLocationMapState();
+}
+
+class _AgencyLocationMapState extends State<_AgencyLocationMap> {
+  bool _showPopup = true;
+  final MapController _mapController = MapController();
 
   @override
   Widget build(BuildContext context) {
@@ -663,7 +890,7 @@ class _AgencyLocationMap extends StatelessWidget {
           ClipRRect(
             borderRadius: BorderRadius.circular(10),
             child: Container(
-              height: 280,
+              height: 360,
               decoration: BoxDecoration(
                 border: Border.all(color: AppColors.border),
                 borderRadius: BorderRadius.circular(10),
@@ -671,9 +898,13 @@ class _AgencyLocationMap extends StatelessWidget {
               child: Stack(
                 children: [
                   FlutterMap(
+                    mapController: _mapController,
                     options: MapOptions(
-                      initialCenter: LatLng(lat, lng),
+                      initialCenter: LatLng(widget.lat, widget.lng),
                       initialZoom: 16,
+                      onMapReady: () {
+                        _mapController.move(LatLng(widget.lat, widget.lng), 16);
+                      },
                       interactionOptions: const InteractionOptions(
                         flags: InteractiveFlag.pinchZoom | InteractiveFlag.drag,
                       ),
@@ -686,95 +917,30 @@ class _AgencyLocationMap extends StatelessWidget {
                       ),
                       MarkerLayer(markers: [
                         Marker(
-                          point: LatLng(lat, lng),
-                          width: 34,
-                          height: 42,
-                          alignment: Alignment.topCenter,
-                          child: SvgPicture.string(
-                            '<svg xmlns="http://www.w3.org/2000/svg" width="34" height="42" viewBox="0 0 34 42"><path d="M17 0C7.6 0 0 7.6 0 17c0 12.5 17 25 17 25s17-12.5 17-25c0-9.4-7.6-17-17-17z" fill="#16A34A" stroke="white" stroke-width="2.5"/><circle cx="17" cy="17" r="6" fill="white"/></svg>',
+                          point: LatLng(widget.lat, widget.lng),
+                          width: 230,
+                          height: 240,
+                          alignment: Alignment.bottomCenter,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              if (_showPopup) _callout(),
+                              // Pin (sa pointe est sur la coordonnée)
+                              GestureDetector(
+                                onTap: () =>
+                                    setState(() => _showPopup = !_showPopup),
+                                child: SvgPicture.string(
+                                  '<svg xmlns="http://www.w3.org/2000/svg" width="34" height="42" viewBox="0 0 34 42"><path d="M17 0C7.6 0 0 7.6 0 17c0 12.5 17 25 17 25s17-12.5 17-25c0-9.4-7.6-17-17-17z" fill="#16A34A" stroke="white" stroke-width="2.5"/><circle cx="17" cy="17" r="6" fill="white"/></svg>',
+                                  width: 34,
+                                  height: 42,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ]),
                     ],
-                  ),
-                  Positioned(
-                    top: 10,
-                    left: 0,
-                    right: 0,
-                    child: Center(
-                      child: Container(
-                        constraints: const BoxConstraints(maxWidth: 220),
-                        padding: const EdgeInsets.fromLTRB(12, 10, 12, 12),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(10),
-                          boxShadow: const [
-                            BoxShadow(
-                                color: Color(0x33000000),
-                                blurRadius: 8,
-                                offset: Offset(0, 2))
-                          ],
-                        ),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text('📍 $locationLabel',
-                                style: const TextStyle(
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.w700,
-                                    color: AppColors.primary,
-                                    letterSpacing: 0.5)),
-                            const SizedBox(height: 4),
-                            Text(name,
-                                style: const TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w800,
-                                    color: AppColors.textPrimary)),
-                            if (address != null && address!.isNotEmpty) ...[
-                              const SizedBox(height: 3),
-                              Text(address!,
-                                  style: const TextStyle(
-                                      fontSize: 12,
-                                      color: AppColors.textSecondary,
-                                      height: 1.4)),
-                            ],
-                            const SizedBox(height: 10),
-                            GestureDetector(
-                              onTap: () async {
-                                final uri = Uri.parse(
-                                    'https://www.google.com/maps/dir/?api=1&destination=$lat,$lng');
-                                if (await canLaunchUrl(uri)) {
-                                  launchUrl(uri,
-                                      mode: LaunchMode.externalApplication);
-                                }
-                              },
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 14, vertical: 8),
-                                decoration: BoxDecoration(
-                                  color: AppColors.primary,
-                                  borderRadius: BorderRadius.circular(6),
-                                ),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    const Icon(Icons.arrow_forward,
-                                        color: Colors.white, size: 12),
-                                    const SizedBox(width: 5),
-                                    Text(directionsLabel,
-                                        style: const TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w700)),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
                   ),
                 ],
               ),
@@ -784,4 +950,120 @@ class _AgencyLocationMap extends StatelessWidget {
       ),
     );
   }
+
+  Widget _callout() {
+    final isAr = Localizations.localeOf(context).languageCode == 'ar';
+    final locationLabel = isAr ? 'موقع الوكالة' : "Position de l'agence";
+    final directionsLabel = isAr ? 'الاتجاهات' : 'Itinéraire';
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          constraints: const BoxConstraints(maxWidth: 210),
+          padding: const EdgeInsets.fromLTRB(10, 8, 8, 10),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(10),
+            boxShadow: const [
+              BoxShadow(
+                  color: Color(0x33000000),
+                  blurRadius: 8,
+                  offset: Offset(0, 2)),
+            ],
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    child: Text('📍 $locationLabel',
+                        style: const TextStyle(
+                            fontSize: 9,
+                            fontWeight: FontWeight.w700,
+                            color: AppColors.primary,
+                            letterSpacing: 0.3)),
+                  ),
+                  GestureDetector(
+                    onTap: () => setState(() => _showPopup = false),
+                    child: const Icon(Icons.close,
+                        size: 15, color: AppColors.textSecondary),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 2),
+              Text(widget.name,
+                  style: const TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w800,
+                      color: AppColors.textPrimary)),
+              if (widget.address != null && widget.address!.isNotEmpty) ...[
+                const SizedBox(height: 2),
+                Text(widget.address!,
+                    style: const TextStyle(
+                        fontSize: 11,
+                        color: AppColors.textSecondary,
+                        height: 1.3)),
+              ],
+              const SizedBox(height: 8),
+              GestureDetector(
+                onTap: () async {
+                  final uri = Uri.parse(
+                      'https://www.google.com/maps/dir/?api=1&destination=${widget.lat},${widget.lng}');
+                  if (await canLaunchUrl(uri)) {
+                    launchUrl(uri, mode: LaunchMode.externalApplication);
+                  }
+                },
+                child: Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(vertical: 7),
+                  decoration: BoxDecoration(
+                    color: AppColors.primary,
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(Icons.arrow_forward,
+                          color: Colors.white, size: 11),
+                      const SizedBox(width: 5),
+                      Text(directionsLabel,
+                          style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 11,
+                              fontWeight: FontWeight.w700)),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        CustomPaint(
+          size: const Size(18, 9),
+          painter: _CalloutArrow(),
+        ),
+      ],
+    );
+  }
+}
+
+class _CalloutArrow extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()..color = Colors.white;
+    final path = ui.Path()
+      ..moveTo(0, 0)
+      ..lineTo(size.width, 0)
+      ..lineTo(size.width / 2, size.height)
+      ..close();
+    // Légère ombre
+    canvas.drawShadow(path, const Color(0x33000000), 2, false);
+    canvas.drawPath(path, paint);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
