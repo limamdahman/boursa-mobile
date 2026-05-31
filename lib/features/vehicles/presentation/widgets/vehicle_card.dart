@@ -57,8 +57,7 @@ class VehicleCard extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // ── Image + badges ──────────────────────────────────────────
-              AspectRatio(
-                aspectRatio: 4 / 3,
+              Expanded(
                 child: Stack(
                   children: [
                     Positioned.fill(child: _buildImage()),
@@ -193,7 +192,8 @@ class VehicleCard extends ConsumerWidget {
                     const SizedBox(height: 6),
 
                     // Prix barré si réduction
-                    if (vehicle.originalPrice != null && vehicle.originalPrice! > vehicle.priceMru) ...[
+                    if (vehicle.originalPrice != null &&
+                        vehicle.originalPrice! > vehicle.priceMru) ...[
                       Directionality(
                         textDirection: TextDirection.ltr,
                         child: Text(
@@ -217,15 +217,16 @@ class VehicleCard extends ConsumerWidget {
                               text: NumberFormatters.formatPrice(
                                   vehicle.priceMru),
                               style: TextStyle(
-                                color: isDeal ? const Color(0xFFDC2626) : AppColors.priceColor,
+                                color: isDeal
+                                    ? const Color(0xFFDC2626)
+                                    : AppColors.priceColor,
                                 fontSize: 15,
                                 fontWeight: FontWeight.w800,
                                 height: 1.0,
                               ),
                             ),
                             TextSpan(
-                              text:
-                                  ' ${isAr ? 'أوقية' : 'MRU'}',
+                              text: ' ${isAr ? 'أوقية' : 'MRU'}',
                               style: TextStyle(
                                 color: AppColors.textSecondary,
                                 fontSize: 11,
@@ -242,12 +243,13 @@ class VehicleCard extends ConsumerWidget {
                       const SizedBox(height: 4),
                       Row(mainAxisSize: MainAxisSize.min, children: [
                         const Icon(Icons.handshake_outlined,
-                          size: 11, color: AppColors.primary),
+                            size: 11, color: AppColors.primary),
                         const SizedBox(width: 3),
                         Text(isAr ? 'قابل للتفاوض' : 'Négociable',
-                          style: const TextStyle(fontSize: 10,
-                            fontWeight: FontWeight.w700,
-                            color: AppColors.primary)),
+                            style: const TextStyle(
+                                fontSize: 10,
+                                fontWeight: FontWeight.w700,
+                                color: AppColors.primary)),
                       ]),
                     ],
                     // Ville
@@ -256,8 +258,7 @@ class VehicleCard extends ConsumerWidget {
                       Row(
                         children: [
                           const BoursaPinIcon(
-                              size: 10,
-                              color: AppColors.textSecondary),
+                              size: 10, color: AppColors.textSecondary),
                           const SizedBox(width: 3),
                           Flexible(
                             child: Text(
@@ -367,8 +368,8 @@ class _TagIconPainter extends CustomPainter {
     final dotPaint = Paint()
       ..color = Colors.white
       ..style = PaintingStyle.fill;
-    canvas.drawCircle(
-        Offset(size.width * 0.29, size.width * 0.29), size.width * 0.1, dotPaint);
+    canvas.drawCircle(Offset(size.width * 0.29, size.width * 0.29),
+        size.width * 0.1, dotPaint);
   }
 
   @override
@@ -388,7 +389,8 @@ class _PillBadge extends StatelessWidget {
         color: color,
         borderRadius: BorderRadius.circular(100),
         boxShadow: const [
-          BoxShadow(color: Color(0x33000000), blurRadius: 6, offset: Offset(0, 2))
+          BoxShadow(
+              color: Color(0x33000000), blurRadius: 6, offset: Offset(0, 2))
         ],
       ),
       child: Text(

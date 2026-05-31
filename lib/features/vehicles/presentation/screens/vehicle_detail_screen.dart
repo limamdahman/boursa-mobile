@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'dart:ui' as ui;
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:flutter/material.dart';
@@ -1563,7 +1564,7 @@ class _SimilarVehicles extends ConsumerWidget {
 // CARTE LOCALISATION
 // ═══════════════════════════════════════════════════════════════════════════
 
-class _AgencyMap extends StatelessWidget {
+class _AgencyMap extends StatefulWidget {
   const _AgencyMap(
       {required this.lat, required this.lng, required this.name, this.address});
   final double lat;
@@ -1572,13 +1573,21 @@ class _AgencyMap extends StatelessWidget {
   final String? address;
 
   @override
+  State<_AgencyMap> createState() => _AgencyMapState();
+}
+
+class _AgencyMapState extends State<_AgencyMap> {
+  bool _showPopup = true;
+  final MapController _mapController = MapController();
+
+  @override
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context)!;
     final isAr = Localizations.localeOf(context).languageCode == 'ar';
     final locationLabel = isAr ? 'موقع الوكالة' : "Position de l'agence";
     final directionsLabel = isAr ? 'الاتجاهات' : 'Itinéraire';
     final fullAddress =
-        [address, ''].where((s) => s != null && s.isNotEmpty).join(', ');
+        [widget.address, ''].where((s) => s != null && s.isNotEmpty).join(', ');
 
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
@@ -1599,7 +1608,7 @@ class _AgencyMap extends StatelessWidget {
           ClipRRect(
             borderRadius: BorderRadius.circular(10),
             child: Container(
-              height: 280,
+              height: 360,
               decoration: BoxDecoration(
                 border: Border.all(color: AppColors.border),
                 borderRadius: BorderRadius.circular(10),
@@ -1607,9 +1616,13 @@ class _AgencyMap extends StatelessWidget {
               child: Stack(
                 children: [
                   FlutterMap(
+                    mapController: _mapController,
                     options: MapOptions(
-                      initialCenter: LatLng(lat, lng),
+                      initialCenter: LatLng(widget.lat, widget.lng),
                       initialZoom: 16,
+                      onMapReady: () {
+                        _mapController.move(LatLng(widget.lat, widget.lng), 16);
+                      },
                       interactionOptions: const InteractionOptions(
                         flags: InteractiveFlag.pinchZoom | InteractiveFlag.drag,
                       ),
@@ -1622,96 +1635,29 @@ class _AgencyMap extends StatelessWidget {
                       ),
                       MarkerLayer(markers: [
                         Marker(
-                          point: LatLng(lat, lng),
-                          width: 34,
-                          height: 42,
-                          alignment: Alignment.topCenter,
-                          child: SvgPicture.string(
-                            '<svg xmlns="http://www.w3.org/2000/svg" width="34" height="42" viewBox="0 0 34 42"><path d="M17 0C7.6 0 0 7.6 0 17c0 12.5 17 25 17 25s17-12.5 17-25c0-9.4-7.6-17-17-17z" fill="#16A34A" stroke="white" stroke-width="2.5"/><circle cx="17" cy="17" r="6" fill="white"/></svg>',
+                          point: LatLng(widget.lat, widget.lng),
+                          width: 230,
+                          height: 240,
+                          alignment: Alignment.bottomCenter,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              if (_showPopup) _callout(),
+                              GestureDetector(
+                                onTap: () =>
+                                    setState(() => _showPopup = !_showPopup),
+                                child: SvgPicture.string(
+                                  '<svg xmlns="http://www.w3.org/2000/svg" width="34" height="42" viewBox="0 0 34 42"><path d="M17 0C7.6 0 0 7.6 0 17c0 12.5 17 25 17 25s17-12.5 17-25c0-9.4-7.6-17-17-17z" fill="#16A34A" stroke="white" stroke-width="2.5"/><circle cx="17" cy="17" r="6" fill="white"/></svg>',
+                                  width: 34,
+                                  height: 42,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ]),
                     ],
-                  ),
-                  // Popup style web — centré
-                  Positioned(
-                    top: 10,
-                    left: 0,
-                    right: 0,
-                    child: Center(
-                      child: Container(
-                        constraints: const BoxConstraints(maxWidth: 220),
-                        padding: const EdgeInsets.fromLTRB(12, 10, 12, 12),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(10),
-                          boxShadow: const [
-                            BoxShadow(
-                                color: Color(0x33000000),
-                                blurRadius: 8,
-                                offset: Offset(0, 2))
-                          ],
-                        ),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text('📍 $locationLabel',
-                                style: const TextStyle(
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.w700,
-                                    color: AppColors.primary,
-                                    letterSpacing: 0.5)),
-                            const SizedBox(height: 4),
-                            Text(name,
-                                style: const TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w800,
-                                    color: AppColors.textPrimary)),
-                            if (address != null && address!.isNotEmpty) ...[
-                              const SizedBox(height: 3),
-                              Text(address!,
-                                  style: const TextStyle(
-                                      fontSize: 12,
-                                      color: AppColors.textSecondary,
-                                      height: 1.4)),
-                            ],
-                            const SizedBox(height: 10),
-                            GestureDetector(
-                              onTap: () async {
-                                final uri = Uri.parse(
-                                    'https://www.google.com/maps/dir/?api=1&destination=$lat,$lng');
-                                if (await canLaunchUrl(uri)) {
-                                  launchUrl(uri,
-                                      mode: LaunchMode.externalApplication);
-                                }
-                              },
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 14, vertical: 8),
-                                decoration: BoxDecoration(
-                                  color: AppColors.primary,
-                                  borderRadius: BorderRadius.circular(6),
-                                ),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    const Icon(Icons.arrow_forward,
-                                        color: Colors.white, size: 12),
-                                    const SizedBox(width: 5),
-                                    Text(directionsLabel,
-                                        style: const TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w700)),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
                   ),
                 ],
               ),
@@ -1719,6 +1665,104 @@ class _AgencyMap extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  Widget _callout() {
+    final isAr = Localizations.localeOf(context).languageCode == 'ar';
+    final locationLabel = isAr ? 'موقع الوكالة' : "Position de l'agence";
+    final directionsLabel = isAr ? 'الاتجاهات' : 'Itinéraire';
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          constraints: const BoxConstraints(maxWidth: 210),
+          padding: const EdgeInsets.fromLTRB(10, 8, 8, 10),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(10),
+            boxShadow: const [
+              BoxShadow(
+                  color: Color(0x33000000),
+                  blurRadius: 8,
+                  offset: Offset(0, 2)),
+            ],
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    child: Text('📍 $locationLabel',
+                        style: const TextStyle(
+                            fontSize: 9,
+                            fontWeight: FontWeight.w700,
+                            color: AppColors.primary,
+                            letterSpacing: 0.3)),
+                  ),
+                  GestureDetector(
+                    onTap: () => setState(() => _showPopup = false),
+                    child: const Icon(Icons.close,
+                        size: 15, color: AppColors.textSecondary),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 2),
+              Text(widget.name,
+                  style: const TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w800,
+                      color: AppColors.textPrimary)),
+              if (widget.address != null && widget.address!.isNotEmpty) ...[
+                const SizedBox(height: 2),
+                Text(widget.address!,
+                    style: const TextStyle(
+                        fontSize: 11,
+                        color: AppColors.textSecondary,
+                        height: 1.3)),
+              ],
+              const SizedBox(height: 8),
+              GestureDetector(
+                onTap: () async {
+                  final uri = Uri.parse(
+                      'https://www.google.com/maps/dir/?api=1&destination=${widget.lat},${widget.lng}');
+                  if (await canLaunchUrl(uri)) {
+                    launchUrl(uri, mode: LaunchMode.externalApplication);
+                  }
+                },
+                child: Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(vertical: 7),
+                  decoration: BoxDecoration(
+                    color: AppColors.primary,
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(Icons.arrow_forward,
+                          color: Colors.white, size: 11),
+                      const SizedBox(width: 5),
+                      Text(directionsLabel,
+                          style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 11,
+                              fontWeight: FontWeight.w700)),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        CustomPaint(
+          size: const Size(18, 9),
+          painter: _CalloutArrow(),
+        ),
+      ],
     );
   }
 }
@@ -2292,4 +2336,21 @@ class _StarRatingInput extends StatelessWidget {
               )),
     );
   }
+}
+
+class _CalloutArrow extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()..color = Colors.white;
+    final path = ui.Path()
+      ..moveTo(0, 0)
+      ..lineTo(size.width, 0)
+      ..lineTo(size.width / 2, size.height)
+      ..close();
+    canvas.drawShadow(path, const Color(0x33000000), 2, false);
+    canvas.drawPath(path, paint);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
