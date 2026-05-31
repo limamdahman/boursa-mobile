@@ -66,9 +66,12 @@ class VehicleRepository {
   }
 
   Future<List<Vehicle>> similar(String id) async {
-    final response = await _dio.get<Map<String, dynamic>>('/vehicles/$id/similar');
+    final response =
+        await _dio.get<Map<String, dynamic>>('/vehicles/$id/similar');
     final list = response.data!['data'] as List<dynamic>? ?? [];
-    return list.map((e) => Vehicle.fromJson(e as Map<String, dynamic>)).toList();
+    return list
+        .map((e) => Vehicle.fromJson(e as Map<String, dynamic>))
+        .toList();
   }
 
   Future<void> trackView(String id) async {

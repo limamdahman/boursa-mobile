@@ -7,6 +7,7 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../core/storage/locale_storage.dart';
 import '../../data/notification_models.dart';
 import '../notification_providers.dart';
+import '../../../../core/theme/app_font.dart';
 
 class NotificationsScreen extends ConsumerWidget {
   const NotificationsScreen({super.key});
@@ -87,7 +88,7 @@ class NotificationsScreen extends ConsumerWidget {
           if (items.isEmpty) {
             return Center(
               child: Text(isAr ? 'لا توجد إشعارات' : 'Aucune notification',
-                  style: GoogleFonts.sourceSans3(
+                  style: appFont(context,
                       fontSize: 15, color: AppColors.textSecondary)),
             );
           }
@@ -113,15 +114,15 @@ class NotificationsScreen extends ConsumerWidget {
                   ),
                 ),
                 title: Text(title,
-                    style: GoogleFonts.sourceSans3(
+                    style: appFont(context,
                         fontSize: 14, fontWeight: FontWeight.w700)),
                 subtitle: Text(msg,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
-                    style: GoogleFonts.sourceSans3(
+                    style: appFont(context,
                         fontSize: 13, color: AppColors.textSecondary)),
                 trailing: Text(_relative(n.createdAt, isAr),
-                    style: GoogleFonts.sourceSans3(
+                    style: appFont(context,
                         fontSize: 11, color: AppColors.textMuted)),
                 onTap: () async {
                   if (!n.isRead) {

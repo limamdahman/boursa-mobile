@@ -8,8 +8,11 @@ class UserVehicleRepository {
   Future<List<MyVehicle>> myVehicles() async {
     final res = await _dio.get('/me/vehicles');
     final raw = res.data;
-    final list = raw is Map && raw['data'] is List ? raw['data'] as List : <dynamic>[];
-    return list.map((e) => MyVehicle.fromJson(e as Map<String, dynamic>)).toList();
+    final list =
+        raw is Map && raw['data'] is List ? raw['data'] as List : <dynamic>[];
+    return list
+        .map((e) => MyVehicle.fromJson(e as Map<String, dynamic>))
+        .toList();
   }
 
   Future<void> delete(String id) async {

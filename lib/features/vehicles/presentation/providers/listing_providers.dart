@@ -151,7 +151,9 @@ final agencyAllVehiclesProvider =
   return result.items;
 });
 
-final agencyVehiclesProvider = FutureProvider.family<List<Vehicle>, ({String agencyId, String excludeId})>((ref, args) async {
+final agencyVehiclesProvider =
+    FutureProvider.family<List<Vehicle>, ({String agencyId, String excludeId})>(
+        (ref, args) async {
   final repo = ref.read(vehicleRepositoryProvider);
   final result = await repo.list(page: 1, perPage: 8, agencyId: args.agencyId);
   return result.items.where((v) => v.id != args.excludeId).toList();

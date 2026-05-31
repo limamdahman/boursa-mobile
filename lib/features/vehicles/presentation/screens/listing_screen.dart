@@ -11,6 +11,7 @@ import '../providers/listing_providers.dart';
 import '../providers/vehicle_filter.dart';
 import '../widgets/filter_sheet.dart';
 import '../widgets/vehicle_card.dart';
+import '../../../../core/theme/app_font.dart';
 
 class ListingScreen extends ConsumerStatefulWidget {
   const ListingScreen({super.key});
@@ -69,7 +70,8 @@ class _ListingScreenState extends ConsumerState<ListingScreen> {
 
   Widget _buildBody(ListingState state) {
     if (state.isLoading && state.items.isEmpty) {
-      return const Center(child: CircularProgressIndicator(color: AppColors.primary));
+      return const Center(
+          child: CircularProgressIndicator(color: AppColors.primary));
     }
     if (state.error != null && state.items.isEmpty) {
       return Center(
@@ -77,9 +79,14 @@ class _ListingScreenState extends ConsumerState<ListingScreen> {
           const Icon(Icons.cloud_off, size: 48, color: AppColors.border),
           const SizedBox(height: 12),
           Text(AppLocalizations.of(context)!.listingError,
-              style: GoogleFonts.sourceSans3(fontSize: 15, fontWeight: FontWeight.w600, color: AppColors.textSecondary)),
+              style: appFont(context,
+                  fontSize: 15,
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.textSecondary)),
           const SizedBox(height: 16),
-          FilledButton(onPressed: () => ref.read(listingProvider.notifier).refresh(), child: Text(AppLocalizations.of(context)!.listingRetry)),
+          FilledButton(
+              onPressed: () => ref.read(listingProvider.notifier).refresh(),
+              child: Text(AppLocalizations.of(context)!.listingRetry)),
         ]),
       );
     }
@@ -89,11 +96,16 @@ class _ListingScreenState extends ConsumerState<ListingScreen> {
           const Icon(Icons.search_off, size: 48, color: AppColors.border),
           const SizedBox(height: 12),
           Text(AppLocalizations.of(context)!.listingEmpty,
-              style: GoogleFonts.sourceSans3(fontSize: 15, fontWeight: FontWeight.w600, color: AppColors.textSecondary)),
+              style: appFont(context,
+                  fontSize: 15,
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.textSecondary)),
           if (state.filter.activeCount > 0) ...[
             const SizedBox(height: 16),
             FilledButton(
-              onPressed: () => ref.read(listingProvider.notifier).refresh(filter: const VehicleFilter()),
+              onPressed: () => ref
+                  .read(listingProvider.notifier)
+                  .refresh(filter: const VehicleFilter()),
               child: Text(AppLocalizations.of(context)!.listingResetFilters),
             ),
           ],
@@ -109,14 +121,22 @@ class _ListingScreenState extends ConsumerState<ListingScreen> {
         padding: const EdgeInsets.fromLTRB(16, 16, 16, 24),
         physics: const AlwaysScrollableScrollPhysics(),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2, mainAxisSpacing: 14, crossAxisSpacing: 14, childAspectRatio: 0.60,
+          crossAxisCount: 2,
+          mainAxisSpacing: 14,
+          crossAxisSpacing: 14,
+          childAspectRatio: 0.60,
         ),
         itemCount: state.items.length + (state.isLoadingMore ? 2 : 0),
         itemBuilder: (context, index) {
           if (index >= state.items.length) {
             return Container(
-              decoration: BoxDecoration(color: AppColors.surface, borderRadius: BorderRadius.circular(16), border: Border.all(color: AppColors.border)),
-              child: const Center(child: CircularProgressIndicator(strokeWidth: 2, color: AppColors.border)),
+              decoration: BoxDecoration(
+                  color: AppColors.surface,
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(color: AppColors.border)),
+              child: const Center(
+                  child: CircularProgressIndicator(
+                      strokeWidth: 2, color: AppColors.border)),
             );
           }
           final v = state.items[index];
@@ -133,7 +153,9 @@ class _ListingScreenState extends ConsumerState<ListingScreen> {
   Future<void> _openFilters() async {
     final current = ref.read(listingProvider).filter;
     final result = await showModalBottomSheet<VehicleFilter>(
-      context: context, isScrollControlled: true, backgroundColor: Colors.transparent,
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
       builder: (_) => FilterSheet(initial: current),
     );
     if (result != null) ref.read(listingProvider.notifier).applyFilter(result);
@@ -152,12 +174,16 @@ class _BoursaHeader extends ConsumerWidget {
     return Container(
       decoration: const BoxDecoration(
         gradient: LinearGradient(
-          begin: Alignment.topLeft, end: Alignment.bottomRight,
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
           colors: [Color(0xFF064E3B), Color(0xFF052E22), Color(0xFF0A0A0A)],
           stops: [0.0, 0.55, 1.0],
         ),
         borderRadius: BorderRadius.vertical(bottom: Radius.circular(24)),
-        boxShadow: [BoxShadow(color: Color(0x2616A34A), blurRadius: 18, offset: Offset(0, 8))],
+        boxShadow: [
+          BoxShadow(
+              color: Color(0x2616A34A), blurRadius: 18, offset: Offset(0, 8))
+        ],
       ),
       child: SafeArea(
         bottom: false,
@@ -166,7 +192,9 @@ class _BoursaHeader extends ConsumerWidget {
           child: Column(
             children: [
               Row(children: [
-                Expanded(child: BoursaLogo.horizontal(markHeight: 36, wordmarkSize: 26, dark: true)),
+                Expanded(
+                    child: BoursaLogo.horizontal(
+                        markHeight: 36, wordmarkSize: 26, dark: true)),
                 GestureDetector(
                   onTap: () async {
                     final next = isAr ? const Locale('fr') : const Locale('ar');
@@ -195,28 +223,45 @@ class _BoursaHeader extends ConsumerWidget {
                   decoration: BoxDecoration(
                     color: AppColors.surface,
                     borderRadius: BorderRadius.circular(14),
-                    boxShadow: const [BoxShadow(color: Color(0x1A000000), blurRadius: 10, offset: Offset(0, 4))],
+                    boxShadow: const [
+                      BoxShadow(
+                          color: Color(0x1A000000),
+                          blurRadius: 10,
+                          offset: Offset(0, 4))
+                    ],
                   ),
                   child: Row(children: [
-                    const Icon(Icons.search, size: 20, color: AppColors.textSecondary),
+                    const Icon(Icons.search,
+                        size: 20, color: AppColors.textSecondary),
                     const SizedBox(width: 10),
-                    Expanded(child: Text(l.searchHint,
-                      style: const TextStyle(fontSize: 14, color: AppColors.textSecondary))),
+                    Expanded(
+                        child: Text(l.searchHint,
+                            style: const TextStyle(
+                                fontSize: 14, color: AppColors.textSecondary))),
                     Stack(children: [
                       Container(
-                        width: 34, height: 34,
-                        decoration: BoxDecoration(color: AppColors.primary,
-                          borderRadius: BorderRadius.circular(10)),
-                        child: const Icon(Icons.tune, size: 18, color: Colors.white)),
+                          width: 34,
+                          height: 34,
+                          decoration: BoxDecoration(
+                              color: AppColors.primary,
+                              borderRadius: BorderRadius.circular(10)),
+                          child: const Icon(Icons.tune,
+                              size: 18, color: Colors.white)),
                       if (filterCount > 0)
-                        Positioned(top: 0, right: 0,
-                          child: Container(
-                            width: 14, height: 14,
-                            decoration: const BoxDecoration(
-                              color: Colors.red, shape: BoxShape.circle),
-                            child: Center(child: Text('$filterCount',
-                              style: const TextStyle(color: Colors.white,
-                                fontSize: 9, fontWeight: FontWeight.w800))))),
+                        Positioned(
+                            top: 0,
+                            right: 0,
+                            child: Container(
+                                width: 14,
+                                height: 14,
+                                decoration: const BoxDecoration(
+                                    color: Colors.red, shape: BoxShape.circle),
+                                child: Center(
+                                    child: Text('$filterCount',
+                                        style: const TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 9,
+                                            fontWeight: FontWeight.w800))))),
                     ]),
                   ]),
                 ),
@@ -243,9 +288,11 @@ class _LangBtn extends StatelessWidget {
         color: active ? AppColors.primary : Colors.transparent,
         borderRadius: BorderRadius.circular(16),
       ),
-      child: Text(label, style: TextStyle(
-        fontSize: 13, fontWeight: FontWeight.w700,
-        color: active ? Colors.white : Colors.white.withOpacity(0.6))),
+      child: Text(label,
+          style: TextStyle(
+              fontSize: 13,
+              fontWeight: FontWeight.w700,
+              color: active ? Colors.white : Colors.white.withOpacity(0.6))),
     );
   }
 }

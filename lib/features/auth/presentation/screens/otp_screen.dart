@@ -38,7 +38,9 @@ class _OtpScreenState extends ConsumerState<OtpScreen> {
       _submitting = true;
     });
     try {
-      await ref.read(authProvider.notifier).verifyOtp(widget.phone, code, name: widget.name);
+      await ref
+          .read(authProvider.notifier)
+          .verifyOtp(widget.phone, code, name: widget.name);
       if (!mounted) return;
       context.go('/');
     } on Object catch (e) {
@@ -125,8 +127,10 @@ class _OtpScreenState extends ConsumerState<OtpScreen> {
               onPressed: _submitting ? null : _submit,
               child: _submitting
                   ? const SizedBox(
-                      height: 16, width: 16,
-                      child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white))
+                      height: 16,
+                      width: 16,
+                      child: CircularProgressIndicator(
+                          strokeWidth: 2, color: Colors.white))
                   : const Text('Vérifier'),
             ),
             const SizedBox(height: 8),

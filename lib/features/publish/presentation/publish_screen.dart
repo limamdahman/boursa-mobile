@@ -11,6 +11,7 @@ import '../../vehicles/data/models/reference.dart';
 import '../../vehicles/data/repositories/reference_repository.dart';
 import '../../my_listings/presentation/my_listings_providers.dart';
 import 'publish_providers.dart';
+import '../../../core/theme/app_font.dart';
 
 class _Photo {
   _Photo(this.bytes, this.name);
@@ -98,8 +99,10 @@ class _PublishScreenState extends ConsumerState<PublishScreen> {
         if (_transmission != null) 'transmission': _transmission,
         if (_bodyType != null) 'body_type': _bodyType,
         if (_cityId != null) 'city_id': _cityId,
-        if (_descFr.text.trim().isNotEmpty) 'description_fr': _descFr.text.trim(),
-        if (_descAr.text.trim().isNotEmpty) 'description_ar': _descAr.text.trim(),
+        if (_descFr.text.trim().isNotEmpty)
+          'description_fr': _descFr.text.trim(),
+        if (_descAr.text.trim().isNotEmpty)
+          'description_ar': _descAr.text.trim(),
       };
       final id = await repo.create(payload);
       for (var i = 0; i < _photos.length; i++) {
@@ -131,7 +134,8 @@ class _PublishScreenState extends ConsumerState<PublishScreen> {
 
     return Scaffold(
       backgroundColor: AppColors.background,
-      appBar: AppBar(title: Text('${isAr ? "نشر إعلان" : "Publier"} · ${steps[_step]}')),
+      appBar: AppBar(
+          title: Text('${isAr ? "نشر إعلان" : "Publier"} · ${steps[_step]}')),
       body: Column(
         children: [
           LinearProgressIndicator(
@@ -148,7 +152,8 @@ class _PublishScreenState extends ConsumerState<PublishScreen> {
           if (_error != null)
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Text(_error!, style: const TextStyle(color: AppColors.error)),
+              child:
+                  Text(_error!, style: const TextStyle(color: AppColors.error)),
             ),
           Padding(
             padding: EdgeInsets.fromLTRB(
@@ -158,7 +163,8 @@ class _PublishScreenState extends ConsumerState<PublishScreen> {
                 if (_step > 0)
                   Expanded(
                     child: OutlinedButton(
-                      onPressed: _submitting ? null : () => setState(() => _step--),
+                      onPressed:
+                          _submitting ? null : () => setState(() => _step--),
                       child: Text(isAr ? 'السابق' : 'Précédent'),
                     ),
                   ),
@@ -176,7 +182,8 @@ class _PublishScreenState extends ConsumerState<PublishScreen> {
                         : null,
                     child: _submitting
                         ? const SizedBox(
-                            height: 16, width: 16,
+                            height: 16,
+                            width: 16,
                             child: CircularProgressIndicator(
                                 strokeWidth: 2, color: Colors.white))
                         : Text(_step < steps.length - 1
@@ -288,25 +295,37 @@ class _PublishScreenState extends ConsumerState<PublishScreen> {
           activeColor: AppColors.primary,
           onChanged: (v) => setState(() => _negotiable = v),
         ),
-        _dropdown(isAr ? 'الوقود' : 'Carburant', _fuel, {
-          'gasoline': isAr ? 'بنزين' : 'Essence',
-          'diesel': isAr ? 'ديزل' : 'Diesel',
-          'hybrid': isAr ? 'هايبرد' : 'Hybride',
-          'electric': isAr ? 'كهربائي' : 'Électrique',
-          'lpg': isAr ? 'غاز' : 'GPL',
-        }, (v) => setState(() => _fuel = v)),
-        _dropdown(isAr ? 'ناقل الحركة' : 'Transmission', _transmission, {
-          'manual': isAr ? 'يدوي' : 'Manuelle',
-          'automatic': isAr ? 'أوتوماتيك' : 'Automatique',
-        }, (v) => setState(() => _transmission = v)),
-        _dropdown(isAr ? 'الهيكل' : 'Carrosserie', _bodyType, {
-          'sedan': isAr ? 'سيدان' : 'Berline',
-          'suv': 'SUV',
-          'pickup': 'Pickup',
-          'hatchback': isAr ? 'هاتشباك' : 'Compacte',
-          'van': isAr ? 'فان' : 'Van',
-          'coupe': isAr ? 'كوبيه' : 'Coupé',
-        }, (v) => setState(() => _bodyType = v)),
+        _dropdown(
+            isAr ? 'الوقود' : 'Carburant',
+            _fuel,
+            {
+              'gasoline': isAr ? 'بنزين' : 'Essence',
+              'diesel': isAr ? 'ديزل' : 'Diesel',
+              'hybrid': isAr ? 'هايبرد' : 'Hybride',
+              'electric': isAr ? 'كهربائي' : 'Électrique',
+              'lpg': isAr ? 'غاز' : 'GPL',
+            },
+            (v) => setState(() => _fuel = v)),
+        _dropdown(
+            isAr ? 'ناقل الحركة' : 'Transmission',
+            _transmission,
+            {
+              'manual': isAr ? 'يدوي' : 'Manuelle',
+              'automatic': isAr ? 'أوتوماتيك' : 'Automatique',
+            },
+            (v) => setState(() => _transmission = v)),
+        _dropdown(
+            isAr ? 'الهيكل' : 'Carrosserie',
+            _bodyType,
+            {
+              'sedan': isAr ? 'سيدان' : 'Berline',
+              'suv': 'SUV',
+              'pickup': 'Pickup',
+              'hatchback': isAr ? 'هاتشباك' : 'Compacte',
+              'van': isAr ? 'فان' : 'Van',
+              'coupe': isAr ? 'كوبيه' : 'Coupé',
+            },
+            (v) => setState(() => _bodyType = v)),
         cities.when(
           loading: () => const SizedBox.shrink(),
           error: (_, __) => const SizedBox.shrink(),
@@ -318,8 +337,9 @@ class _PublishScreenState extends ConsumerState<PublishScreen> {
                   labelText: isAr ? 'المدينة' : 'Ville',
                   border: const OutlineInputBorder()),
               items: list
-                  .map((c) =>
-                      DropdownMenuItem(value: c.id, child: Text(c.displayName(isAr ? 'ar' : 'fr'))))
+                  .map((c) => DropdownMenuItem(
+                      value: c.id,
+                      child: Text(c.displayName(isAr ? 'ar' : 'fr'))))
                   .toList(),
               onChanged: (v) => setState(() => _cityId = v),
             ),
@@ -335,8 +355,8 @@ class _PublishScreenState extends ConsumerState<PublishScreen> {
       padding: const EdgeInsets.only(top: 14),
       child: DropdownButtonFormField<String>(
         value: value,
-        decoration:
-            InputDecoration(labelText: label, border: const OutlineInputBorder()),
+        decoration: InputDecoration(
+            labelText: label, border: const OutlineInputBorder()),
         items: options.entries
             .map((e) => DropdownMenuItem(value: e.key, child: Text(e.value)))
             .toList(),
@@ -361,8 +381,7 @@ class _PublishScreenState extends ConsumerState<PublishScreen> {
           isAr
               ? 'الصورة الأولى هي الغلاف. حد أقصى 10 صور.'
               : 'La 1ʳᵉ photo est la couverture. Max 10 photos.',
-          style: GoogleFonts.sourceSans3(
-              fontSize: 12, color: AppColors.textSecondary),
+          style: appFont(context, fontSize: 12, color: AppColors.textSecondary),
         ),
         const SizedBox(height: 14),
         Wrap(
@@ -379,7 +398,8 @@ class _PublishScreenState extends ConsumerState<PublishScreen> {
                   ),
                   if (i == 0)
                     Positioned(
-                      left: 4, bottom: 4,
+                      left: 4,
+                      bottom: 4,
                       child: Container(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 5, vertical: 1),
@@ -389,7 +409,8 @@ class _PublishScreenState extends ConsumerState<PublishScreen> {
                       ),
                     ),
                   Positioned(
-                    right: 0, top: 0,
+                    right: 0,
+                    top: 0,
                     child: GestureDetector(
                       onTap: () => setState(() => _photos.removeAt(i)),
                       child: Container(

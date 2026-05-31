@@ -22,23 +22,23 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
   RangeValues _yearRange = const RangeValues(2000, 2026);
 
   List<(String, String)> _fuelOptions(AppLocalizations l) => [
-    ('gasoline', l.fuelGasoline),
-    ('diesel', l.fuelDiesel),
-    ('hybrid', l.fuelHybrid),
-    ('electric', l.fuelElectric),
-    ('gpl', l.fuelGpl),
-  ];
+        ('gasoline', l.fuelGasoline),
+        ('diesel', l.fuelDiesel),
+        ('hybrid', l.fuelHybrid),
+        ('electric', l.fuelElectric),
+        ('gpl', l.fuelGpl),
+      ];
   List<(String, String)> _transOptions(AppLocalizations l) => [
-    ('manual', l.transmissionManual),
-    ('automatic', l.transmissionAutomatic),
-  ];
+        ('manual', l.transmissionManual),
+        ('automatic', l.transmissionAutomatic),
+      ];
   List<(String, String)> _sortOptions(AppLocalizations l) => [
-    ('recent', l.filterSortRecent),
-    ('price_asc', l.filterSortPriceAsc),
-    ('price_desc', l.filterSortPriceDesc),
-    ('year_desc', l.filterSortYearDesc),
-    ('mileage_asc', l.filterSortKmAsc),
-  ];
+        ('recent', l.filterSortRecent),
+        ('price_asc', l.filterSortPriceAsc),
+        ('price_desc', l.filterSortPriceDesc),
+        ('year_desc', l.filterSortYearDesc),
+        ('mileage_asc', l.filterSortKmAsc),
+      ];
 
   @override
   void initState() {
@@ -75,7 +75,8 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
             // Drag handle
             Container(
               margin: const EdgeInsets.only(top: 8, bottom: 4),
-              width: 36, height: 4,
+              width: 36,
+              height: 4,
               decoration: BoxDecoration(
                 color: AppColors.borderStrong,
                 borderRadius: BorderRadius.circular(2),
@@ -137,7 +138,10 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
             // Sticky CTA
             Container(
               padding: EdgeInsets.fromLTRB(
-                16, 10, 16, 14 + MediaQuery.of(context).padding.bottom,
+                16,
+                10,
+                16,
+                14 + MediaQuery.of(context).padding.bottom,
               ),
               decoration: const BoxDecoration(
                 color: AppColors.surface,
@@ -186,8 +190,10 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
         brands.when(
           loading: () => const SizedBox(
             height: 40,
-            child: Center(child: SizedBox(
-              width: 14, height: 14,
+            child: Center(
+                child: SizedBox(
+              width: 14,
+              height: 14,
               child: CircularProgressIndicator(strokeWidth: 2),
             )),
           ),
@@ -346,7 +352,8 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
       children: [
         _label(l.filterFuel),
         Wrap(
-          spacing: 6, runSpacing: 6,
+          spacing: 6,
+          runSpacing: 6,
           children: _fuelOptions(l).map((opt) {
             final (key, label) = opt;
             final selected = _draft.fuel == key;
@@ -400,9 +407,7 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
         _Select<String?>(
           value: _draft.sort ?? 'recent',
           hint: l.filterSortRecentHint,
-          items: _sortOptions(l)
-              .map((o) => _Opt<String?>(o.$1, o.$2))
-              .toList(),
+          items: _sortOptions(l).map((o) => _Opt<String?>(o.$1, o.$2)).toList(),
           onChanged: (v) => setState(() => _draft = _draft.copyWith(sort: v)),
         ),
       ],

@@ -25,7 +25,10 @@ class MessagesNotifier extends StateNotifier<List<ChatMessage>> {
   }
 
   Future<void> poll() async {
-    if (state.isEmpty) { await load(); return; }
+    if (state.isEmpty) {
+      await load();
+      return;
+    }
     try {
       final since = state.last.createdAt.toIso8601String();
       final news = await _repo.getMessages(conversationId, since: since);
@@ -44,6 +47,7 @@ class MessagesNotifier extends StateNotifier<List<ChatMessage>> {
   }
 }
 
-final messagesProvider = StateNotifierProvider.family<MessagesNotifier, List<ChatMessage>, String>(
+final messagesProvider =
+    StateNotifierProvider.family<MessagesNotifier, List<ChatMessage>, String>(
   (ref, convId) => MessagesNotifier(ref.read(chatRepositoryProvider), convId),
 );

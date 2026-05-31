@@ -262,6 +262,45 @@ class AppTheme {
   static ThemeData arabic() {
     final base = light();
     final cairoText = GoogleFonts.cairoTextTheme(base.textTheme);
-    return base.copyWith(textTheme: cairoText, primaryTextTheme: cairoText);
+    return base.copyWith(
+      textTheme: cairoText,
+      primaryTextTheme: cairoText,
+      // Boutons en Cairo (sinon ils gardent le textStyle Source Sans 3 du thème FR)
+      filledButtonTheme: FilledButtonThemeData(
+        style: FilledButton.styleFrom(
+          backgroundColor: AppColors.primary,
+          foregroundColor: AppColors.textOnBrand,
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 13),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
+          ),
+          textStyle: GoogleFonts.cairo(
+            fontSize: 14, fontWeight: FontWeight.w700, letterSpacing: 0.2,
+          ),
+          elevation: 0,
+        ),
+      ),
+      outlinedButtonTheme: OutlinedButtonThemeData(
+        style: OutlinedButton.styleFrom(
+          foregroundColor: AppColors.primary,
+          side: const BorderSide(color: AppColors.primary, width: 1.5),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
+          ),
+          textStyle: GoogleFonts.cairo(
+            fontSize: 14, fontWeight: FontWeight.w700,
+          ),
+        ),
+      ),
+      textButtonTheme: TextButtonThemeData(
+        style: TextButton.styleFrom(
+          foregroundColor: AppColors.primary,
+          textStyle: GoogleFonts.cairo(
+            fontSize: 14, fontWeight: FontWeight.w600,
+          ),
+        ),
+      ),
+    );
   }
 }

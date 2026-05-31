@@ -13,9 +13,11 @@ class BrandRef {
 }
 
 class VehicleModelRef {
-  VehicleModelRef({required this.id, required this.name, required this.brandId});
+  VehicleModelRef(
+      {required this.id, required this.name, required this.brandId});
 
-  factory VehicleModelRef.fromJson(Map<String, dynamic> json) => VehicleModelRef(
+  factory VehicleModelRef.fromJson(Map<String, dynamic> json) =>
+      VehicleModelRef(
         id: (json['id'] as num).toInt(),
         brandId: (json['brand_id'] as num).toInt(),
         name: json['name'] as String,

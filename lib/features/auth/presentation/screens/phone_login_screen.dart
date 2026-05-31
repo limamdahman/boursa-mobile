@@ -33,12 +33,15 @@ class _PhoneLoginScreenState extends ConsumerState<PhoneLoginScreen> {
     final raw = _controller.text.trim();
     String phone = raw;
     // Auto-format : si commence par 8 chiffres et pas de +, ajoute +222 (MR)
-    if (raw.length == 8 && !raw.startsWith('+') && RegExp(r'^\d+$').hasMatch(raw)) {
+    if (raw.length == 8 &&
+        !raw.startsWith('+') &&
+        RegExp(r'^\d+$').hasMatch(raw)) {
       phone = '+222$raw';
     }
 
     try {
-      final normalized = await ref.read(authProvider.notifier).requestOtp(phone);
+      final normalized =
+          await ref.read(authProvider.notifier).requestOtp(phone);
       if (!mounted) return;
       context.go('/otp', extra: (phone: normalized, name: null));
     } on Object catch (e) {
@@ -77,19 +80,19 @@ class _PhoneLoginScreenState extends ConsumerState<PhoneLoginScreen> {
             Directionality(
               textDirection: TextDirection.ltr,
               child: TextField(
-              controller: _controller,
-              keyboardType: TextInputType.phone,
-              inputFormatters: [
-                FilteringTextInputFormatter.allow(RegExp(r'[0-9+]')),
-              ],
-              decoration: InputDecoration(
-                labelText: AppLocalizations.of(context)!.authPhoneLabel,
-                hintText: '+222 33 44 55 66',
-                prefixIcon: Icon(Icons.phone),
-                border: OutlineInputBorder(),
-              ),
-              autofocus: true,
-              onSubmitted: (_) => _submit(),
+                controller: _controller,
+                keyboardType: TextInputType.phone,
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(RegExp(r'[0-9+]')),
+                ],
+                decoration: InputDecoration(
+                  labelText: AppLocalizations.of(context)!.authPhoneLabel,
+                  hintText: '+222 33 44 55 66',
+                  prefixIcon: Icon(Icons.phone),
+                  border: OutlineInputBorder(),
+                ),
+                autofocus: true,
+                onSubmitted: (_) => _submit(),
               ),
             ),
             if (_error != null) ...[
@@ -104,8 +107,10 @@ class _PhoneLoginScreenState extends ConsumerState<PhoneLoginScreen> {
               onPressed: _submitting ? null : _submit,
               child: _submitting
                   ? const SizedBox(
-                      height: 16, width: 16,
-                      child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white))
+                      height: 16,
+                      width: 16,
+                      child: CircularProgressIndicator(
+                          strokeWidth: 2, color: Colors.white))
                   : Text(AppLocalizations.of(context)!.authReceiveCode),
             ),
             const SizedBox(height: 8),

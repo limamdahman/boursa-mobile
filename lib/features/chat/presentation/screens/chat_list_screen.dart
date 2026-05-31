@@ -11,6 +11,7 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../auth/presentation/providers/auth_provider.dart';
 import '../providers/chat_provider.dart';
 import '../../data/models/chat_models.dart';
+import '../../../../core/theme/app_font.dart';
 
 class ChatListScreen extends ConsumerWidget {
   const ChatListScreen({super.key});
@@ -23,27 +24,29 @@ class ChatListScreen extends ConsumerWidget {
       backgroundColor: AppColors.background,
       body: Column(
         children: [
-          _CompactHeader(title: AppLocalizations.of(context)!.navMessages, subtitle: AppLocalizations.of(context)!.messagesSubtitle),
+          _CompactHeader(
+              title: AppLocalizations.of(context)!.navMessages,
+              subtitle: AppLocalizations.of(context)!.messagesSubtitle),
           Expanded(
             child: !isAuth
                 ? _NotLoggedIn()
                 : ref.watch(conversationsProvider).when(
-                    loading: () => const Center(
-                        child: CircularProgressIndicator(
-                            color: AppColors.primary)),
-                    error: (e, _) => Center(child: Text('Erreur: $e')),
-                    data: (convs) => convs.isEmpty
-                        ? _EmptyState()
-                        : ListView.builder(
-                            itemCount: convs.length,
-                            itemBuilder: (context, i) => _ChatRow(
-                              conv: convs[i],
-                              onTap: () =>
-                                  context.push('/chat/${convs[i].id}',
-                                      extra: convs[i].displayName),
+                      loading: () => const Center(
+                          child: CircularProgressIndicator(
+                              color: AppColors.primary)),
+                      error: (e, _) => Center(child: Text('Erreur: $e')),
+                      data: (convs) => convs.isEmpty
+                          ? _EmptyState()
+                          : ListView.builder(
+                              itemCount: convs.length,
+                              itemBuilder: (context, i) => _ChatRow(
+                                conv: convs[i],
+                                onTap: () => context.push(
+                                    '/chat/${convs[i].id}',
+                                    extra: convs[i].displayName),
+                              ),
                             ),
-                          ),
-                  ),
+                    ),
           ),
         ],
       ),
@@ -71,7 +74,8 @@ class _ChatRow extends StatelessWidget {
   }
 
   String get _initials {
-    final parts = conv.displayName.split(' ').where((s) => s.isNotEmpty).take(2);
+    final parts =
+        conv.displayName.split(' ').where((s) => s.isNotEmpty).take(2);
     return parts.map((s) => s[0].toUpperCase()).join();
   }
 
@@ -116,7 +120,8 @@ class _ChatRow extends StatelessWidget {
                           conv.displayName,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
-                          style: GoogleFonts.sourceSans3(
+                          style: appFont(
+                            context,
                             fontSize: 15,
                             fontWeight: FontWeight.w600,
                             color: AppColors.textPrimary,
@@ -135,7 +140,8 @@ class _ChatRow extends StatelessWidget {
                       const SizedBox(width: 8),
                       Text(
                         _formatTime(conv.lastMessageAt),
-                        style: GoogleFonts.sourceSans3(
+                        style: appFont(
+                          context,
                           fontSize: 12,
                           color: AppColors.textSecondary,
                         ),
@@ -147,10 +153,10 @@ class _ChatRow extends StatelessWidget {
                     conv.lastMessageBody ?? 'Aucun message',
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: GoogleFonts.sourceSans3(
+                    style: appFont(
+                      context,
                       fontSize: 13,
-                      fontWeight:
-                          hasUnread ? FontWeight.w600 : FontWeight.w400,
+                      fontWeight: hasUnread ? FontWeight.w600 : FontWeight.w400,
                       color: hasUnread
                           ? AppColors.textPrimary
                           : AppColors.textSecondary,
@@ -208,7 +214,8 @@ class _EmptyState extends StatelessWidget {
           const SizedBox(height: 16),
           Text(
             'Aucune conversation',
-            style: GoogleFonts.sourceSans3(
+            style: appFont(
+              context,
               fontSize: 17,
               fontWeight: FontWeight.w600,
               color: AppColors.textPrimary,
@@ -217,7 +224,8 @@ class _EmptyState extends StatelessWidget {
           const SizedBox(height: 6),
           Text(
             'Contactez une agence depuis une annonce',
-            style: GoogleFonts.sourceSans3(
+            style: appFont(
+              context,
               fontSize: 14,
               color: AppColors.textSecondary,
             ),
@@ -251,7 +259,8 @@ class _NotLoggedIn extends StatelessWidget {
             Text(
               AppLocalizations.of(context)!.authConnectForMessages,
               textAlign: TextAlign.center,
-              style: GoogleFonts.sourceSans3(
+              style: appFont(
+                context,
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
                 color: AppColors.textPrimary,
@@ -291,9 +300,7 @@ class _CompactHeader extends StatelessWidget {
         borderRadius: BorderRadius.vertical(bottom: Radius.circular(24)),
         boxShadow: [
           BoxShadow(
-              color: Color(0x2616A34A),
-              blurRadius: 18,
-              offset: Offset(0, 8)),
+              color: Color(0x2616A34A), blurRadius: 18, offset: Offset(0, 8)),
         ],
       ),
       child: SafeArea(
@@ -304,7 +311,8 @@ class _CompactHeader extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(title,
-                  style: GoogleFonts.sourceSans3(
+                  style: appFont(
+                    context,
                     fontSize: 24,
                     fontWeight: FontWeight.w700,
                     letterSpacing: -0.3,
@@ -312,7 +320,8 @@ class _CompactHeader extends StatelessWidget {
                   )),
               const SizedBox(height: 3),
               Text(subtitle,
-                  style: GoogleFonts.sourceSans3(
+                  style: appFont(
+                    context,
                     fontSize: 14,
                     color: Colors.white.withOpacity(0.7),
                   )),
@@ -325,12 +334,13 @@ class _CompactHeader extends StatelessWidget {
 }
 
 class _Avatar extends StatelessWidget {
-  const _Avatar({required this.logoUrl, required this.initials, required this.gradient});
+  const _Avatar(
+      {required this.logoUrl, required this.initials, required this.gradient});
   final String? logoUrl;
   final String initials;
   final List<Color> gradient;
 
-  Widget _fallback() => Container(
+  Widget _fallback(BuildContext context) => Container(
         width: 50,
         height: 50,
         decoration: BoxDecoration(
@@ -344,7 +354,8 @@ class _Avatar extends StatelessWidget {
         child: Center(
           child: Text(
             initials,
-            style: GoogleFonts.sourceSans3(
+            style: appFont(
+              context,
               color: Colors.white,
               fontWeight: FontWeight.w700,
               fontSize: 17,
@@ -355,17 +366,16 @@ class _Avatar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (logoUrl == null || logoUrl!.isEmpty) return _fallback();
+    if (logoUrl == null || logoUrl!.isEmpty) return _fallback(context);
     return ClipOval(
       child: CachedNetworkImage(
         imageUrl: logoUrl!,
         width: 50,
         height: 50,
         fit: BoxFit.cover,
-        placeholder: (_, __) => _fallback(),
-        errorWidget: (_, __, ___) => _fallback(),
+        placeholder: (_, __) => _fallback(context),
+        errorWidget: (_, __, ___) => _fallback(context),
       ),
     );
   }
 }
-

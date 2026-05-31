@@ -6,6 +6,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/storage/locale_storage.dart';
+import '../../../../core/theme/app_font.dart';
 
 class PricingScreen extends ConsumerWidget {
   const PricingScreen({super.key});
@@ -29,7 +30,9 @@ class PricingScreen extends ConsumerWidget {
       _Plan(
         name: isAr ? 'مجاني' : 'Gratuit',
         price: isAr ? '0 أوقية/شهر' : '0 MRU/mois',
-        desc: isAr ? 'للبدء واختبار المنصة' : 'Pour démarrer et tester la plateforme',
+        desc: isAr
+            ? 'للبدء واختبار المنصة'
+            : 'Pour démarrer et tester la plateforme',
         features: [
           _Feat(isAr ? 'حتى 10 إعلانات' : "Jusqu'à 10 annonces", true),
           _Feat(isAr ? 'صفحة وكالة عامة' : 'Page agence publique', true),
@@ -46,7 +49,9 @@ class PricingScreen extends ConsumerWidget {
       _Plan(
         name: isAr ? 'احترافي' : 'Pro',
         price: isAr ? 'حسب الطلب' : 'Sur devis',
-        desc: isAr ? 'للوكالات النشطة التي تريد النمو' : 'Pour les agences actives qui veulent croître',
+        desc: isAr
+            ? 'للوكالات النشطة التي تريد النمو'
+            : 'Pour les agences actives qui veulent croître',
         features: [
           _Feat(isAr ? 'إعلانات غير محدودة' : 'Annonces illimitées', true),
           _Feat(isAr ? 'صفحة وكالة مميزة' : 'Page agence premium', true),
@@ -63,15 +68,19 @@ class PricingScreen extends ConsumerWidget {
       _Plan(
         name: isAr ? 'أعمال' : 'Business',
         price: isAr ? 'حسب الطلب' : 'Sur devis',
-        desc: isAr ? 'للمجموعات الكبرى والوكلاء الرسميين' : 'Pour les grands groupes et concessionnaires',
+        desc: isAr
+            ? 'للمجموعات الكبرى والوكلاء الرسميين'
+            : 'Pour les grands groupes et concessionnaires',
         features: [
           _Feat(isAr ? 'كل مزايا الاحترافي' : 'Tout le plan Pro', true),
           _Feat(isAr ? 'إبراز أولوية' : 'Mise en avant prioritaire', true),
-          _Feat(isAr ? 'شارة "شريك رسمي"' : 'Badge "Partenaire officiel"', true),
+          _Feat(
+              isAr ? 'شارة "شريك رسمي"' : 'Badge "Partenaire officiel"', true),
           _Feat(isAr ? 'مدير حساب مخصص' : 'Account manager dédié', true),
           _Feat(isAr ? 'تكامل API المخزون' : 'Intégration API stock', true),
           _Feat(isAr ? 'تقارير شهرية' : 'Rapports mensuels', true),
-          _Feat(isAr ? 'إعلانات Facebook مجانية 🎁' : 'Facebook Ads offerts 🎁', true),
+          _Feat(isAr ? 'إعلانات Facebook مجانية 🎁' : 'Facebook Ads offerts 🎁',
+              true),
         ],
         ctaLabel: isAr ? 'تواصل معنا' : 'Nous contacter',
         onCta: (_) => _wa('Business'),
@@ -89,8 +98,11 @@ class PricingScreen extends ConsumerWidget {
         padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
         children: [
           Text(
-            isAr ? 'اختر الباقة المناسبة لنشاطك' : 'Choisissez la formule adaptée à votre activité',
-            style: GoogleFonts.sourceSans3(fontSize: 14, color: AppColors.textSecondary),
+            isAr
+                ? 'اختر الباقة المناسبة لنشاطك'
+                : 'Choisissez la formule adaptée à votre activité',
+            style:
+                appFont(context, fontSize: 14, color: AppColors.textSecondary),
           ),
           const SizedBox(height: 20),
           ...plans.map((p) => _PlanCard(plan: p)),
@@ -131,7 +143,8 @@ class _PlanCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final dark = plan.dark;
     final textPrimary = dark ? Colors.white : AppColors.textPrimary;
-    final textSecondary = dark ? const Color(0xFF94A3B8) : AppColors.textSecondary;
+    final textSecondary =
+        dark ? const Color(0xFF94A3B8) : AppColors.textSecondary;
 
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
@@ -156,15 +169,18 @@ class _PlanCard extends StatelessWidget {
               ),
               child: Text(
                 'Le plus populaire',
-                style: GoogleFonts.sourceSans3(
-                    fontSize: 12, fontWeight: FontWeight.w700, color: Colors.white),
+                style: appFont(context,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.white),
               ),
             ),
             const SizedBox(height: 12),
           ],
           Text(
             plan.name.toUpperCase(),
-            style: GoogleFonts.sourceSans3(
+            style: appFont(
+              context,
               fontSize: 13,
               fontWeight: FontWeight.w700,
               color: dark ? const Color(0xFF64748B) : AppColors.textSecondary,
@@ -174,12 +190,12 @@ class _PlanCard extends StatelessWidget {
           const SizedBox(height: 6),
           Text(
             plan.price,
-            style: GoogleFonts.sourceSans3(
+            style: appFont(context,
                 fontSize: 30, fontWeight: FontWeight.w800, color: textPrimary),
           ),
           const SizedBox(height: 4),
           Text(plan.desc,
-              style: GoogleFonts.sourceSans3(fontSize: 13, color: textSecondary)),
+              style: appFont(context, fontSize: 13, color: textSecondary)),
           const SizedBox(height: 18),
           Divider(color: dark ? const Color(0xFF1E293B) : AppColors.border),
           const SizedBox(height: 14),
@@ -192,17 +208,24 @@ class _PlanCard extends StatelessWidget {
                       size: 18,
                       color: f.included
                           ? AppColors.primary
-                          : (dark ? const Color(0xFF475569) : const Color(0xFFCBD5E1)),
+                          : (dark
+                              ? const Color(0xFF475569)
+                              : const Color(0xFFCBD5E1)),
                     ),
                     const SizedBox(width: 10),
                     Expanded(
                       child: Text(
                         f.label,
-                        style: GoogleFonts.sourceSans3(
+                        style: appFont(
+                          context,
                           fontSize: 14,
                           color: f.included
-                              ? (dark ? const Color(0xFFE2E8F0) : const Color(0xFF374151))
-                              : (dark ? const Color(0xFF64748B) : const Color(0xFF94A3B8)),
+                              ? (dark
+                                  ? const Color(0xFFE2E8F0)
+                                  : const Color(0xFF374151))
+                              : (dark
+                                  ? const Color(0xFF64748B)
+                                  : const Color(0xFF94A3B8)),
                         ),
                       ),
                     ),

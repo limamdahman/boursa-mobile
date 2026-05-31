@@ -7,6 +7,7 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../core/ui/icons/boursa_icons.dart';
 import '../../../../core/ui/tier_badge.dart';
 import '../../data/models/agency.dart';
+import '../../../../core/theme/app_font.dart';
 
 class AgencyCard extends StatelessWidget {
   const AgencyCard({super.key, required this.agency, required this.onTap});
@@ -88,7 +89,8 @@ class AgencyCard extends StatelessWidget {
                             agency.name,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
-                            style: GoogleFonts.sourceSans3(
+                            style: appFont(
+                              context,
                               fontSize: 16,
                               fontWeight: FontWeight.w600,
                               color: AppColors.textPrimary,
@@ -111,14 +113,16 @@ class AgencyCard extends StatelessWidget {
                       const SizedBox(height: 2),
                       Row(
                         children: [
-                          const BoursaPinIcon(size: 13, color: AppColors.textSecondary),
+                          const BoursaPinIcon(
+                              size: 13, color: AppColors.textSecondary),
                           const SizedBox(width: 3),
                           Flexible(
                             child: Text(
                               agency.city!.name,
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
-                              style: GoogleFonts.sourceSans3(
+                              style: appFont(
+                                context,
                                 fontSize: 13,
                                 color: AppColors.textSecondary,
                               ),
@@ -135,7 +139,8 @@ class AgencyCard extends StatelessWidget {
                           icon: Icons.directions_car_outlined,
                           iconColor: AppColors.textSecondary,
                           value: '${agency.vehiclesCount}',
-                          label: AppLocalizations.of(context)!.agencyVehiclesLabel,
+                          label:
+                              AppLocalizations.of(context)!.agencyVehiclesLabel,
                         ),
                         const SizedBox(width: 14),
                         _Stat(
@@ -169,7 +174,8 @@ class _Initials extends StatelessWidget {
     return Center(
       child: Text(
         text,
-        style: GoogleFonts.sourceSans3(
+        style: appFont(
+          context,
           color: Colors.white,
           fontWeight: FontWeight.w700,
           fontSize: 18,
@@ -199,7 +205,8 @@ class _Stat extends StatelessWidget {
         const SizedBox(width: 3),
         Text(
           value,
-          style: GoogleFonts.sourceSans3(
+          style: appFont(
+            context,
             fontSize: 12,
             fontWeight: FontWeight.w700,
             color: AppColors.textPrimary,
@@ -209,8 +216,8 @@ class _Stat extends StatelessWidget {
           const SizedBox(width: 2),
           Text(
             label,
-            style: GoogleFonts.sourceSans3(
-                fontSize: 12, color: AppColors.textSecondary),
+            style:
+                appFont(context, fontSize: 12, color: AppColors.textSecondary),
           ),
         ],
       ],

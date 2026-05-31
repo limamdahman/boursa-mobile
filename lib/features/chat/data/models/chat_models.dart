@@ -16,13 +16,15 @@ class ChatMessage {
   });
 
   factory ChatMessage.fromJson(Map<String, dynamic> j) => ChatMessage(
-    id: j['id'].toString(),
-    conversationId: j['conversation_id'] as String?,
-    senderType: (j['sender_type'] ?? 'agency') as String,
-    body: (j['body'] ?? '') as String,
-    createdAt: DateTime.parse(j['created_at'] as String),
-    readAt: j['read_at'] != null ? DateTime.parse(j['read_at'] as String) : null,
-  );
+        id: j['id'].toString(),
+        conversationId: j['conversation_id'] as String?,
+        senderType: (j['sender_type'] ?? 'agency') as String,
+        body: (j['body'] ?? '') as String,
+        createdAt: DateTime.parse(j['created_at'] as String),
+        readAt: j['read_at'] != null
+            ? DateTime.parse(j['read_at'] as String)
+            : null,
+      );
 
   bool get isFromUser => senderType == 'user';
 }
@@ -51,18 +53,18 @@ class Conversation {
   });
 
   factory Conversation.fromJson(Map<String, dynamic> j) => Conversation(
-    id: j['id'] as String,
-    agencyId: j['agency_id'] as String?,
-    agencyName: j['agency']?['name'] as String?,
-    agencyLogo: j['agency']?['logo_url'] as String?,
-    agencyTier: j['agency']?['tier'] as String?,
-    agencyVerified: j['agency']?['is_verified'] as bool? ?? false,
-    lastMessageBody: j['last_message']?['body'] as String?,
-    lastMessageAt: j['last_message_at'] != null
-        ? DateTime.parse(j['last_message_at'] as String)
-        : null,
-    unreadCount: j['unread_count'] as int? ?? 0,
-  );
+        id: j['id'] as String,
+        agencyId: j['agency_id'] as String?,
+        agencyName: j['agency']?['name'] as String?,
+        agencyLogo: j['agency']?['logo_url'] as String?,
+        agencyTier: j['agency']?['tier'] as String?,
+        agencyVerified: j['agency']?['is_verified'] as bool? ?? false,
+        lastMessageBody: j['last_message']?['body'] as String?,
+        lastMessageAt: j['last_message_at'] != null
+            ? DateTime.parse(j['last_message_at'] as String)
+            : null,
+        unreadCount: j['unread_count'] as int? ?? 0,
+      );
 
   bool get isSupport => agencyId == null;
   String get displayName => agencyName ?? 'Support Boursa';

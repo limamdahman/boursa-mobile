@@ -2,12 +2,13 @@ class AgencyCity {
   final int id;
   final String nameFr;
   final String nameAr;
-  const AgencyCity({required this.id, required this.nameFr, required this.nameAr});
+  const AgencyCity(
+      {required this.id, required this.nameFr, required this.nameAr});
   factory AgencyCity.fromJson(Map<String, dynamic> j) => AgencyCity(
-    id: j['id'] as int,
-    nameFr: j['name_fr'] as String? ?? '',
-    nameAr: j['name_ar'] as String? ?? '',
-  );
+        id: j['id'] as int,
+        nameFr: j['name_fr'] as String? ?? '',
+        nameAr: j['name_ar'] as String? ?? '',
+      );
   String get name => nameFr;
 }
 
@@ -51,24 +52,26 @@ class Agency {
   });
 
   factory Agency.fromJson(Map<String, dynamic> j) => Agency(
-    id: j['id'] as String,
-    name: j['name'] as String,
-    slug: j['slug'] as String,
-    logoUrl: j['logo_url'] as String?,
-    bannerUrl: j['banner_url'] as String?,
-    address: j['address'] as String?,
-    description: j['description'] as String?,
-    email: j['email'] as String?,
-    website: j['website'] as String?,
-    phoneWhatsapp: j['phone_whatsapp'] as String?,
-    phoneCall: j['phone_call'] as String?,
-    isVerified: j['is_verified'] as bool? ?? false,
-    subscriptionTier: j['subscription_tier'] as String? ?? 'free',
-    vehiclesCount: j['vehicles_count'] as int? ?? 0,
-    city: j['city'] != null ? AgencyCity.fromJson(j['city'] as Map<String, dynamic>) : null,
-    lat: (j['lat'] as num?)?.toDouble(),
-    lng: (j['lng'] as num?)?.toDouble(),
-  );
+        id: j['id'] as String,
+        name: j['name'] as String,
+        slug: j['slug'] as String,
+        logoUrl: j['logo_url'] as String?,
+        bannerUrl: j['banner_url'] as String?,
+        address: j['address'] as String?,
+        description: j['description'] as String?,
+        email: j['email'] as String?,
+        website: j['website'] as String?,
+        phoneWhatsapp: j['phone_whatsapp'] as String?,
+        phoneCall: j['phone_call'] as String?,
+        isVerified: j['is_verified'] as bool? ?? false,
+        subscriptionTier: j['subscription_tier'] as String? ?? 'free',
+        vehiclesCount: j['vehicles_count'] as int? ?? 0,
+        city: j['city'] != null
+            ? AgencyCity.fromJson(j['city'] as Map<String, dynamic>)
+            : null,
+        lat: (j['lat'] as num?)?.toDouble(),
+        lng: (j['lng'] as num?)?.toDouble(),
+      );
 
   String get initials => name
       .split(' ')

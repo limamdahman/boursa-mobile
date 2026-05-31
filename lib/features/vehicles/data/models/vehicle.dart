@@ -3,7 +3,8 @@ class Brand {
 
   factory Brand.fromJson(Map<String, dynamic> json) => Brand(
         id: (json['id'] as num).toInt(),
-        name: (json["name"] ?? json["name_fr"] ?? json["name_ar"] ?? "") as String,
+        name: (json["name"] ?? json["name_fr"] ?? json["name_ar"] ?? "")
+            as String,
         slug: json['slug'] as String?,
       );
 
@@ -17,7 +18,8 @@ class VehicleModel {
 
   factory VehicleModel.fromJson(Map<String, dynamic> json) => VehicleModel(
         id: (json['id'] as num).toInt(),
-        name: (json["name"] ?? json["name_fr"] ?? json["name_ar"] ?? "") as String,
+        name: (json["name"] ?? json["name_fr"] ?? json["name_ar"] ?? "")
+            as String,
       );
 
   final int id;
@@ -29,7 +31,8 @@ class City {
 
   factory City.fromJson(Map<String, dynamic> json) => City(
         id: (json['id'] as num).toInt(),
-        name: (json["name"] ?? json["name_fr"] ?? json["name_ar"] ?? "") as String,
+        name: (json["name"] ?? json["name_fr"] ?? json["name_ar"] ?? "")
+            as String,
         nameFr: json["name_fr"] as String?,
         nameAr: json["name_ar"] as String?,
       );
@@ -52,7 +55,11 @@ class VehicleMedia {
 
   factory VehicleMedia.fromJson(Map<String, dynamic> json) => VehicleMedia(
         id: json['id'] as String,
-        urlOriginal: (json['url_original'] ?? json['url_lg'] ?? json['url_md'] ?? json['url_thumb'] ?? '') as String,
+        urlOriginal: (json['url_original'] ??
+            json['url_lg'] ??
+            json['url_md'] ??
+            json['url_thumb'] ??
+            '') as String,
         urlMd: (json["url_md"] ?? json["url_webp_md"]) as String?,
         urlThumb: json['url_thumb'] as String?,
         isCover: json['is_cover'] as bool? ?? false,
@@ -71,8 +78,13 @@ class VehicleMedia {
 }
 
 class UserLite {
-  UserLite({required this.id, required this.name, this.avatarUrl,
-    this.phoneWhatsapp, this.phoneCall, this.isIndividual = true});
+  UserLite(
+      {required this.id,
+      required this.name,
+      this.avatarUrl,
+      this.phoneWhatsapp,
+      this.phoneCall,
+      this.isIndividual = true});
 
   factory UserLite.fromJson(Map<String, dynamic> json) => UserLite(
         id: json['id'] as String,
@@ -90,15 +102,31 @@ class UserLite {
   final String? phoneCall;
   final bool isIndividual;
 
-  String get initials => name.trim().split(RegExp(r'\s+')).take(2)
-      .map((w) => w.isEmpty ? '' : w[0].toUpperCase()).join();
+  String get initials => name
+      .trim()
+      .split(RegExp(r'\s+'))
+      .take(2)
+      .map((w) => w.isEmpty ? '' : w[0].toUpperCase())
+      .join();
 }
 
 class AgencyLite {
-  AgencyLite({required this.id, required this.name, this.phone,
-    this.slug, this.logoUrl, this.bannerUrl, this.phoneWhatsapp,
-    this.subscriptionTier = 'free', this.description, this.address,
-    this.email, this.city, this.lat, this.lng, this.vehiclesCount});
+  AgencyLite(
+      {required this.id,
+      required this.name,
+      this.phone,
+      this.slug,
+      this.logoUrl,
+      this.bannerUrl,
+      this.phoneWhatsapp,
+      this.subscriptionTier = 'free',
+      this.description,
+      this.address,
+      this.email,
+      this.city,
+      this.lat,
+      this.lng,
+      this.vehiclesCount});
 
   factory AgencyLite.fromJson(Map<String, dynamic> json) => AgencyLite(
         id: json['id'] as String,
@@ -112,7 +140,9 @@ class AgencyLite {
         description: json['description'] as String?,
         address: json['address'] as String?,
         email: json['email'] as String?,
-        city: json['city'] is Map ? (json['city']['name_fr'] ?? json['city']['name'] ?? '') as String : null,
+        city: json['city'] is Map
+            ? (json['city']['name_fr'] ?? json['city']['name'] ?? '') as String
+            : null,
         lat: (json['lat'] as num?)?.toDouble(),
         lng: (json['lng'] as num?)?.toDouble(),
         vehiclesCount: (json['vehicles_count'] as num?)?.toInt(),
@@ -196,14 +226,17 @@ class Vehicle {
             : null,
         viewsCount: (json['views_count'] as num?)?.toInt() ?? 0,
         contactsCount: (json['contacts_count'] as num?)?.toInt() ?? 0,
-        mediaCount: (json['media_count'] as num?)?.toInt() ?? (json['media'] as List?)?.length ?? 0,
+        mediaCount: (json['media_count'] as num?)?.toInt() ??
+            (json['media'] as List?)?.length ??
+            0,
         priceRating: json['price_rating'] as String?,
         priceRatingColor: json['price_rating_color'] as String?,
         priceRatingLabel: json['price_rating_label'] as String?,
         status: json['status'] as String?,
         isDeal: json['is_deal'] as bool? ?? false,
         originalPrice: (json['original_price'] as num?)?.toInt(),
-        priceNegotiable: json['price_negotiable'] == true || json['price_negotiable'] == 1,
+        priceNegotiable:
+            json['price_negotiable'] == true || json['price_negotiable'] == 1,
       );
 
   final String id;
@@ -235,7 +268,8 @@ class Vehicle {
   final bool priceNegotiable;
 
   String get title => '${brand.name} ${model.name}';
-  String? get coverUrl => coverImage ?? (media.isNotEmpty ? media.first.bestUrl : null);
+  String? get coverUrl =>
+      coverImage ?? (media.isNotEmpty ? media.first.bestUrl : null);
   bool get isSold => status == 'sold';
 }
 

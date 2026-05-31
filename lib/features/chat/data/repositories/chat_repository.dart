@@ -10,8 +10,12 @@ class ChatRepository {
     final raw = res.data;
     final data = raw is List
         ? raw
-        : (raw is Map && raw['data'] is List ? raw['data'] as List : <dynamic>[]);
-    return data.map((e) => Conversation.fromJson(e as Map<String, dynamic>)).toList();
+        : (raw is Map && raw['data'] is List
+            ? raw['data'] as List
+            : <dynamic>[]);
+    return data
+        .map((e) => Conversation.fromJson(e as Map<String, dynamic>))
+        .toList();
   }
 
   Future<Conversation> getOrCreateConversation(String agencyId) async {
@@ -24,14 +28,17 @@ class ChatRepository {
     return Conversation.fromJson(res.data as Map<String, dynamic>);
   }
 
-  Future<List<ChatMessage>> getMessages(String conversationId, {String? since}) async {
+  Future<List<ChatMessage>> getMessages(String conversationId,
+      {String? since}) async {
     final params = since != null ? {'since': since} : null;
     final res = await _dio.get(
       '/chat/conversations/$conversationId/messages',
       queryParameters: params,
     );
     final data = res.data as List? ?? [];
-    return data.map((e) => ChatMessage.fromJson(e as Map<String, dynamic>)).toList();
+    return data
+        .map((e) => ChatMessage.fromJson(e as Map<String, dynamic>))
+        .toList();
   }
 
   Future<ChatMessage> sendMessage(String conversationId, String body) async {

@@ -7,6 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/storage/locale_storage.dart';
 import '../../../auth/presentation/providers/auth_provider.dart';
+import '../../../../core/theme/app_font.dart';
 
 class SettingsScreen extends ConsumerStatefulWidget {
   const SettingsScreen({super.key});
@@ -157,8 +158,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
           const SizedBox(height: 24),
           // Nom
           Text(isAr ? 'الاسم الكامل' : 'Nom complet',
-              style: GoogleFonts.sourceSans3(
-                  fontSize: 13, fontWeight: FontWeight.w700)),
+              style:
+                  appFont(context, fontSize: 13, fontWeight: FontWeight.w700)),
           const SizedBox(height: 6),
           TextField(
             controller: _name,
@@ -167,8 +168,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
           const SizedBox(height: 16),
           // Email
           Text(isAr ? 'البريد الإلكتروني' : 'Email',
-              style: GoogleFonts.sourceSans3(
-                  fontSize: 13, fontWeight: FontWeight.w700)),
+              style:
+                  appFont(context, fontSize: 13, fontWeight: FontWeight.w700)),
           const SizedBox(height: 6),
           TextField(
             controller: _email,
@@ -178,8 +179,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
           const SizedBox(height: 16),
           // Téléphone (lecture seule)
           Text(isAr ? 'الهاتف' : 'Téléphone',
-              style: GoogleFonts.sourceSans3(
-                  fontSize: 13, fontWeight: FontWeight.w700)),
+              style:
+                  appFont(context, fontSize: 13, fontWeight: FontWeight.w700)),
           const SizedBox(height: 6),
           TextField(
             enabled: false,
@@ -193,8 +194,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
           const SizedBox(height: 24),
           // Langue
           Text(isAr ? 'اللغة' : 'Langue',
-              style: GoogleFonts.sourceSans3(
-                  fontSize: 13, fontWeight: FontWeight.w700)),
+              style:
+                  appFont(context, fontSize: 13, fontWeight: FontWeight.w700)),
           const SizedBox(height: 8),
           Row(
             children: [

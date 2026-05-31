@@ -8,6 +8,7 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../core/storage/locale_storage.dart';
 import '../../data/followed_seller.dart';
 import '../follow_providers.dart';
+import '../../../../core/theme/app_font.dart';
 
 class MyFollowsScreen extends ConsumerWidget {
   const MyFollowsScreen({super.key});
@@ -40,7 +41,7 @@ class MyFollowsScreen extends ConsumerWidget {
                           ? 'لا تتابع أي بائع حاليا'
                           : 'Vous ne suivez aucun vendeur pour le moment',
                       textAlign: TextAlign.center,
-                      style: GoogleFonts.sourceSans3(
+                      style: appFont(context,
                           fontSize: 16,
                           fontWeight: FontWeight.w800,
                           color: AppColors.textPrimary),
@@ -51,7 +52,7 @@ class MyFollowsScreen extends ConsumerWidget {
                           ? 'تابع بائعيك المفضلين لمعرفة كل إعلاناتهم الجديدة'
                           : 'Suivez vos vendeurs préférés pour ne rien manquer de leurs annonces',
                       textAlign: TextAlign.center,
-                      style: GoogleFonts.sourceSans3(
+                      style: appFont(context,
                           fontSize: 13, color: AppColors.textSecondary),
                     ),
                     const SizedBox(height: 20),
@@ -59,7 +60,8 @@ class MyFollowsScreen extends ConsumerWidget {
                       onPressed: () => context.go('/vehicules'),
                       style: FilledButton.styleFrom(
                           backgroundColor: AppColors.primary),
-                      child: Text(isAr ? 'تصفح السيارات' : 'Parcourir les véhicules'),
+                      child: Text(
+                          isAr ? 'تصفح السيارات' : 'Parcourir les véhicules'),
                     ),
                   ],
                 ),
@@ -72,7 +74,8 @@ class MyFollowsScreen extends ConsumerWidget {
               padding: const EdgeInsets.all(12),
               itemCount: follows.length,
               separatorBuilder: (_, __) => const SizedBox(height: 10),
-              itemBuilder: (_, i) => _FollowCard(seller: follows[i], isAr: isAr),
+              itemBuilder: (_, i) =>
+                  _FollowCard(seller: follows[i], isAr: isAr),
             ),
           );
         },
@@ -144,7 +147,7 @@ class _FollowCard extends StatelessWidget {
                             child: Text(seller.sellerName,
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
-                                style: GoogleFonts.sourceSans3(
+                                style: appFont(context,
                                     fontSize: 15,
                                     fontWeight: FontWeight.w800,
                                     color: AppColors.textPrimary)),
@@ -163,7 +166,7 @@ class _FollowCard extends StatelessWidget {
                               seller.isAgency
                                   ? (isAr ? 'وكالة' : 'Agence')
                                   : (isAr ? 'فرد' : 'Particulier'),
-                              style: GoogleFonts.sourceSans3(
+                              style: appFont(context,
                                   fontSize: 9,
                                   fontWeight: FontWeight.w700,
                                   color: seller.isAgency
@@ -176,7 +179,7 @@ class _FollowCard extends StatelessWidget {
                       const SizedBox(height: 2),
                       Text(
                         '${seller.activeVehiclesCount} ${isAr ? 'إعلان نشط' : 'annonces actives'}',
-                        style: GoogleFonts.sourceSans3(
+                        style: appFont(context,
                             fontSize: 12, color: AppColors.textSecondary),
                       ),
                     ],

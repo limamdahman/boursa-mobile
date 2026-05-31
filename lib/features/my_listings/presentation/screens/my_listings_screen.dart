@@ -9,6 +9,7 @@ import '../../../../core/storage/locale_storage.dart';
 import '../../../../core/utils/number_formatters.dart';
 import '../../data/my_vehicle.dart';
 import '../my_listings_providers.dart';
+import '../../../../core/theme/app_font.dart';
 
 class MyListingsScreen extends ConsumerWidget {
   const MyListingsScreen({super.key});
@@ -42,7 +43,7 @@ class MyListingsScreen extends ConsumerWidget {
                       size: 56, color: AppColors.textMuted),
                   const SizedBox(height: 12),
                   Text(isAr ? 'لا توجد إعلانات' : 'Aucune annonce',
-                      style: GoogleFonts.sourceSans3(
+                      style: appFont(context,
                           fontSize: 15, color: AppColors.textSecondary)),
                 ],
               ),
@@ -54,7 +55,8 @@ class MyListingsScreen extends ConsumerWidget {
               padding: const EdgeInsets.all(12),
               itemCount: items.length,
               separatorBuilder: (_, __) => const SizedBox(height: 10),
-              itemBuilder: (_, i) => _ListingCard(vehicle: items[i], isAr: isAr),
+              itemBuilder: (_, i) =>
+                  _ListingCard(vehicle: items[i], isAr: isAr),
             ),
           );
         },
@@ -95,14 +97,16 @@ class _ListingCard extends ConsumerWidget {
       child: Row(
         children: [
           ClipRRect(
-            borderRadius: const BorderRadius.horizontal(left: Radius.circular(12)),
+            borderRadius:
+                const BorderRadius.horizontal(left: Radius.circular(12)),
             child: SizedBox(
               width: 96,
               height: 96,
               child: vehicle.coverUrl != null
                   ? CachedNetworkImage(
                       imageUrl: vehicle.coverUrl!, fit: BoxFit.cover)
-                  : Container(color: AppColors.background,
+                  : Container(
+                      color: AppColors.background,
                       child: const Icon(Icons.directions_car_outlined,
                           color: AppColors.textMuted)),
             ),
@@ -123,7 +127,7 @@ class _ListingCard extends ConsumerWidget {
                           borderRadius: BorderRadius.circular(4),
                         ),
                         child: Text(label,
-                            style: GoogleFonts.sourceSans3(
+                            style: appFont(context,
                                 fontSize: 10,
                                 fontWeight: FontWeight.w700,
                                 color: color)),
@@ -144,7 +148,8 @@ class _ListingCard extends ConsumerWidget {
                           if (vehicle.status != 'sold')
                             PopupMenuItem(
                                 value: 'sold',
-                                child: Text(isAr ? 'تم البيع' : 'Marquer vendu')),
+                                child:
+                                    Text(isAr ? 'تم البيع' : 'Marquer vendu')),
                           PopupMenuItem(
                               value: 'delete',
                               child: Text(isAr ? 'حذف' : 'Supprimer')),
@@ -156,13 +161,13 @@ class _ListingCard extends ConsumerWidget {
                     '${vehicle.brandName} ${vehicle.modelName}',
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: GoogleFonts.sourceSans3(
+                    style: appFont(context,
                         fontSize: 14, fontWeight: FontWeight.w700),
                   ),
                   const SizedBox(height: 2),
                   Text(
                     '${NumberFormatters.formatPrice(vehicle.priceMru)} ${isAr ? "أوقية" : "MRU"}',
-                    style: GoogleFonts.sourceSans3(
+                    style: appFont(context,
                         fontSize: 14,
                         fontWeight: FontWeight.w800,
                         color: AppColors.priceColor),

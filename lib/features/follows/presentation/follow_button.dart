@@ -6,9 +6,11 @@ import '../../../core/theme/app_colors.dart';
 import '../../../core/storage/locale_storage.dart';
 import '../../auth/presentation/providers/auth_provider.dart';
 import 'follow_providers.dart';
+import '../../../core/theme/app_font.dart';
 
 class FollowButton extends ConsumerWidget {
-  const FollowButton({super.key, required this.sellerType, required this.sellerId});
+  const FollowButton(
+      {super.key, required this.sellerType, required this.sellerId});
   final String sellerType; // 'user' | 'agency'
   final String sellerId;
 
@@ -24,9 +26,8 @@ class FollowButton extends ConsumerWidget {
       onPressed: () async {
         if (!isAuth) {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text(isAr
-                ? 'سجل دخولك للمتابعة'
-                : 'Connectez-vous pour suivre'),
+            content: Text(
+                isAr ? 'سجل دخولك للمتابعة' : 'Connectez-vous pour suivre'),
           ));
           return;
         }
@@ -47,7 +48,7 @@ class FollowButton extends ConsumerWidget {
         following
             ? '${isAr ? 'متابَع' : 'Suivi'}${count > 0 ? ' · $count' : ''}'
             : '${isAr ? 'متابعة' : 'Suivre'}${count > 0 ? ' · $count' : ''}',
-        style: GoogleFonts.sourceSans3(fontSize: 13, fontWeight: FontWeight.w700),
+        style: appFont(context, fontSize: 13, fontWeight: FontWeight.w700),
       ),
     );
   }

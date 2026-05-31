@@ -76,8 +76,7 @@ class _FavoritesGrid extends ConsumerWidget {
           child: GridView.builder(
             padding: const EdgeInsets.fromLTRB(16, 16, 16, 24),
             physics: const AlwaysScrollableScrollPhysics(),
-            gridDelegate:
-                const SliverGridDelegateWithFixedCrossAxisCount(
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
               mainAxisSpacing: 14,
               crossAxisSpacing: 14,
@@ -104,7 +103,6 @@ class _Header extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Container(
       decoration: const BoxDecoration(
         gradient: LinearGradient(

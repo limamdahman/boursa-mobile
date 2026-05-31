@@ -47,8 +47,8 @@ class _AgenciesScreenState extends ConsumerState<AgenciesScreen> {
         children: [
           _CompactHeader(
             title: AppLocalizations.of(context)!.navAgenciesTitle,
-            subtitle:
-                AppLocalizations.of(context)!.agenciesVerifiedCount(state.items.where((a) => a.isVerified).length),
+            subtitle: AppLocalizations.of(context)!.agenciesVerifiedCount(
+                state.items.where((a) => a.isVerified).length),
           ),
           Expanded(child: _buildBody(state)),
         ],
@@ -69,8 +69,7 @@ class _AgenciesScreenState extends ConsumerState<AgenciesScreen> {
             const Icon(Icons.cloud_off, size: 48, color: AppColors.border),
             const SizedBox(height: 12),
             Text('Impossible de charger les agences',
-                style: TextStyle(
-                    fontSize: 15, color: AppColors.textSecondary)),
+                style: TextStyle(fontSize: 15, color: AppColors.textSecondary)),
             const SizedBox(height: 16),
             FilledButton(
               onPressed: () => ref.read(agenciesProvider.notifier).refresh(),
@@ -90,14 +89,12 @@ class _AgenciesScreenState extends ConsumerState<AgenciesScreen> {
       child: ListView.builder(
         controller: _scrollController,
         padding: const EdgeInsets.fromLTRB(16, 16, 16, 24),
-        itemCount:
-            state.items.length + (state.isLoadingMore ? 1 : 0),
+        itemCount: state.items.length + (state.isLoadingMore ? 1 : 0),
         itemBuilder: (context, index) {
           if (index >= state.items.length) {
             return const Padding(
               padding: EdgeInsets.all(16),
-              child: Center(
-                  child: CircularProgressIndicator(strokeWidth: 2)),
+              child: Center(child: CircularProgressIndicator(strokeWidth: 2)),
             );
           }
           final a = state.items[index];
@@ -133,9 +130,7 @@ class _CompactHeader extends StatelessWidget {
         borderRadius: BorderRadius.vertical(bottom: Radius.circular(24)),
         boxShadow: [
           BoxShadow(
-              color: Color(0x2616A34A),
-              blurRadius: 18,
-              offset: Offset(0, 8)),
+              color: Color(0x2616A34A), blurRadius: 18, offset: Offset(0, 8)),
         ],
       ),
       child: SafeArea(

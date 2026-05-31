@@ -26,16 +26,21 @@ class AgenciesState {
   });
 
   AgenciesState copyWith({
-    List<Agency>? items, bool? isLoading, bool? isLoadingMore,
-    bool? hasMore, String? error, int? page,
-  }) => AgenciesState(
-    items: items ?? this.items,
-    isLoading: isLoading ?? this.isLoading,
-    isLoadingMore: isLoadingMore ?? this.isLoadingMore,
-    hasMore: hasMore ?? this.hasMore,
-    error: error,
-    page: page ?? this.page,
-  );
+    List<Agency>? items,
+    bool? isLoading,
+    bool? isLoadingMore,
+    bool? hasMore,
+    String? error,
+    int? page,
+  }) =>
+      AgenciesState(
+        items: items ?? this.items,
+        isLoading: isLoading ?? this.isLoading,
+        isLoadingMore: isLoadingMore ?? this.isLoadingMore,
+        hasMore: hasMore ?? this.hasMore,
+        error: error,
+        page: page ?? this.page,
+      );
 }
 
 class AgenciesNotifier extends StateNotifier<AgenciesState> {
@@ -47,8 +52,10 @@ class AgenciesNotifier extends StateNotifier<AgenciesState> {
     try {
       final items = await _repo.listAgencies(page: 1);
       state = state.copyWith(
-        items: items, isLoading: false,
-        hasMore: items.length >= 20, page: 1,
+        items: items,
+        isLoading: false,
+        hasMore: items.length >= 20,
+        page: 1,
       );
     } catch (e) {
       state = state.copyWith(isLoading: false, error: e.toString());
@@ -73,7 +80,8 @@ class AgenciesNotifier extends StateNotifier<AgenciesState> {
   }
 }
 
-final agenciesProvider = StateNotifierProvider<AgenciesNotifier, AgenciesState>((ref) {
+final agenciesProvider =
+    StateNotifierProvider<AgenciesNotifier, AgenciesState>((ref) {
   return AgenciesNotifier(ref.read(agencyRepositoryProvider));
 });
 

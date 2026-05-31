@@ -61,7 +61,8 @@ class AuthRepository {
   }
 
   /// Met à jour le profil (PUT /me) et retourne le user frais.
-  Future<User> updateProfile({String? name, String? email, String? language}) async {
+  Future<User> updateProfile(
+      {String? name, String? email, String? language}) async {
     final payload = <String, dynamic>{};
     if (name != null) payload['name'] = name;
     if (email != null) payload['email'] = email;

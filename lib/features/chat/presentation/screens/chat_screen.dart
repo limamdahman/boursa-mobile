@@ -103,7 +103,8 @@ class _Bubble extends StatelessWidget {
       alignment: isUser ? Alignment.centerRight : Alignment.centerLeft,
       child: Container(
         margin: const EdgeInsets.only(bottom: 6),
-        constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.72),
+        constraints:
+            BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.72),
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         decoration: BoxDecoration(
           color: isUser ? AppColors.primary : AppColors.surface,
@@ -116,7 +117,8 @@ class _Bubble extends StatelessWidget {
           border: isUser ? null : Border.all(color: AppColors.border),
         ),
         child: Column(
-          crossAxisAlignment: isUser ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+          crossAxisAlignment:
+              isUser ? CrossAxisAlignment.end : CrossAxisAlignment.start,
           children: [
             Text(
               message.body,
@@ -150,7 +152,10 @@ class _InputBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.fromLTRB(
-        12, 8, 12, 8 + MediaQuery.of(context).padding.bottom,
+        12,
+        8,
+        12,
+        8 + MediaQuery.of(context).padding.bottom,
       ),
       decoration: const BoxDecoration(
         color: AppColors.surface,
@@ -175,7 +180,8 @@ class _InputBar extends StatelessWidget {
                   border: InputBorder.none,
                   enabledBorder: InputBorder.none,
                   focusedBorder: InputBorder.none,
-                  contentPadding: EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                  contentPadding:
+                      EdgeInsets.symmetric(horizontal: 14, vertical: 10),
                   isDense: true,
                 ),
                 style: const TextStyle(fontSize: 14),
@@ -191,7 +197,8 @@ class _InputBar extends StatelessWidget {
               onTap: onSend,
               customBorder: const CircleBorder(),
               child: const SizedBox(
-                width: 42, height: 42,
+                width: 42,
+                height: 42,
                 child: Icon(Icons.send_rounded, color: Colors.white, size: 18),
               ),
             ),

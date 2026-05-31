@@ -3,6 +3,7 @@ import '../../../../l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../../../../core/theme/app_font.dart';
 
 import '../../../../core/theme/app_colors.dart';
 import '../../../auth/presentation/providers/auth_provider.dart';
@@ -30,35 +31,75 @@ class ProfileScreen extends ConsumerWidget {
         body: Column(children: [
           Container(
             decoration: const BoxDecoration(
-              gradient: LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight,
-                colors: [Color(0xFF064E3B), Color(0xFF052E22), Color(0xFF0A0A0A)], stops: [0.0, 0.55, 1.0]),
+              gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    Color(0xFF064E3B),
+                    Color(0xFF052E22),
+                    Color(0xFF0A0A0A)
+                  ],
+                  stops: [
+                    0.0,
+                    0.55,
+                    1.0
+                  ]),
               borderRadius: BorderRadius.vertical(bottom: Radius.circular(24)),
             ),
-            child: SafeArea(bottom: false, child: Padding(
-              padding: const EdgeInsets.fromLTRB(20, 18, 20, 26),
-              child: Row(children: [
-                Container(width: 52, height: 52,
-                  decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.white.withOpacity(0.12)),
-                  child: const Icon(Icons.person_outline, color: Colors.white, size: 28)),
-                const SizedBox(width: 14),
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                  Text(AppLocalizations.of(context)!.authMyAccount, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w700, color: Colors.white)),
-                  Text(AppLocalizations.of(context)!.authConnectToAccess, style: TextStyle(fontSize: 13, color: Colors.white.withOpacity(0.7))),
-                ]),
-              ]),
-            )),
+            child: SafeArea(
+                bottom: false,
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 18, 20, 26),
+                  child: Row(children: [
+                    Container(
+                        width: 52,
+                        height: 52,
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.white.withOpacity(0.12)),
+                        child: const Icon(Icons.person_outline,
+                            color: Colors.white, size: 28)),
+                    const SizedBox(width: 14),
+                    Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(AppLocalizations.of(context)!.authMyAccount,
+                              style: const TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w700,
+                                  color: Colors.white)),
+                          Text(
+                              AppLocalizations.of(context)!.authConnectToAccess,
+                              style: TextStyle(
+                                  fontSize: 13,
+                                  color: Colors.white.withOpacity(0.7))),
+                        ]),
+                  ]),
+                )),
           ),
           const SizedBox(height: 32),
-          Padding(padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Column(children: [
-              SizedBox(width: double.infinity, height: 54,
-                child: FilledButton(onPressed: () => context.push('/login'),
-                  child: Text(AppLocalizations.of(context)!.authSignIn, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700)))),
-              const SizedBox(height: 12),
-              SizedBox(width: double.infinity, height: 54,
-                child: OutlinedButton(onPressed: () => context.push('/login'),
-                  child: Text(AppLocalizations.of(context)!.authCreateAccount, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600)))),
-            ])),
+          Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Column(children: [
+                SizedBox(
+                    width: double.infinity,
+                    height: 54,
+                    child: FilledButton(
+                        onPressed: () => context.push('/login'),
+                        child: Text(AppLocalizations.of(context)!.authSignIn,
+                            style: const TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.w700)))),
+                const SizedBox(height: 12),
+                SizedBox(
+                    width: double.infinity,
+                    height: 54,
+                    child: OutlinedButton(
+                        onPressed: () => context.push('/login'),
+                        child: Text(
+                            AppLocalizations.of(context)!.authCreateAccount,
+                            style: const TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.w600)))),
+              ])),
         ]),
       );
     }
@@ -88,8 +129,7 @@ class ProfileScreen extends ConsumerWidget {
               padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
               child: _MenuCard(
                 isAuth: isAuth,
-                onLogout: () =>
-                    ref.read(authProvider.notifier).logout(),
+                onLogout: () => ref.read(authProvider.notifier).logout(),
               ),
             ),
 
@@ -124,9 +164,7 @@ class _ProfileHeader extends StatelessWidget {
         borderRadius: BorderRadius.vertical(bottom: Radius.circular(24)),
         boxShadow: [
           BoxShadow(
-              color: Color(0x2616A34A),
-              blurRadius: 18,
-              offset: Offset(0, 8)),
+              color: Color(0x2616A34A), blurRadius: 18, offset: Offset(0, 8)),
         ],
       ),
       child: SafeArea(
@@ -154,7 +192,8 @@ class _ProfileHeader extends StatelessWidget {
                 child: Center(
                   child: Text(
                     initials,
-                    style: GoogleFonts.sourceSans3(
+                    style: appFont(
+                      context,
                       color: Colors.white,
                       fontWeight: FontWeight.w700,
                       fontSize: 22,
@@ -170,7 +209,8 @@ class _ProfileHeader extends StatelessWidget {
                   children: [
                     Text(
                       name,
-                      style: GoogleFonts.sourceSans3(
+                      style: appFont(
+                        context,
                         fontSize: 20,
                         fontWeight: FontWeight.w700,
                         color: Colors.white,
@@ -181,12 +221,12 @@ class _ProfileHeader extends StatelessWidget {
                       Row(
                         children: [
                           Icon(Icons.phone_outlined,
-                              size: 14,
-                              color: Colors.white.withOpacity(0.75)),
+                              size: 14, color: Colors.white.withOpacity(0.75)),
                           const SizedBox(width: 5),
                           Text(
                             phone,
-                            style: GoogleFonts.sourceSans3(
+                            style: appFont(
+                              context,
                               fontSize: 14,
                               color: Colors.white.withOpacity(0.75),
                             ),
@@ -248,7 +288,8 @@ class _SellCta extends StatelessWidget {
                   children: [
                     Text(
                       'Vendre un véhicule',
-                      style: GoogleFonts.sourceSans3(
+                      style: appFont(
+                        context,
                         fontSize: 16,
                         fontWeight: FontWeight.w700,
                         color: Colors.white,
@@ -257,7 +298,8 @@ class _SellCta extends StatelessWidget {
                     const SizedBox(height: 1),
                     Text(
                       'Publiez votre annonce en quelques minutes',
-                      style: GoogleFonts.sourceSans3(
+                      style: appFont(
+                        context,
                         fontSize: 13,
                         color: Colors.white.withOpacity(0.85),
                       ),
@@ -281,31 +323,32 @@ class _MenuCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isAr = Localizations.localeOf(context).languageCode == 'ar';
     final items = [
       _MenuItem(
         icon: Icons.grid_view_outlined,
-        label: 'Mes annonces',
+        label: isAr ? 'إعلاناتي' : 'Mes annonces',
         onTap: () => context.push('/mes-annonces'),
       ),
       _MenuItem(
         icon: Icons.people_outline,
-        label: 'Mes suivis',
+        label: isAr ? 'متابعاتي' : 'Mes suivis',
         onTap: () => context.push('/mes-suivis'),
       ),
       _MenuItem(
         icon: Icons.favorite_border,
-        label: 'Mes favoris',
+        label: isAr ? 'مفضلاتي' : 'Mes favoris',
         onTap: () => context.go('/favorites'),
       ),
       _MenuItem(
         icon: Icons.settings_outlined,
-        label: 'Paramètres',
+        label: isAr ? 'الإعدادات' : 'Paramètres',
         onTap: () => context.push('/parametres'),
       ),
       _MenuItem(
         icon: Icons.help_outline,
-        label: 'Aide & support',
-        onTap: () {},
+        label: isAr ? 'المساعدة والدعم' : 'Aide & support',
+        onTap: () => context.push('/aide'),
       ),
     ];
 
@@ -323,7 +366,7 @@ class _MenuCard extends StatelessWidget {
             _MenuRow(
               item: _MenuItem(
                 icon: Icons.logout,
-                label: 'Déconnexion',
+                label: isAr ? 'تسجيل الخروج' : 'Déconnexion',
                 onTap: onLogout,
                 isDanger: true,
               ),
@@ -362,9 +405,8 @@ class _MenuRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final color = item.isDanger ? const Color(0xFFDC2626) : AppColors.primary;
-    final bgColor = item.isDanger
-        ? const Color(0x1ADC2626)
-        : const Color(0x1F16A34A);
+    final bgColor =
+        item.isDanger ? const Color(0x1ADC2626) : const Color(0x1F16A34A);
 
     return Material(
       color: Colors.transparent,
@@ -390,7 +432,8 @@ class _MenuRow extends StatelessWidget {
               Expanded(
                 child: Text(
                   item.label,
-                  style: GoogleFonts.sourceSans3(
+                  style: appFont(
+                    context,
                     fontSize: 15,
                     fontWeight: FontWeight.w600,
                     color: item.isDanger

@@ -72,8 +72,10 @@ class AuthNotifier extends StateNotifier<AuthState> {
   }
 
   /// Met à jour le profil et pousse le user frais dans l'état.
-  Future<void> updateProfile({String? name, String? email, String? language}) async {
-    final user = await _repo.updateProfile(name: name, email: email, language: language);
+  Future<void> updateProfile(
+      {String? name, String? email, String? language}) async {
+    final user =
+        await _repo.updateProfile(name: name, email: email, language: language);
     state = AuthAuthenticated(user);
   }
 

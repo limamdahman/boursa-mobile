@@ -30,7 +30,8 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   Future<void> _submit() async {
     final name = _nameController.text.trim();
     if (name.isEmpty) {
-      setState(() => _error = AppLocalizations.of(context)!.registerNameRequired);
+      setState(
+          () => _error = AppLocalizations.of(context)!.registerNameRequired);
       return;
     }
     setState(() {
@@ -39,12 +40,15 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
     });
     final raw = _phoneController.text.trim();
     String phone = raw;
-    if (raw.length == 8 && !raw.startsWith('+') && RegExp(r'^\d+$').hasMatch(raw)) {
+    if (raw.length == 8 &&
+        !raw.startsWith('+') &&
+        RegExp(r'^\d+$').hasMatch(raw)) {
       phone = '+222$raw';
     }
 
     try {
-      final normalized = await ref.read(authProvider.notifier).requestOtp(phone);
+      final normalized =
+          await ref.read(authProvider.notifier).requestOtp(phone);
       if (!mounted) return;
       context.go('/otp', extra: (phone: normalized, name: name));
     } on Object catch (e) {
@@ -65,7 +69,8 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             const SizedBox(height: 20),
-            const Icon(Icons.person_add_alt_1, size: 64, color: AppColors.primary),
+            const Icon(Icons.person_add_alt_1,
+                size: 64, color: AppColors.primary),
             const SizedBox(height: 24),
             Text(
               l.registerHeading,
@@ -115,7 +120,8 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
               onPressed: _submitting ? null : _submit,
               child: _submitting
                   ? const SizedBox(
-                      height: 16, width: 16,
+                      height: 16,
+                      width: 16,
                       child: CircularProgressIndicator(
                           strokeWidth: 2, color: Colors.white))
                   : Text(l.authReceiveCode),
