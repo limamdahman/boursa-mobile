@@ -16,6 +16,7 @@ import '../../../../core/ui/striped_placeholder.dart';
 import '../../../../core/utils/number_formatters.dart';
 import '../../../auth/presentation/providers/auth_provider.dart';
 import '../../../chat/presentation/providers/chat_provider.dart';
+import '../../../follows/presentation/follow_button.dart';
 import '../../../favorites/presentation/providers/favorites_provider.dart';
 import '../../data/models/vehicle.dart';
 import '../providers/listing_providers.dart';
@@ -761,104 +762,116 @@ class _AgencyCard extends StatelessWidget {
         border: Border.all(color: AppColors.border),
         borderRadius: BorderRadius.circular(16),
       ),
-      child: Row(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          // Avatar — logo carré ou initiales
-          Container(
-            width: 44,
-            height: 44,
-            decoration: BoxDecoration(
-              color: const Color(0xFF0F172A),
-              borderRadius: BorderRadius.circular(10),
-            ),
-            clipBehavior: Clip.antiAlias,
-            child: (agency?.logoUrl ?? user?.avatarUrl) != null
-                ? Image.network((agency?.logoUrl ?? user?.avatarUrl)!,
-                    fit: BoxFit.cover,
-                    errorBuilder: (_, __, ___) => Center(
+          Row(
+            children: [
+              // Avatar — logo carré ou initiales
+              Container(
+                width: 44,
+                height: 44,
+                decoration: BoxDecoration(
+                  color: const Color(0xFF0F172A),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                clipBehavior: Clip.antiAlias,
+                child: (agency?.logoUrl ?? user?.avatarUrl) != null
+                    ? Image.network((agency?.logoUrl ?? user?.avatarUrl)!,
+                        fit: BoxFit.cover,
+                        errorBuilder: (_, __, ___) => Center(
+                            child: Text(initials,
+                                style: const TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w800,
+                                    fontSize: 15))))
+                    : Center(
                         child: Text(initials,
                             style: const TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.w800,
-                                fontSize: 15))))
-                : Center(
-                    child: Text(initials,
-                        style: const TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w800,
-                            fontSize: 15))),
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(children: [
-                  Flexible(
-                      child: Text(name,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.w700,
-                              color: AppColors.textPrimary))),
-                  if (isPrivate) ...[
-                    const SizedBox(width: 5),
-                    Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 6, vertical: 2),
-                        decoration: BoxDecoration(
-                            color: const Color(0xFFF1F5F9),
-                            borderRadius: BorderRadius.circular(100)),
-                        child: const Text('Particulier',
-                            style: TextStyle(
-                                fontSize: 10,
-                                fontWeight: FontWeight.w700,
-                                color: AppColors.textSecondary)))
-                  ],
-                  if (agency != null) ...[
-                    const SizedBox(width: 5),
-                    // Badge vérifié — gold pour business, vert sinon
-                    Icon(Icons.verified,
-                        size: 16,
-                        color: isBusiness
-                            ? const Color(0xFFF59E0B)
-                            : AppColors.primary),
-                  ],
-                ]),
-                const SizedBox(height: 2),
-                Text(
-                    agency != null
-                        ? (city.isEmpty
-                            ? l.verifiedAgencyDot
-                            : '${l.verifiedAgencyDot} · $city')
-                        : (city.isEmpty
-                            ? 'Particulier'
-                            : 'Particulier · $city'),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                        fontSize: 12, color: AppColors.textSecondary)),
-              ],
-            ),
-          ),
-          if (agency?.phone != null && agency!.phone!.isNotEmpty)
-            GestureDetector(
-              onTap: () async {
-                final uri = Uri.parse('tel:${agency.phone}');
-                if (await canLaunchUrl(uri)) launchUrl(uri);
-              },
-              child: Container(
-                width: 40,
-                height: 40,
-                decoration: BoxDecoration(
-                  color: const Color(0x1F16A34A),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child:
-                    const Icon(Icons.phone, color: AppColors.primary, size: 20),
+                                fontSize: 15))),
               ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(children: [
+                      Flexible(
+                          child: Text(name,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w700,
+                                  color: AppColors.textPrimary))),
+                      if (isPrivate) ...[
+                        const SizedBox(width: 5),
+                        Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 6, vertical: 2),
+                            decoration: BoxDecoration(
+                                color: const Color(0xFFF1F5F9),
+                                borderRadius: BorderRadius.circular(100)),
+                            child: const Text('Particulier',
+                                style: TextStyle(
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.w700,
+                                    color: AppColors.textSecondary)))
+                      ],
+                      if (agency != null) ...[
+                        const SizedBox(width: 5),
+                        // Badge vérifié — gold pour business, vert sinon
+                        Icon(Icons.verified,
+                            size: 16,
+                            color: isBusiness
+                                ? const Color(0xFFF59E0B)
+                                : AppColors.primary),
+                      ],
+                    ]),
+                    const SizedBox(height: 2),
+                    Text(
+                        agency != null
+                            ? (city.isEmpty
+                                ? l.verifiedAgencyDot
+                                : '${l.verifiedAgencyDot} · $city')
+                            : (city.isEmpty
+                                ? 'Particulier'
+                                : 'Particulier · $city'),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                            fontSize: 12, color: AppColors.textSecondary)),
+                  ],
+                ),
+              ),
+              if (agency?.phone != null && agency!.phone!.isNotEmpty)
+                GestureDetector(
+                  onTap: () async {
+                    final uri = Uri.parse('tel:${agency.phone}');
+                    if (await canLaunchUrl(uri)) launchUrl(uri);
+                  },
+                  child: Container(
+                    width: 40,
+                    height: 40,
+                    decoration: BoxDecoration(
+                      color: const Color(0x1F16A34A),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: const Icon(Icons.phone,
+                        color: AppColors.primary, size: 20),
+                  ),
+                ),
+            ],
+          ),
+          if (agency != null || user != null) ...[
+            const SizedBox(height: 12),
+            FollowButton(
+              sellerType: agency != null ? 'agency' : 'user',
+              sellerId: agency?.id ?? user!.id,
             ),
+          ],
         ],
       ),
     );
@@ -1069,32 +1082,42 @@ class _CtaDock extends ConsumerWidget {
           // Chat (réservé aux agences pro/business)
           if (vehicle.agency != null &&
               (vehicle.agency!.subscriptionTier == 'pro' ||
-               vehicle.agency!.subscriptionTier == 'business'))
-          GestureDetector(
-            onTap: () async {
-                    try {
-                      final repo = ref.read(chatRepositoryProvider);
-                      final conv = await repo
-                          .getOrCreateConversation(vehicle.agency!.id);
-                      if (context.mounted) {
-                        context.push('/chat/${conv.id}',
-                            extra: vehicle.agency!.name);
-                      }
-                    } catch (_) {}
-                  },
-            child: Container(
-              width: 50,
-              height: 50,
-              decoration: BoxDecoration(
-                color: AppColors.surface,
-                border: Border.all(color: AppColors.primary, width: 1.5),
-                borderRadius: BorderRadius.circular(14),
+                  vehicle.agency!.subscriptionTier == 'business'))
+            GestureDetector(
+              onTap: () async {
+                final isAr =
+                    Localizations.localeOf(context).languageCode == 'ar';
+                if (!ref.read(isAuthenticatedProvider)) {
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text(isAr
+                        ? 'سجل دخولك لإرسال رسالة'
+                        : 'Connectez-vous pour envoyer un message'),
+                  ));
+                  return;
+                }
+                try {
+                  final repo = ref.read(chatRepositoryProvider);
+                  final conv =
+                      await repo.getOrCreateConversation(vehicle.agency!.id);
+                  if (context.mounted) {
+                    context.push('/chat/${conv.id}',
+                        extra: vehicle.agency!.name);
+                  }
+                } catch (_) {}
+              },
+              child: Container(
+                width: 50,
+                height: 50,
+                decoration: BoxDecoration(
+                  color: AppColors.surface,
+                  border: Border.all(color: AppColors.primary, width: 1.5),
+                  borderRadius: BorderRadius.circular(14),
+                ),
+                alignment: Alignment.center,
+                child: const BoursaChatIcon(
+                    size: 20, color: AppColors.primary, strokeWidth: 2),
               ),
-              alignment: Alignment.center,
-              child: const BoursaChatIcon(
-                  size: 20, color: AppColors.primary, strokeWidth: 2),
             ),
-          ),
           const SizedBox(width: 8),
           // WhatsApp
           Expanded(
