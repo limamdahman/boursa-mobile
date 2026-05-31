@@ -8,6 +8,7 @@ import '../features/agencies/presentation/screens/pricing_screen.dart';
 import '../features/notifications/presentation/screens/notifications_screen.dart';
 import '../features/my_listings/presentation/screens/my_listings_screen.dart';
 import '../features/follows/presentation/screens/my_follows_screen.dart';
+import '../features/settings/presentation/screens/settings_screen.dart';
 import '../features/publish/presentation/publish_screen.dart';
 import '../features/auth/presentation/screens/profile_screen.dart';
 import '../features/favorites/presentation/screens/favorites_screen.dart';
@@ -97,6 +98,10 @@ final appRouter = GoRouter(
     GoRoute(
       path: '/mes-suivis',
       builder: (context, state) => const MyFollowsScreen(),
+    ),
+    GoRoute(
+      path: '/parametres',
+      builder: (context, state) => const SettingsScreen(),
     ),
     GoRoute(
       path: '/publier',
