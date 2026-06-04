@@ -14,6 +14,40 @@ import '../../../agencies/presentation/providers/agencies_provider.dart';
 import '../../../vehicles/presentation/providers/vehicle_filter.dart';
 import '../../../vehicles/data/repositories/reference_repository.dart';
 import '../../../vehicles/data/repositories/vehicle_repository.dart';
+import '../../../vehicles/data/models/reference.dart';
+
+const _popularBrandOrder = [
+  'toyota',
+  'hyundai',
+  'nissan',
+  'mercedes',
+  'kia',
+  'renault',
+  'peugeot',
+  'mitsubishi',
+  'ford',
+  'jetour',
+];
+
+String _normBrand(String s) =>
+    s.toLowerCase().replaceAll(RegExp(r'[^a-z]'), '');
+
+List<BrandRef> _sortPopularBrands(List<BrandRef> brands) {
+  int rank(BrandRef b) {
+    final n = _normBrand(b.slug ?? b.name);
+    final i =
+        _popularBrandOrder.indexWhere((p) => n.contains(p) || p.contains(n));
+    return i == -1 ? 999 : i;
+  }
+
+  final sorted = [...brands];
+  sorted.sort((a, b) {
+    final ra = rank(a), rb = rank(b);
+    if (ra != rb) return ra.compareTo(rb);
+    return a.name.compareTo(b.name);
+  });
+  return sorted;
+}
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // SECTION CATÉGORIES
@@ -273,54 +307,57 @@ class SectionBrands extends ConsumerWidget {
                 child: CircularProgressIndicator(
                     color: AppColors.primary, strokeWidth: 2)),
             error: (_, __) => const SizedBox(),
-            data: (list) => GridView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 4,
-                mainAxisSpacing: 10,
-                crossAxisSpacing: 10,
-                childAspectRatio: 1.0,
-              ),
-              itemCount: list.length > 12 ? 12 : list.length,
-              itemBuilder: (context, i) {
-                final brand = list[i];
-                final url = logoUrl(brand.slug ?? brand.name.toLowerCase());
-                return GestureDetector(
-                  onTap: () => context.go('/vehicules',
-                      extra: VehicleFilter(brandId: brand.id)),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: AppColors.surface,
-                      border: Border.all(color: AppColors.border),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SizedBox(
-                          width: 44,
-                          height: 44,
-                          child: _BrandLogo(
-                            name: brand.name,
-                            slug: brand.slug ?? brand.name.toLowerCase(),
+            data: (rawList) {
+              final list = _sortPopularBrands(rawList);
+              return GridView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 4,
+                  mainAxisSpacing: 10,
+                  crossAxisSpacing: 10,
+                  childAspectRatio: 1.0,
+                ),
+                itemCount: list.length > 12 ? 12 : list.length,
+                itemBuilder: (context, i) {
+                  final brand = list[i];
+                  final url = logoUrl(brand.slug ?? brand.name.toLowerCase());
+                  return GestureDetector(
+                    onTap: () => context.go('/vehicules',
+                        extra: VehicleFilter(brandId: brand.id)),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: AppColors.surface,
+                        border: Border.all(color: AppColors.border),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                            width: 44,
+                            height: 44,
+                            child: _BrandLogo(
+                              name: brand.name,
+                              slug: brand.slug ?? brand.name.toLowerCase(),
+                            ),
                           ),
-                        ),
-                        const SizedBox(height: 4),
-                        Text(brand.name,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(
-                                fontSize: 10,
-                                fontWeight: FontWeight.w700,
-                                color: AppColors.textPrimary)),
-                      ],
+                          const SizedBox(height: 4),
+                          Text(brand.name,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.w700,
+                                  color: AppColors.textPrimary)),
+                        ],
+                      ),
                     ),
-                  ),
-                );
-              },
-            ),
+                  );
+                },
+              );
+            },
           ),
         ],
       ),
