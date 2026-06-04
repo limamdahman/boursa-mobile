@@ -30,7 +30,8 @@ class _OtpScreenState extends ConsumerState<OtpScreen> {
   Future<void> _submit() async {
     final code = _controller.text.trim();
     if (code.length < 4) {
-      setState(() => _error = 'Code trop court');
+      final isArV = Localizations.localeOf(context).languageCode == 'ar';
+      setState(() => _error = isArV ? 'الرمز قصير جداً' : 'Code trop court');
       return;
     }
     setState(() {
@@ -55,7 +56,10 @@ class _OtpScreenState extends ConsumerState<OtpScreen> {
       await ref.read(authProvider.notifier).requestOtp(widget.phone);
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Code renvoyé')),
+        SnackBar(
+            content: Text(Localizations.localeOf(context).languageCode == 'ar'
+                ? 'تم إرسال الرمز'
+                : 'Code renvoyé')),
       );
     } on Object catch (e) {
       if (!mounted) return;
@@ -67,9 +71,10 @@ class _OtpScreenState extends ConsumerState<OtpScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isAr = Localizations.localeOf(context).languageCode == 'ar';
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Vérification'),
+        title: Text(isAr ? 'التحقق' : 'Vérification'),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => context.go('/login'),
@@ -84,7 +89,7 @@ class _OtpScreenState extends ConsumerState<OtpScreen> {
             const Icon(Icons.lock_outline, size: 64, color: AppColors.primary),
             const SizedBox(height: 24),
             Text(
-              'Code envoyé au',
+              isAr ? 'تم إرسال الرمز إلى' : 'Code envoyé au',
               style: Theme.of(context).textTheme.titleMedium,
               textAlign: TextAlign.center,
             ),
@@ -105,8 +110,8 @@ class _OtpScreenState extends ConsumerState<OtpScreen> {
                 FilteringTextInputFormatter.digitsOnly,
                 LengthLimitingTextInputFormatter(6),
               ],
-              decoration: const InputDecoration(
-                labelText: 'Code à 6 chiffres',
+              decoration: InputDecoration(
+                labelText: isAr ? 'رمز من 6 أرقام' : 'Code à 6 chiffres',
                 prefixIcon: Icon(Icons.numbers),
                 border: OutlineInputBorder(),
               ),
@@ -131,12 +136,12 @@ class _OtpScreenState extends ConsumerState<OtpScreen> {
                       width: 16,
                       child: CircularProgressIndicator(
                           strokeWidth: 2, color: Colors.white))
-                  : const Text('Vérifier'),
+                  : Text(isAr ? 'تحقق' : 'Vérifier'),
             ),
             const SizedBox(height: 8),
             TextButton(
               onPressed: _submitting ? null : _resend,
-              child: const Text('Renvoyer le code'),
+              child: Text(isAr ? 'إعادة إرسال الرمز' : 'Renvoyer le code'),
             ),
           ],
         ),

@@ -12,6 +12,7 @@ import '../../vehicles/data/repositories/reference_repository.dart';
 import '../../my_listings/presentation/my_listings_providers.dart';
 import 'publish_providers.dart';
 import '../../../core/theme/app_font.dart';
+import '../../../core/i18n/err_label.dart';
 
 class _Photo {
   _Photo(this.bytes, this.name);
@@ -219,7 +220,7 @@ class _PublishScreenState extends ConsumerState<PublishScreen> {
       children: [
         brands.when(
           loading: () => const LinearProgressIndicator(),
-          error: (e, _) => Text('Erreur: $e'),
+          error: (e, _) => Text(errLabel(context, e)),
           data: (list) => DropdownButtonFormField<int>(
             value: _brandId,
             decoration: InputDecoration(
@@ -238,7 +239,7 @@ class _PublishScreenState extends ConsumerState<PublishScreen> {
         if (_brandId != null)
           ref.watch(modelsForBrandProvider(_brandId!)).when(
                 loading: () => const LinearProgressIndicator(),
-                error: (e, _) => Text('Erreur: $e'),
+                error: (e, _) => Text(errLabel(context, e)),
                 data: (models) => DropdownButtonFormField<int>(
                   value: _modelId,
                   decoration: InputDecoration(
@@ -404,8 +405,9 @@ class _PublishScreenState extends ConsumerState<PublishScreen> {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 5, vertical: 1),
                         color: AppColors.primary,
-                        child: const Text('Cover',
-                            style: TextStyle(color: Colors.white, fontSize: 9)),
+                        child: Text(isAr ? 'غلاف' : 'Cover',
+                            style: const TextStyle(
+                                color: Colors.white, fontSize: 9)),
                       ),
                     ),
                   Positioned(

@@ -68,7 +68,10 @@ class _AgenciesScreenState extends ConsumerState<AgenciesScreen> {
           children: [
             const Icon(Icons.cloud_off, size: 48, color: AppColors.border),
             const SizedBox(height: 12),
-            Text('Impossible de charger les agences',
+            Text(
+                Localizations.localeOf(context).languageCode == 'ar'
+                    ? 'تعذر تحميل الوكالات'
+                    : 'Impossible de charger les agences',
                 style: TextStyle(fontSize: 15, color: AppColors.textSecondary)),
             const SizedBox(height: 16),
             FilledButton(
@@ -80,7 +83,10 @@ class _AgenciesScreenState extends ConsumerState<AgenciesScreen> {
       );
     }
     if (state.items.isEmpty) {
-      return const Center(child: Text('Aucune agence trouvée'));
+      return Center(
+          child: Text(Localizations.localeOf(context).languageCode == 'ar'
+              ? 'لم يتم العثور على وكالات'
+              : 'Aucune agence trouvée'));
     }
 
     return RefreshIndicator(

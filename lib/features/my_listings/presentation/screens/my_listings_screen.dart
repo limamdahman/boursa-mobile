@@ -10,6 +10,7 @@ import '../../../../core/utils/number_formatters.dart';
 import '../../data/my_vehicle.dart';
 import '../my_listings_providers.dart';
 import '../../../../core/theme/app_font.dart';
+import '../../../../core/i18n/err_label.dart';
 
 class MyListingsScreen extends ConsumerWidget {
   const MyListingsScreen({super.key});
@@ -32,7 +33,7 @@ class MyListingsScreen extends ConsumerWidget {
       body: async.when(
         loading: () => const Center(
             child: CircularProgressIndicator(color: AppColors.primary)),
-        error: (e, _) => Center(child: Text('Erreur: $e')),
+        error: (e, _) => Center(child: Text(errLabel(context, e))),
         data: (items) {
           if (items.isEmpty) {
             return Center(

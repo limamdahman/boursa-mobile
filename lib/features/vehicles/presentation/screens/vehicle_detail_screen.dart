@@ -22,6 +22,7 @@ import '../../../favorites/presentation/providers/favorites_provider.dart';
 import '../../data/models/vehicle.dart';
 import '../providers/listing_providers.dart';
 import '../../../vehicles/presentation/providers/listing_providers.dart';
+import '../../../../core/i18n/err_label.dart';
 
 class VehicleDetailScreen extends ConsumerWidget {
   const VehicleDetailScreen({super.key, required this.id});
@@ -38,7 +39,11 @@ class VehicleDetailScreen extends ConsumerWidget {
         error: (e, _) => Center(
           child: Padding(
             padding: const EdgeInsets.all(24),
-            child: Text('Impossible de charger ce véhicule.\n$e',
+            child: Text(
+                (Localizations.localeOf(context).languageCode == 'ar'
+                        ? 'تعذر تحميل هذه السيارة.\n'
+                        : 'Impossible de charger ce véhicule.\n') +
+                    '$e',
                 textAlign: TextAlign.center,
                 style: const TextStyle(
                     color: AppColors.textSecondary, fontSize: 14)),
@@ -168,7 +173,7 @@ class _DetailBody extends ConsumerWidget {
     } catch (e) {
       if (context.mounted) {
         ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text('Erreur : $e')));
+            .showSnackBar(SnackBar(content: Text(errLabel(context, e))));
       }
     }
   }
@@ -815,7 +820,11 @@ class _AgencyCard extends StatelessWidget {
                             decoration: BoxDecoration(
                                 color: const Color(0xFFF1F5F9),
                                 borderRadius: BorderRadius.circular(100)),
-                            child: const Text('Particulier',
+                            child: Text(
+                                Localizations.localeOf(context).languageCode ==
+                                        'ar'
+                                    ? 'فرد'
+                                    : 'Particulier',
                                 style: TextStyle(
                                     fontSize: 10,
                                     fontWeight: FontWeight.w700,

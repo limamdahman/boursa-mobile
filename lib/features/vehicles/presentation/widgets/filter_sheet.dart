@@ -6,6 +6,7 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../data/repositories/reference_repository.dart';
 import '../providers/vehicle_filter.dart';
+import '../../../../core/i18n/err_label.dart';
 
 class FilterSheet extends ConsumerStatefulWidget {
   const FilterSheet({super.key, required this.initial});
@@ -197,7 +198,7 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
               child: CircularProgressIndicator(strokeWidth: 2),
             )),
           ),
-          error: (e, _) => Text('Erreur: $e',
+          error: (e, _) => Text(errLabel(context, e),
               style: const TextStyle(color: AppColors.error)),
           data: (list) => _Select<int?>(
             value: _draft.brandId,
@@ -226,7 +227,7 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
         _label(AppLocalizations.of(context)!.filterModel),
         models.when(
           loading: () => const SizedBox(height: 40),
-          error: (e, _) => Text('Erreur: $e',
+          error: (e, _) => Text(errLabel(context, e),
               style: const TextStyle(color: AppColors.error)),
           data: (list) => _Select<int?>(
             value: _draft.modelId,
@@ -254,7 +255,7 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
         _label(AppLocalizations.of(context)!.filterCity),
         cities.when(
           loading: () => const SizedBox(height: 40),
-          error: (e, _) => Text('Erreur: $e',
+          error: (e, _) => Text(errLabel(context, e),
               style: const TextStyle(color: AppColors.error)),
           data: (list) => _Select<int?>(
             value: _draft.cityId,

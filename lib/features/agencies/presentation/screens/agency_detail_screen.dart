@@ -19,6 +19,7 @@ import '../../../chat/presentation/providers/chat_provider.dart';
 import '../../../vehicles/presentation/widgets/vehicle_card.dart';
 import '../../../vehicles/data/models/vehicle.dart';
 import '../../../vehicles/presentation/providers/listing_providers.dart';
+import '../../../../core/i18n/err_label.dart';
 
 class AgencyDetailScreen extends ConsumerWidget {
   const AgencyDetailScreen({super.key, required this.slug});
@@ -37,7 +38,7 @@ class AgencyDetailScreen extends ConsumerWidget {
             children: [
               const Icon(Icons.error_outline, size: 48, color: AppColors.error),
               const SizedBox(height: 12),
-              Text('Erreur: $e', textAlign: TextAlign.center),
+              Text(errLabel(context, e), textAlign: TextAlign.center),
               const SizedBox(height: 16),
               FilledButton(
                 onPressed: () => ref.invalidate(agencyDetailProvider(slug)),

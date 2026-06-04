@@ -11,6 +11,7 @@ class WelcomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isAr = Localizations.localeOf(context).languageCode == 'ar';
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
@@ -110,7 +111,7 @@ class WelcomeScreen extends StatelessWidget {
                           child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Text('Commencer',
+                                Text(isAr ? 'ابدأ' : 'Commencer',
                                     style: appFont(context,
                                         fontSize: 17,
                                         fontWeight: FontWeight.w700,
@@ -124,7 +125,10 @@ class WelcomeScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 14),
                     Center(
-                      child: Text('Gratuit  •  Sans engagement',
+                      child: Text(
+                          isAr
+                              ? 'مجاني  •  بدون التزام'
+                              : 'Gratuit  •  Sans engagement',
                           style: appFont(context,
                               fontSize: 13,
                               color: Colors.white.withOpacity(0.45))),

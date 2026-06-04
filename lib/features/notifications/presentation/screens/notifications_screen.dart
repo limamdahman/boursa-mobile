@@ -8,6 +8,7 @@ import '../../../../core/storage/locale_storage.dart';
 import '../../data/notification_models.dart';
 import '../notification_providers.dart';
 import '../../../../core/theme/app_font.dart';
+import '../../../../core/i18n/err_label.dart';
 
 class NotificationsScreen extends ConsumerWidget {
   const NotificationsScreen({super.key});
@@ -83,7 +84,7 @@ class NotificationsScreen extends ConsumerWidget {
       body: async.when(
         loading: () => const Center(
             child: CircularProgressIndicator(color: AppColors.primary)),
-        error: (e, _) => Center(child: Text('Erreur: $e')),
+        error: (e, _) => Center(child: Text(errLabel(context, e))),
         data: (items) {
           if (items.isEmpty) {
             return Center(

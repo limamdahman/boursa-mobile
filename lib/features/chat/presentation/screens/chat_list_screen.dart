@@ -12,6 +12,7 @@ import '../../../auth/presentation/providers/auth_provider.dart';
 import '../providers/chat_provider.dart';
 import '../../data/models/chat_models.dart';
 import '../../../../core/theme/app_font.dart';
+import '../../../../core/i18n/err_label.dart';
 
 class ChatListScreen extends ConsumerWidget {
   const ChatListScreen({super.key});
@@ -34,7 +35,8 @@ class ChatListScreen extends ConsumerWidget {
                       loading: () => const Center(
                           child: CircularProgressIndicator(
                               color: AppColors.primary)),
-                      error: (e, _) => Center(child: Text('Erreur: $e')),
+                      error: (e, _) =>
+                          Center(child: Text(errLabel(context, e))),
                       data: (convs) => convs.isEmpty
                           ? _EmptyState()
                           : ListView.builder(
@@ -79,16 +81,17 @@ class _ChatRow extends StatelessWidget {
     return parts.map((s) => s[0].toUpperCase()).join();
   }
 
-  String _formatTime(DateTime? dt) {
+  String _formatTime(DateTime? dt, bool isAr) {
     if (dt == null) return '';
     final now = DateTime.now();
     if (now.difference(dt).inDays == 0) return DateFormat('HH:mm').format(dt);
-    if (now.difference(dt).inDays == 1) return 'Hier';
-    return DateFormat('EEE', 'fr').format(dt);
+    if (now.difference(dt).inDays == 1) return isAr ? 'أمس' : 'Hier';
+    return DateFormat('EEE', isAr ? 'ar' : 'fr').format(dt);
   }
 
   @override
   Widget build(BuildContext context) {
+    final isAr = Localizations.localeOf(context).languageCode == 'ar';
     final hasUnread = conv.unreadCount > 0;
 
     return InkWell(
@@ -139,7 +142,7 @@ class _ChatRow extends StatelessWidget {
                       ],
                       const SizedBox(width: 8),
                       Text(
-                        _formatTime(conv.lastMessageAt),
+                        _formatTime(conv.lastMessageAt, isAr),
                         style: appFont(
                           context,
                           fontSize: 12,
@@ -150,7 +153,8 @@ class _ChatRow extends StatelessWidget {
                   ),
                   const SizedBox(height: 3),
                   Text(
-                    conv.lastMessageBody ?? 'Aucun message',
+                    conv.lastMessageBody ??
+                        (isAr ? 'لا توجد رسائل' : 'Aucun message'),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: appFont(
@@ -213,7 +217,9 @@ class _EmptyState extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           Text(
-            'Aucune conversation',
+            Localizations.localeOf(context).languageCode == 'ar'
+                ? 'لا توجد محادثات'
+                : 'Aucune conversation',
             style: appFont(
               context,
               fontSize: 17,
@@ -223,7 +229,9 @@ class _EmptyState extends StatelessWidget {
           ),
           const SizedBox(height: 6),
           Text(
-            'Contactez une agence depuis une annonce',
+            Localizations.localeOf(context).languageCode == 'ar'
+                ? 'تواصل مع وكالة من خلال إعلان'
+                : 'Contactez une agence depuis une annonce',
             style: appFont(
               context,
               fontSize: 14,

@@ -9,6 +9,7 @@ import '../../../../core/storage/locale_storage.dart';
 import '../../data/followed_seller.dart';
 import '../follow_providers.dart';
 import '../../../../core/theme/app_font.dart';
+import '../../../../core/i18n/err_label.dart';
 
 class MyFollowsScreen extends ConsumerWidget {
   const MyFollowsScreen({super.key});
@@ -24,7 +25,7 @@ class MyFollowsScreen extends ConsumerWidget {
       body: async.when(
         loading: () => const Center(
             child: CircularProgressIndicator(color: AppColors.primary)),
-        error: (e, _) => Center(child: Text('Erreur: $e')),
+        error: (e, _) => Center(child: Text(errLabel(context, e))),
         data: (follows) {
           if (follows.isEmpty) {
             return Center(

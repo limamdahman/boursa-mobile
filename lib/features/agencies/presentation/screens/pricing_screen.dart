@@ -141,6 +141,7 @@ class _PlanCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isAr = Localizations.localeOf(context).languageCode == 'ar';
     final dark = plan.dark;
     final textPrimary = dark ? Colors.white : AppColors.textPrimary;
     final textSecondary =
@@ -168,7 +169,7 @@ class _PlanCard extends StatelessWidget {
                 borderRadius: BorderRadius.circular(100),
               ),
               child: Text(
-                'Le plus populaire',
+                isAr ? 'الأكثر شعبية' : 'Le plus populaire',
                 style: appFont(context,
                     fontSize: 12,
                     fontWeight: FontWeight.w700,

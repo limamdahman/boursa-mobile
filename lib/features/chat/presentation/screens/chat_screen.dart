@@ -68,7 +68,10 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
-        title: Text(widget.title ?? 'Chat'),
+        title: Text(widget.title ??
+            (Localizations.localeOf(context).languageCode == 'ar'
+                ? 'محادثة'
+                : 'Chat')),
         centerTitle: false,
       ),
       body: Column(
@@ -175,8 +178,10 @@ class _InputBar extends StatelessWidget {
                 controller: controller,
                 maxLines: null,
                 textCapitalization: TextCapitalization.sentences,
-                decoration: const InputDecoration(
-                  hintText: 'Écrire un message...',
+                decoration: InputDecoration(
+                  hintText: Localizations.localeOf(context).languageCode == 'ar'
+                      ? 'اكتب رسالة...'
+                      : 'Écrire un message...',
                   border: InputBorder.none,
                   enabledBorder: InputBorder.none,
                   focusedBorder: InputBorder.none,
