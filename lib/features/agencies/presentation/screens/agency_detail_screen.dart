@@ -769,7 +769,7 @@ class _AgencyVehiclesState extends ConsumerState<_AgencyVehicles> {
                     crossAxisCount: 2,
                     mainAxisSpacing: 12,
                     crossAxisSpacing: 12,
-                    childAspectRatio: 0.58,
+                    childAspectRatio: 0.72,
                   ),
                   itemCount: vehicles.length,
                   itemBuilder: (context, i) => VehicleCard(

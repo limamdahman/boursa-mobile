@@ -124,7 +124,7 @@ class _ListingScreenState extends ConsumerState<ListingScreen> {
           crossAxisCount: 2,
           mainAxisSpacing: 14,
           crossAxisSpacing: 14,
-          childAspectRatio: 0.60,
+          childAspectRatio: 0.72,
         ),
         itemCount: state.items.length + (state.isLoadingMore ? 2 : 0),
         itemBuilder: (context, index) {
